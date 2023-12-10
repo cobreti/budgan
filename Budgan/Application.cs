@@ -48,7 +48,8 @@ public class Application
             .AddScoped<ITransactionsLoader, TransactionsLoader>()
             .AddScoped<ITransactionParser, TransactionParser>()
             .AddSingleton<IState, State>()
-            .AddSingleton<ITransactionMgr, TransactionsMgr>();
+            .AddSingleton<ITransactionMgr, TransactionsMgr>()
+            .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>();
         
         Builder.Logging.AddConsole();
 

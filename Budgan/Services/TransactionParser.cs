@@ -44,7 +44,7 @@ public class TransactionParser : ITransactionParser
         var transaction = new Transaction()
         {
             Key = keyBuilder.ToString().Replace(" ", ""),
-            Layout = LayoutName,
+            LayoutName = LayoutName,
             Origin = origin,
             DateTransaction = GetParserColumn(parser, Layout.DateTransaction),
             DateInscription = GetParserColumn(parser, Layout.DateTransaction),

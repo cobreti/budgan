@@ -3,7 +3,7 @@ namespace Budgan.Model;
 public class Transaction
 {
     public string Key { get; set; }
-    public string Layout { get; set; }
+    public string LayoutName { get; set; }
     public string Origin { get; set; }
     
     public string DateTransaction { get; set; }

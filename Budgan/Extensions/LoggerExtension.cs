@@ -9,7 +9,7 @@ public static class LoggerExtension
     {
         logger.LogDebug("{message} -- {layout name}\t{origin}\t{datetransaction}\t{dateinscription}\t{amount}\t{description}\t[{key}]",
             message,
-            transaction.Layout,
+            transaction.LayoutName,
             transaction.Origin,
             transaction.DateTransaction,
             transaction.DateInscription,
