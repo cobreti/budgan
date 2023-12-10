@@ -1,6 +1,6 @@
 namespace Budgan.Services;
 
-public interface ISourceLoader
+public interface ITransactionsLoader
 {
     void Load();
 }

@@ -45,8 +45,10 @@ public class Application
 
         Builder.Services
             .AddTransient<IFileSystem, FileSystem>()
-            .AddScoped<ISourceLoader, SourceLoader>()
-            .AddSingleton<IState, State>();
+            .AddScoped<ITransactionsLoader, TransactionsLoader>()
+            .AddScoped<ITransactionParser, TransactionParser>()
+            .AddSingleton<IState, State>()
+            .AddSingleton<ITransactionMgr, TransactionsMgr>();
         
         Builder.Logging.AddConsole();
 
@@ -70,10 +72,10 @@ public class Application
                 throw new Exception("Invalid state from command line");
             }
             
-            var sourceLoader = App.Services.GetService<ISourceLoader>();
-            Guard.Against.Null(sourceLoader, message: "unable to find SourceLoader service");
+            var transactionsLoader = App.Services.GetService<ITransactionsLoader>();
+            Guard.Against.Null(transactionsLoader, message: "unable to find SourceLoader service");
             
-            sourceLoader.Load();
+            transactionsLoader.Load();
         }
         catch (Exception e)
         {
@@ -81,40 +83,4 @@ public class Application
             throw;
         }
     }
-
-    // public bool UpdateStateFromCommandLineArgs()
-    // {
-    //     var ret = true;
-    //     
-    //     Parser.ParseArguments<CommandLineOptions>(Args)
-    //         .WithParsed(c =>
-    //         {
-    //             // Builder.Services.Configure<FoldersOptions>(options =>
-    //             // {
-    //             //     options.Source = c.Source;
-    //             //     options.Output = c.Output;
-    //             // });
-    //             // Builder.Services.Configure<LayoutOptions>(options =>
-    //             // {
-    //             //     options.Name = c.Layout;
-    //             // });
-    //         })
-    //         .WithNotParsed(errors =>
-    //         {
-    //             foreach (var error in errors)
-    //             {
-    //                 Console.WriteLine(error);
-    //             }
-    //
-    //             ret = false;
-    //         });
-    //
-    //     var helpText = HelpWriter.ToString();
-    //     if (helpText.Length > 0)
-    //     {
-    //         Console.WriteLine(helpText);
-    //     }
-    //
-    //     return ret;
-    // }
 }

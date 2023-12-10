@@ -12,6 +12,7 @@ public interface IState
     
     string? Output { get; }
     
+    string? LayoutName { get; }
     FileLayout? Layout { get; }
 
     void UpdateFromCommandLineArgs(string[] args);

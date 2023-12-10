@@ -12,21 +12,25 @@ using Microsoft.Extensions.Options;
 
 namespace Budgan.Services;
 
-public class SourceLoader : ISourceLoader
+public class TransactionsLoader : ITransactionsLoader
 {
-    public ILogger<SourceLoader> Logger { get; }
+    public ILogger<TransactionsLoader> Logger { get; }
     
     public IFileSystem FileSystem { get; }
     public IState State { get; }
     
-    public SourceLoader(
-        ILogger<SourceLoader> logger,
+    public ITransactionParser TransactionsParser { get; }
+    
+    public TransactionsLoader(
+        ILogger<TransactionsLoader> logger,
         IState state,
+        ITransactionParser transactionsParser,
         IFileSystem fileSystem)
     {
         Logger = logger;
         FileSystem = fileSystem;
         State = state;
+        TransactionsParser = transactionsParser;
     }
 
     public void Load()
@@ -92,35 +96,7 @@ public class SourceLoader : ISourceLoader
             csv.ReadHeader();
             while (csv.Read())
             {
-                string? dateTransaction = null;
-                if (State.Layout.DateTransaction != null)
-                {
-                    dateTransaction = csv.Parser[State.Layout.DateTransaction.Value];
-                }
-
-                string? dateInscription = null;
-                if (State.Layout.DateInscription != null)
-                {
-                    dateInscription = csv.Parser[State.Layout.DateInscription.Value];
-                }
-
-                string? amount = null;
-                if (State.Layout.Amount != null)
-                {
-                    amount = csv.Parser[State.Layout.Amount.Value];
-                }
-
-                string? desc = null;
-                if (State.Layout.Description != null)
-                {
-                    desc = csv.Parser[State.Layout.Description.Value];
-                }
-
-                // var rec = csv.GetRecord<CSVDataLine>();
-                Logger.LogDebug("{date transaction}",dateTransaction);
-                Logger.LogDebug("{date inscription}",dateInscription);
-                Logger.LogDebug("{amount}",amount);
-                Logger.LogDebug("{desc}",desc);
+                TransactionsParser.Parse(file, csv.Parser);
             }
         }
     }

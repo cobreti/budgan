@@ -14,6 +14,7 @@ public class State : IState
 
     public int MinColumnsRequired { get; set; }
 
+    public string? LayoutName { get; set; }
     public FileLayout? Layout { get; set; }
 
     public bool Valid { get; set; } = false;
@@ -57,6 +58,7 @@ public class State : IState
 
                 var entry = CsvSettings.Value.Layouts?.FirstOrDefault(x => x.Key == c.Layout);
                 this.Layout = entry?.Value;
+                this.LayoutName = entry?.Key;
             })
             .WithNotParsed(errors =>
             {
