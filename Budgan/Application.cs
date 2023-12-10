@@ -46,9 +46,10 @@ public class Application
         Builder.Services
             .AddTransient<IFileSystem, FileSystem>()
             .AddScoped<ITransactionsLoader, TransactionsLoader>()
+            .AddScoped<ITransactionsWriter, TransactionsWriter>()
             .AddScoped<ITransactionParser, TransactionParser>()
             .AddSingleton<IState, State>()
-            .AddSingleton<ITransactionMgr, TransactionsMgr>()
+            .AddSingleton<ITransactionsMgr, TransactionsesMgr>()
             .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>();
         
         Builder.Logging.AddConsole();
@@ -77,6 +78,14 @@ public class Application
             Guard.Against.Null(transactionsLoader, message: "unable to find SourceLoader service");
             
             transactionsLoader.Load();
+
+            var transactionsWriter = App.Services.GetService<ITransactionsWriter>();
+            Guard.Against.Null(transactionsWriter, message: "unable to find TransactionsWriter service");
+
+            var transactionsMgr = App.Services.GetService<ITransactionsMgr>();
+            Guard.Against.Null(transactionsMgr, "unable to get transactions mgr");
+            
+            transactionsWriter.Write("test.csv", transactionsMgr.GetAllTransactions());
         }
         catch (Exception e)
         {

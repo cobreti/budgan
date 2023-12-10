@@ -34,5 +34,13 @@ public class TransactionsContainer : ITransactionsContainer
         
         Transactions.Add(transaction.Key, transaction);
     }
+
+    public IEnumerable<Transaction> GetAllTransactions()
+    {
+        foreach (var transaction in Transactions.Values)
+        {
+            yield return transaction;
+        }
+    }
 }
 

@@ -9,4 +9,6 @@ public interface ITransactionsContainer
     string Origin { get; }
 
     void Add(Transaction transaction);
+
+    IEnumerable<Transaction> GetAllTransactions();
 }

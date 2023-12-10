@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Budgan.Services;
 
-public class TransactionsMgr : ITransactionMgr
+public class TransactionsesMgr : ITransactionsMgr
 {
     public Dictionary<string, ITransactionsContainer> Containers { get; } = new();
     
-    public ILogger<TransactionsMgr>     Logger { get; }
+    public ILogger<TransactionsesMgr>     Logger { get; }
 
     public ITransactionsContainerFactory TransactionsContainerFactory { get; }
 
-    public TransactionsMgr(
-        ILogger<TransactionsMgr> logger,
+    public TransactionsesMgr(
+        ILogger<TransactionsesMgr> logger,
         ITransactionsContainerFactory transactionsContainerFactory)
     {
         Logger = logger;
@@ -46,4 +46,16 @@ public class TransactionsMgr : ITransactionMgr
 
         return container;
     }
+
+    public IEnumerable<Transaction> GetAllTransactions()
+    {
+        foreach (var containerEntry in Containers)
+        {
+            foreach (var transaction in containerEntry.Value.GetAllTransactions())
+            {
+                yield return transaction;
+            }
+        }
+    }
 }
+

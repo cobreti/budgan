@@ -13,16 +13,16 @@ public class TransactionParser : ITransactionParser
     
     public IState State { get; }
     
-    public ITransactionMgr TransactionMgr { get; }
+    public ITransactionsMgr TransactionsMgr { get; }
 
     public TransactionParser(
         ILogger<TransactionParser> logger,
-        ITransactionMgr transactionMgr,
+        ITransactionsMgr transactionsMgr,
         IState state)
     {
         Logger = logger;
         State = state;
-        TransactionMgr = transactionMgr;
+        TransactionsMgr = transactionsMgr;
     }
 
     public void Parse(string origin, IParser parser)
@@ -46,13 +46,14 @@ public class TransactionParser : ITransactionParser
             Key = keyBuilder.ToString().Replace(" ", ""),
             LayoutName = LayoutName,
             Origin = origin,
+            CardNumber = GetParserColumn(parser, Layout.CardNumber),
             DateTransaction = GetParserColumn(parser, Layout.DateTransaction),
             DateInscription = GetParserColumn(parser, Layout.DateTransaction),
             Amount = GetParserColumn(parser, Layout.Amount),
             Description = GetParserColumn(parser, Layout.Description)
         };
 
-        TransactionMgr.Add(transaction);
+        TransactionsMgr.Add(transaction);
     }
 
     public string GetParserColumn(IParser parser, int? column)
