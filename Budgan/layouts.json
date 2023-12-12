@@ -1,0 +1,32 @@
+{
+  "TransactionLayouts": {
+    "Account": {
+      "MinColumnsRequired": 4,
+      "DateTransaction": 2,
+      "DateInscription": 2,
+      "Amount": 3,
+      "Description": 4,
+      "CardNumber": 0,
+      "Key": [
+        "DateTransaction",
+        "DateInscription",
+        "Amount",
+        "Description"
+      ]
+    },
+    "Credit": {
+      "MinColumnsRequired": 4,
+      "DateTransaction": 2,
+      "DateInscription": 3,
+      "Amount": 4,
+      "Description": 5,
+      "CardNumber": 1,
+      "Key": [
+        "DateTransaction",
+        "DateInscription",
+        "Amount",
+        "Description"
+      ]
+    }
+  }
+}

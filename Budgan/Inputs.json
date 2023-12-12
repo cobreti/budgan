@@ -1,0 +1,8 @@
+{
+  "Inputs": {
+    "bank": {
+      "source": "/Users/dannythibaudeau/dev/documents/statement/card_local",
+      "layout": "Credit"
+    }
+  }
+}

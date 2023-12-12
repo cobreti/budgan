@@ -4,7 +4,7 @@ namespace Budgan.Services;
 
 public interface ITransactionsMgr
 {
-    void Add(Transaction transaction);
+    void Add(BankTransaction bankTransaction);
 
-    IEnumerable<Transaction> GetAllTransactions();
+    IEnumerable<BankTransaction> GetAllTransactions();
 }

@@ -19,21 +19,11 @@ public class Application
     public string[] Args { get; }
     
     public IHost? App { get; set; }
-    // public StringWriter HelpWriter { get; } = new();
-    // public Parser Parser { get; }
     
     public Application(string[] args)
     {
         Args = args;
         Builder = Host.CreateApplicationBuilder(args);
-        
-        // Parser = new Parser(c =>
-        // {
-        //     c.CaseSensitive = false;
-        //     c.AutoVersion = false;
-        //     c.AutoHelp = true;
-        //     c.HelpWriter = HelpWriter;
-        // });
     }
 
     public bool Init()
@@ -50,7 +40,8 @@ public class Application
             .AddScoped<ITransactionParser, TransactionParser>()
             .AddSingleton<IState, State>()
             .AddSingleton<ITransactionsMgr, TransactionsesMgr>()
-            .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>();
+            .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>()
+            .AddSingleton<ICommandLineParser, CommandLineParser>();
         
         Builder.Logging.AddConsole();
 
@@ -65,27 +56,32 @@ public class Application
         {
             Guard.Against.Null(App, message: "no host application instance");
 
-            var stateService = App.Services.GetService<IState>();
-            Guard.Against.Null(stateService, message: "unble to access application state");
+            var cmdlineParser = App.Services.GetService<ICommandLineParser>();
+            Guard.Against.Null(cmdlineParser);
 
-            stateService.UpdateFromCommandLineArgs(Args);
-            if (!stateService.Valid)
-            {
-                throw new Exception("Invalid state from command line");
-            }
-            
-            var transactionsLoader = App.Services.GetService<ITransactionsLoader>();
-            Guard.Against.Null(transactionsLoader, message: "unable to find SourceLoader service");
-            
-            transactionsLoader.Load();
+            cmdlineParser.Parse(Args);
 
-            var transactionsWriter = App.Services.GetService<ITransactionsWriter>();
-            Guard.Against.Null(transactionsWriter, message: "unable to find TransactionsWriter service");
-
-            var transactionsMgr = App.Services.GetService<ITransactionsMgr>();
-            Guard.Against.Null(transactionsMgr, "unable to get transactions mgr");
-            
-            transactionsWriter.Write("test.csv", transactionsMgr.GetAllTransactions());
+            // var stateService = App.Services.GetService<IState>();
+            // Guard.Against.Null(stateService, message: "unble to access application state");
+            //
+            // stateService.UpdateFromCommandLineArgs(Args);
+            // if (!stateService.Valid)
+            // {
+            //     throw new Exception("Invalid state from command line");
+            // }
+            //
+            // var transactionsLoader = App.Services.GetService<ITransactionsLoader>();
+            // Guard.Against.Null(transactionsLoader, message: "unable to find SourceLoader service");
+            //
+            // transactionsLoader.Load();
+            //
+            // var transactionsWriter = App.Services.GetService<ITransactionsWriter>();
+            // Guard.Against.Null(transactionsWriter, message: "unable to find TransactionsWriter service");
+            //
+            // var transactionsMgr = App.Services.GetService<ITransactionsMgr>();
+            // Guard.Against.Null(transactionsMgr, "unable to get transactions mgr");
+            //
+            // transactionsWriter.Write("test.csv", transactionsMgr.GetAllTransactions());
         }
         catch (Exception e)
         {

@@ -1,6 +1,6 @@
 namespace Budgan.Model;
 
-public class Transaction
+public class BankTransaction
 {
     public string Key { get; set; }
     public string LayoutName { get; set; }

@@ -4,5 +4,5 @@ namespace Budgan.Services;
 
 public interface ITransactionsWriter
 {
-    void Write(string filename, IEnumerable<Transaction> transactions);
+    void Write(string filename, IEnumerable<BankTransaction> transactions);
 }

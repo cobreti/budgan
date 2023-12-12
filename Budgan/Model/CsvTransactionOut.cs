@@ -4,25 +4,25 @@ namespace Budgan.Model;
 
 public class CsvTransactionOut
 {
-    [Index(0), Name("Card Number")] public string CardNumber => Transaction.CardNumber;
+    [Index(0), Name("Card Number")] public string CardNumber => BankTransaction.CardNumber;
 
-    [Index(1), Name("Date Transaction")] public string DateTransaction => Transaction.DateTransaction;
+    [Index(1), Name("Date Transaction")] public string DateTransaction => BankTransaction.DateTransaction;
 
-    [Index(2), Name("Date Inscription")] public string DateInscription => Transaction.DateInscription;
+    [Index(2), Name("Date Inscription")] public string DateInscription => BankTransaction.DateInscription;
 
-    [Index(3), Name("Amount")] public string Amount => Transaction.Amount;
+    [Index(3), Name("Amount")] public string Amount => BankTransaction.Amount;
 
-    [Index(4), Name("Description")] public string Description => Transaction.Description;
+    [Index(4), Name("Description")] public string Description => BankTransaction.Description;
 
-    [Index(5), Name("LayoutName")] public string LayoutName => Transaction.LayoutName;
+    [Index(5), Name("LayoutName")] public string LayoutName => BankTransaction.LayoutName;
     
-    [Index(6), Name("Origin")] public string Origin => Transaction.Origin;
+    [Index(6), Name("Origin")] public string Origin => BankTransaction.Origin;
 
     [Ignore]
-    public Transaction Transaction { get; }
+    public BankTransaction BankTransaction { get; }
 
-    public CsvTransactionOut(Transaction transaction)
+    public CsvTransactionOut(BankTransaction bankTransaction)
     {
-        Transaction = transaction;
+        BankTransaction = bankTransaction;
     }
 }

@@ -8,7 +8,7 @@ public interface ITransactionsContainer
     
     string Origin { get; }
 
-    void Add(Transaction transaction);
+    void Add(BankTransaction bankTransaction);
 
-    IEnumerable<Transaction> GetAllTransactions();
+    IEnumerable<BankTransaction> GetAllTransactions();
 }

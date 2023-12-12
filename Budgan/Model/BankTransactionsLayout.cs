@@ -1,8 +1,8 @@
-namespace Budgan.Options;
+namespace Budgan.Model;
 
-public class FileLayout
+public class BankTransactionsLayout
 {
-    public int? MinColumnsRequired { get; set; } 
+    public string Name { get; set; }
     public int? DateTransaction { get; set; }
     
     public int? DateInscription { get; set; }

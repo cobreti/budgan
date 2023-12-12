@@ -21,33 +21,33 @@ public class TransactionsesMgr : ITransactionsMgr
         TransactionsContainerFactory = transactionsContainerFactory;
     }
 
-    public void Add(Transaction transaction)
+    public void Add(BankTransaction bankTransaction)
     {
-        var container = GetContainerForTransaction(transaction);
+        var container = GetContainerForTransaction(bankTransaction);
 
-        container.Add(transaction);
+        container.Add(bankTransaction);
         // Logger.LogTransaction("-->", transaction);
     }
 
-    public void LogTransaction(string message, Transaction transaction)
+    public void LogTransaction(string message, BankTransaction bankTransaction)
     {
     }
 
-    public ITransactionsContainer GetContainerForTransaction(Transaction transaction)
+    public ITransactionsContainer GetContainerForTransaction(BankTransaction bankTransaction)
     {
-        if (Containers.TryGetValue(transaction.Origin, out var containerForTransaction))
+        if (Containers.TryGetValue(bankTransaction.Origin, out var containerForTransaction))
         {
             return containerForTransaction;
         }
 
         var container =
-            TransactionsContainerFactory.CreateTransactionsContainer(transaction.LayoutName, transaction.Origin);
+            TransactionsContainerFactory.CreateTransactionsContainer(bankTransaction.LayoutName, bankTransaction.Origin);
         Containers.Add(container.Origin, container);
 
         return container;
     }
 
-    public IEnumerable<Transaction> GetAllTransactions()
+    public IEnumerable<BankTransaction> GetAllTransactions()
     {
         foreach (var containerEntry in Containers)
         {

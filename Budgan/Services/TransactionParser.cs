@@ -41,7 +41,7 @@ public class TransactionParser : ITransactionParser
             }
         }
 
-        var transaction = new Transaction()
+        var transaction = new BankTransaction()
         {
             Key = keyBuilder.ToString().Replace(" ", ""),
             LayoutName = LayoutName,

@@ -8,7 +8,7 @@ public class TransactionsContainer : ITransactionsContainer
 {
     public ILogger<TransactionsContainer>   Logger { get; }
 
-    public Dictionary<string, Transaction> Transactions { get; } = new();
+    public Dictionary<string, BankTransaction> Transactions { get; } = new();
 
     public string LayoutName { get; }
     
@@ -24,18 +24,18 @@ public class TransactionsContainer : ITransactionsContainer
         LayoutName = layoutName;
     }
 
-    public void Add(Transaction transaction)
+    public void Add(BankTransaction bankTransaction)
     {
-        if (Transactions.ContainsKey(transaction.Key))
+        if (Transactions.ContainsKey(bankTransaction.Key))
         {
-            Logger.LogTransaction("transaction already present in container", transaction);
+            Logger.LogTransaction("transaction already present in container", bankTransaction);
             return;
         }
         
-        Transactions.Add(transaction.Key, transaction);
+        Transactions.Add(bankTransaction.Key, bankTransaction);
     }
 
-    public IEnumerable<Transaction> GetAllTransactions()
+    public IEnumerable<BankTransaction> GetAllTransactions()
     {
         foreach (var transaction in Transactions.Values)
         {

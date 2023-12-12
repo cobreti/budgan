@@ -35,49 +35,49 @@ public class State : IState
 
     public void UpdateFromCommandLineArgs(string[] args)
     {
-        var helpWriter = new StringWriter();
-        var parser = new Parser(c =>
-        {
-            c.CaseSensitive = false;
-            c.AutoVersion = false;
-            c.AutoHelp = true;
-            c.HelpWriter = helpWriter;
-        });
-
-        var helpText = helpWriter.ToString();
-        if (helpText.Length > 0)
-        {
-            Console.WriteLine(helpText);
-        }
-
-        parser.ParseArguments<CommandLineOptions>(args)
-            .WithParsed(c =>
-            {
-                Source = c.Source;
-                Output = c.Output;
-
-                var entry = CsvSettings.Value.Layouts?.FirstOrDefault(x => x.Key == c.Layout);
-                this.Layout = entry?.Value;
-                this.LayoutName = entry?.Key;
-            })
-            .WithNotParsed(errors =>
-            {
-                foreach (var error in errors)
-                {
-                    Logger.LogError("{error}", error);
-                }
-            });
-
-        Validate();
+        // var helpWriter = new StringWriter();
+        // var parser = new Parser(c =>
+        // {
+        //     c.CaseSensitive = false;
+        //     c.AutoVersion = false;
+        //     c.AutoHelp = true;
+        //     c.HelpWriter = helpWriter;
+        // });
+        //
+        // var helpText = helpWriter.ToString();
+        // if (helpText.Length > 0)
+        // {
+        //     Console.WriteLine(helpText);
+        // }
+        //
+        // parser.ParseArguments<CommandLineOptions>(args)
+        //     .WithParsed(c =>
+        //     {
+        //         // Source = c.Source;
+        //         // Output = c.Output;
+        //
+        //         var entry = CsvSettings.Value.Layouts?.FirstOrDefault(x => x.Key == c.Layout);
+        //         this.Layout = entry?.Value;
+        //         this.LayoutName = entry?.Key;
+        //     })
+        //     .WithNotParsed(errors =>
+        //     {
+        //         foreach (var error in errors)
+        //         {
+        //             Logger.LogError("{error}", error);
+        //         }
+        //     });
+        //
+        // Validate();
     }
 
     public void Validate()
     {
-        Valid =
-        (
-            Layout != null &&
-            Source != null &&
-            Output != null
-        );
+        // Valid =
+        // (
+        //     Layout != null &&
+        //     Source != null &&
+        //     Output != null
+        // );
     }
 }

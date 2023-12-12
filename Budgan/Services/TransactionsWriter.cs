@@ -30,7 +30,7 @@ public class TransactionsWriter : ITransactionsWriter
         FileSystem = fileSystem;
     }
 
-    public void Write(string filename, IEnumerable<Transaction> transactions)
+    public void Write(string filename, IEnumerable<BankTransaction> transactions)
     {
         Guard.Against.Null(State.Output);
         
