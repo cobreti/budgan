@@ -1,3 +1,4 @@
+using Budgan.Model;
 using Budgan.Options;
 using Budgan.Options.Runtime;
 using CommandLine;
@@ -9,11 +10,15 @@ namespace Budgan.Services;
 public class CommandLineParser : ICommandLineParser
 {
     public ILogger<CommandLineParser> Logger { get; }
+    
+    public IBankTransactionLayoutSettings LayoutSettings { get; }
 
     public CommandLineParser(
-        ILogger<CommandLineParser> logger)
+        ILogger<CommandLineParser> logger,
+        IBankTransactionLayoutSettings layoutSettings )
     {
         Logger = logger;
+        LayoutSettings = layoutSettings;
     }
 
     public void Parse(string[] args)
@@ -59,12 +64,35 @@ public class CommandLineParser : ICommandLineParser
                 var json = stream.ReadToEnd();
                 var config = JsonConvert.DeserializeObject<Config>(json);
 
+                if (config?.TransactionLayouts != null)
+                {
+                    AddTransactionLayoutsToSettings(config.TransactionLayouts);
+                }
+
                 Logger.LogDebug(json);
             }
         }
         catch (Exception e)
         {
             Logger.LogError(e.Message);
+        }
+    }
+
+    public void AddTransactionLayoutsToSettings(Dictionary<string, FileLayout> layouts)
+    {
+        foreach (var (name, layout) in layouts)
+        {
+            var transactionsLayout = new BankTransactionsLayout()
+            {
+                Name = name,
+                Amount = layout.Amount,
+                CardNumber = layout.CardNumber,
+                DateInscription = layout.DateInscription,
+                DateTransaction = layout.DateTransaction,
+                Description = layout.Description,
+                Key = layout.Key
+            };
+            LayoutSettings.AddOrReplace(transactionsLayout);
         }
     }
 }

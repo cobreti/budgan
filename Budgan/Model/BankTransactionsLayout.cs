@@ -2,18 +2,18 @@ namespace Budgan.Model;
 
 public class BankTransactionsLayout
 {
-    public string Name { get; set; }
-    public int? DateTransaction { get; set; }
+    public string Name { get; init; }
+    public int? DateTransaction { get; init; }
     
-    public int? DateInscription { get; set; }
+    public int? DateInscription { get; init; }
     
-    public int? Amount { get; set; }
+    public int? Amount { get; init; }
     
-    public int? Description { get; set; }
+    public int? Description { get; init; }
     
-    public int? CardNumber { get; set; }
+    public int? CardNumber { get; init; }
     
-    public string[]? Key { get; set; }
+    public string[]? Key { get; init; }
 
     public int? GetIndexByName(string name)
     {

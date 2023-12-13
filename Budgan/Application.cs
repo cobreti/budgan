@@ -41,7 +41,8 @@ public class Application
             .AddSingleton<IState, State>()
             .AddSingleton<ITransactionsMgr, TransactionsesMgr>()
             .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>()
-            .AddSingleton<ICommandLineParser, CommandLineParser>();
+            .AddSingleton<ICommandLineParser, CommandLineParser>()
+            .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>();
         
         Builder.Logging.AddConsole();
 
