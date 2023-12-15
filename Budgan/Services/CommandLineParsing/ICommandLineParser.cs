@@ -1,4 +1,4 @@
-namespace Budgan.Services;
+namespace Budgan.Services.CommandLineParsing;
 
 public interface ICommandLineParser
 {

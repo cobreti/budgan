@@ -1,6 +1,6 @@
 using Budgan.Core;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Interfaces;
 
 public interface ITransactionsContainerFactory
 {

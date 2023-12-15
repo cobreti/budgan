@@ -1,6 +1,6 @@
 using Budgan.Model;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Interfaces;
 
 public interface ITransactionsWriter
 {

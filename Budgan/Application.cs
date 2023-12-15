@@ -3,6 +3,9 @@ using Ardalis.GuardClauses;
 using Budgan.Options;
 using Budgan.Options.Runtime;
 using Budgan.Services;
+using Budgan.Services.CommandLineParsing;
+using Budgan.Services.Implementations;
+using Budgan.Services.Interfaces;
 using CommandLine;
 using Microsoft.Extensions.Options;
 
@@ -39,10 +42,11 @@ public class Application
             .AddScoped<ITransactionsWriter, TransactionsWriter>()
             .AddScoped<ITransactionParser, TransactionParser>()
             .AddSingleton<IState, State>()
-            .AddSingleton<ITransactionsMgr, TransactionsesMgr>()
+            .AddSingleton<ITransactionsRepository, TransactionsRepository>()
             .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>()
             .AddSingleton<ICommandLineParser, CommandLineParser>()
-            .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>();
+            .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>()
+            .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>();
         
         Builder.Logging.AddConsole();
 

@@ -14,6 +14,8 @@ public class BankTransactionsLayout
     public int? CardNumber { get; init; }
     
     public string[]? Key { get; init; }
+    
+    public int? MinColumnsRequired { get; set; }
 
     public int? GetIndexByName(string name)
     {

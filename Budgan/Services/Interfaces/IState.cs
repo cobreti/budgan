@@ -1,6 +1,6 @@
 using Budgan.Options;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Interfaces;
 
 public interface IState
 {

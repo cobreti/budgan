@@ -1,10 +1,9 @@
 using Budgan.Options;
-using Budgan.Options.Runtime;
-using CommandLine;
+using Budgan.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Implementations;
 
 public class State : IState
 {

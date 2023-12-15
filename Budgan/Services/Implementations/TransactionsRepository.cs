@@ -1,20 +1,20 @@
 using Budgan.Core;
-using Budgan.Extensions;
 using Budgan.Model;
+using Budgan.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Implementations;
 
-public class TransactionsesMgr : ITransactionsMgr
+public class TransactionsRepository : ITransactionsRepository
 {
     public Dictionary<string, ITransactionsContainer> Containers { get; } = new();
     
-    public ILogger<TransactionsesMgr>     Logger { get; }
+    public ILogger<TransactionsRepository>     Logger { get; }
 
     public ITransactionsContainerFactory TransactionsContainerFactory { get; }
 
-    public TransactionsesMgr(
-        ILogger<TransactionsesMgr> logger,
+    public TransactionsRepository(
+        ILogger<TransactionsRepository> logger,
         ITransactionsContainerFactory transactionsContainerFactory)
     {
         Logger = logger;

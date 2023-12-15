@@ -1,8 +1,8 @@
 using Budgan.Model;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Interfaces;
 
-public interface ITransactionsMgr
+public interface ITransactionsRepository
 {
     void Add(BankTransaction bankTransaction);
 

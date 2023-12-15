@@ -1,7 +1,8 @@
 using Budgan.Core;
+using Budgan.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Implementations;
 
 public class TransactionsContainerFactory : ITransactionsContainerFactory
 {

@@ -1,24 +1,35 @@
-using Budgan.Model;
+using Budgan.Core.ConfigLoader;
 using Budgan.Options;
 using Budgan.Options.Runtime;
+using Budgan.Services.Interfaces;
 using CommandLine;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Budgan.Services;
+namespace Budgan.Services.CommandLineParsing;
 
 public class CommandLineParser : ICommandLineParser
 {
     public ILogger<CommandLineParser> Logger { get; }
     
     public IBankTransactionLayoutSettings LayoutSettings { get; }
+    
+    public ITransactionsLoader TransactionsLoader { get; }
+    
+    public IConfigLoaderFactory ConfigLoaderFactory { get; }
+
+    public List<IConfigLoader> ConfigLoaders { get; } = new();
 
     public CommandLineParser(
         ILogger<CommandLineParser> logger,
+        ITransactionsLoader transactionsLoader,
+        IConfigLoaderFactory configLoaderFactory,
         IBankTransactionLayoutSettings layoutSettings )
     {
         Logger = logger;
         LayoutSettings = layoutSettings;
+        TransactionsLoader = transactionsLoader;
+        ConfigLoaderFactory = configLoaderFactory;
     }
 
     public void Parse(string[] args)
@@ -45,6 +56,10 @@ public class CommandLineParser : ICommandLineParser
                 {
                     ReadConfigFile(s);
                 }
+                
+                ConfigLoaders.ForEach(loader => loader.ProcessLayout());
+                ConfigLoaders.ForEach(loader => loader.ProcessInput());
+                ConfigLoaders.ForEach(loader => loader.ProcessOutputs());
             })
             .WithNotParsed(errors =>
             {
@@ -66,7 +81,14 @@ public class CommandLineParser : ICommandLineParser
 
                 if (config?.TransactionLayouts != null)
                 {
-                    AddTransactionLayoutsToSettings(config.TransactionLayouts);
+                    var loader = ConfigLoaderFactory.Create(config.TransactionLayouts);
+                    ConfigLoaders.Add(loader);
+                }
+
+                if (config?.Inputs != null)
+                {
+                    var loader = ConfigLoaderFactory.Create(config.Inputs);
+                    ConfigLoaders.Add(loader);
                 }
 
                 Logger.LogDebug(json);
@@ -75,24 +97,6 @@ public class CommandLineParser : ICommandLineParser
         catch (Exception e)
         {
             Logger.LogError(e.Message);
-        }
-    }
-
-    public void AddTransactionLayoutsToSettings(Dictionary<string, FileLayout> layouts)
-    {
-        foreach (var (name, layout) in layouts)
-        {
-            var transactionsLayout = new BankTransactionsLayout()
-            {
-                Name = name,
-                Amount = layout.Amount,
-                CardNumber = layout.CardNumber,
-                DateInscription = layout.DateInscription,
-                DateTransaction = layout.DateTransaction,
-                Description = layout.Description,
-                Key = layout.Key
-            };
-            LayoutSettings.AddOrReplace(transactionsLayout);
         }
     }
 }

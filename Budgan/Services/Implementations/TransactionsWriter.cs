@@ -2,11 +2,12 @@ using System.Globalization;
 using System.IO.Abstractions;
 using Ardalis.GuardClauses;
 using Budgan.Model;
+using Budgan.Services.Interfaces;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Budgan.Services;
+namespace Budgan.Services.Implementations;
 
 public class TransactionsWriter : ITransactionsWriter
 {
@@ -14,19 +15,19 @@ public class TransactionsWriter : ITransactionsWriter
     
     public IState State { get; }
     
-    public ITransactionsMgr TransactionsMgr { get; }
+    public ITransactionsRepository TransactionsRepository { get; }
     
     public IFileSystem FileSystem { get; }
 
     public TransactionsWriter(
         ILogger<TransactionsWriter> logger,
-        ITransactionsMgr transactionsMgr,
+        ITransactionsRepository transactionsRepository,
         IFileSystem fileSystem,
         IState state)
     {
         Logger = logger;
         State = state;
-        TransactionsMgr = transactionsMgr;
+        TransactionsRepository = transactionsRepository;
         FileSystem = fileSystem;
     }
 
