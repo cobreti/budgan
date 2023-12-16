@@ -1,6 +1,7 @@
 using Budgan.Core.ConfigLoader;
 using Budgan.Options;
 using Budgan.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Budgan.Services.CommandLineParsing;
@@ -12,16 +13,23 @@ public class ConfigLoaderFactory : IConfigLoaderFactory
     public IBankTransactionLayoutSettings LayoutSettings { get; }
     public ITransactionsLoader TransactionsLoader { get; }
 
+    public ITransactionsRepository TransactionsRepository { get; }
+    public ITransactionsWriter TransactionsWriter { get; }
+    
     public ConfigLoaderFactory(
         ILoggerFactory loggerFactory,
         ILogger<ConfigLoaderFactory> logger,
         ITransactionsLoader transactionsLoader,
+        ITransactionsRepository transactionsRepository,
+        ITransactionsWriter transactionsWriter,
         IBankTransactionLayoutSettings layoutSettings)
     {
         LoggerFactory = loggerFactory;
         Logger = logger;
         LayoutSettings = layoutSettings;
         TransactionsLoader = transactionsLoader;
+        TransactionsRepository = transactionsRepository;
+        TransactionsWriter = transactionsWriter;
     }
     
     public IConfigLoader Create(TransactionLayoutsConfigMap transactionsLayout)
@@ -44,6 +52,8 @@ public class ConfigLoaderFactory : IConfigLoaderFactory
     {
         return new OutputsLoader(
             outputsConfig,
+            TransactionsRepository,
+            TransactionsWriter,
             LoggerFactory.CreateLogger<OutputsLoader>());
     }
     

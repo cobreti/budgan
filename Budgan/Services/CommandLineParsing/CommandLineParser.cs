@@ -91,6 +91,12 @@ public class CommandLineParser : ICommandLineParser
                     ConfigLoaders.Add(loader);
                 }
 
+                if (config?.Outputs != null)
+                {
+                    var loader = ConfigLoaderFactory.Create(config.Outputs);
+                    ConfigLoaders.Add(loader);
+                }
+
                 Logger.LogDebug(json);
             }
         }

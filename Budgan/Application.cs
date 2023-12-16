@@ -6,6 +6,7 @@ using Budgan.Services;
 using Budgan.Services.CommandLineParsing;
 using Budgan.Services.Implementations;
 using Budgan.Services.Interfaces;
+using Budgan.Services.TransactionsProcessors;
 using CommandLine;
 using Microsoft.Extensions.Options;
 
@@ -47,6 +48,9 @@ public class Application
             .AddSingleton<ICommandLineParser, CommandLineParser>()
             .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>()
             .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>();
+
+        Builder.Services
+            .AddTransient<IIdentityTransactionsProcessor, IdentityTransactionsProcessor>();
         
         Builder.Logging.AddConsole();
 

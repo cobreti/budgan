@@ -1,7 +1,7 @@
 {
   "Outputs": {
     "bank": {
-      "output": "./result"
+      "file": "./result/test.csv"
     }
   }
 }

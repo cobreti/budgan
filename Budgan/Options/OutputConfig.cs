@@ -2,5 +2,5 @@ namespace Budgan.Options;
 
 public class OutputConfig
 {
-    public string? Output { get; set; }
+    public string? File { get; set; }
 }

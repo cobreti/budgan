@@ -31,41 +31,29 @@ public class TransactionsWriter : ITransactionsWriter
         FileSystem = fileSystem;
     }
 
-    public void Write(string filename, IEnumerable<BankTransaction> transactions)
+    public void Write(string filePath, IEnumerable<BankTransaction> transactions)
     {
-        Guard.Against.Null(State.Output);
-        
-        string outputDir = State.Output;
-
-        if (!FileSystem.Directory.Exists(outputDir))
-        {
-            FileSystem.Directory.CreateDirectory(outputDir);
-        }
-
-        string outputFile = FileSystem.Path.Combine(outputDir, filename);
-
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             NewLine = "\r\n",
             HasHeaderRecord = true
         };
+
+        using var outputStream = FileSystem.File.CreateText(filePath);
+        using var  csvWriter = new CsvWriter(outputStream, config);
         
-        using (var outputStream = FileSystem.File.CreateText(outputFile))
-        using (var  csvWriter = new CsvWriter(outputStream, config))
+        outputStream.NewLine = "\r\n";
+            
+        csvWriter.WriteHeader<CsvTransactionOut>();
+        csvWriter.Flush();
+        csvWriter.NextRecord();
+            
+        foreach (var transaction in transactions)
         {
-            outputStream.NewLine = "\r\n";
-            
-            csvWriter.WriteHeader<CsvTransactionOut>();
-            csvWriter.Flush();
+            var csvTransaction = new CsvTransactionOut(transaction);
+            csvWriter.WriteRecord<CsvTransactionOut>(csvTransaction);
             csvWriter.NextRecord();
-            
-            foreach (var transaction in transactions)
-            {
-                var csvTransaction = new CsvTransactionOut(transaction);
-                csvWriter.WriteRecord<CsvTransactionOut>(csvTransaction);
-                csvWriter.NextRecord();
-                csvWriter.Flush();
-            }
+            csvWriter.Flush();
         }
     }
 }
