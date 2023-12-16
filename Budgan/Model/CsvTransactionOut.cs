@@ -6,7 +6,7 @@ public class CsvTransactionOut
 {
     [Index(0), Name("Card Number")] public string CardNumber => BankTransaction.CardNumber;
 
-    [Index(1), Name("Date Transaction")] public string DateTransaction => BankTransaction.DateTransaction;
+    [Index(1), Name("Date Transaction")] public string DateTransaction => $"{BankTransaction.DateTransaction} - {BankTransaction.DateTransactionO.ToString()}";
 
     [Index(2), Name("Date Inscription")] public string DateInscription => BankTransaction.DateInscription;
 

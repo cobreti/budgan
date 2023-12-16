@@ -51,33 +51,57 @@ public class TransactionParser : ITransactionParser
     
     public void ParseRow(string origin, IParser parser, BankTransactionsLayout layout)
     {
-        var keyBuilder = new StringBuilder();
-
-        if (layout.Key != null)
+        try
         {
-            foreach (var key in layout.Key)
+            var keyBuilder = new StringBuilder();
+
+            if (layout.Key != null)
             {
-                var index = layout.GetIndexByName(key);
-                if (index != null)
+                foreach (var key in layout.Key)
                 {
-                    keyBuilder.Append(GetParserColumn(parser, index));
+                    var index = layout.GetIndexByName(key);
+                    if (index != null)
+                    {
+                        keyBuilder.Append(GetParserColumn(parser, index));
+                    }
                 }
             }
+            
+            var dateFormat = "yyyyMMdd";
+            var dateTransactionRaw = GetParserColumn(parser, layout.DateTransaction);
+            var dateInscrptionRaw = GetParserColumn(parser, layout.DateInscription);
+
+            var res = DateOnly.TryParseExact(dateTransactionRaw, dateFormat, CultureInfo.CurrentCulture, DateTimeStyles.None, out var dateTransaction);
+            if (!res)
+            {
+                throw new Exception($"Invalid date transaction format : ${dateTransactionRaw}");
+            }
+
+            res = DateOnly.TryParseExact(dateInscrptionRaw, dateFormat, CultureInfo.CurrentCulture, DateTimeStyles.None, out var dateInscription);
+            if (!res)
+            {
+                throw new Exception($"Invalid date inscription format : ${dateInscrptionRaw}");
+            }
+            
+            var transaction = new BankTransaction()
+            {
+                Key = keyBuilder.ToString().Replace(" ", ""),
+                LayoutName = layout.Name,
+                Origin = origin,
+                CardNumber = GetParserColumn(parser, layout.CardNumber),
+                DateTransaction = GetParserColumn(parser, layout.DateTransaction),
+                DateTransactionO = dateTransaction,
+                DateInscription = GetParserColumn(parser, layout.DateTransaction),
+                Amount = GetParserColumn(parser, layout.Amount),
+                Description = GetParserColumn(parser, layout.Description)
+            };
+
+            TransactionsRepository.Add(transaction);
         }
-
-        var transaction = new BankTransaction()
+        catch (Exception e)
         {
-            Key = keyBuilder.ToString().Replace(" ", ""),
-            LayoutName = layout.Name,
-            Origin = origin,
-            CardNumber = GetParserColumn(parser, layout.CardNumber),
-            DateTransaction = GetParserColumn(parser, layout.DateTransaction),
-            DateInscription = GetParserColumn(parser, layout.DateTransaction),
-            Amount = GetParserColumn(parser, layout.Amount),
-            Description = GetParserColumn(parser, layout.Description)
-        };
-
-        TransactionsRepository.Add(transaction);
+            Logger.LogError(e.Message);
+        }
     }
 
     public string GetParserColumn(IParser parser, int? column)
