@@ -15,6 +15,8 @@ public class OutputsConfigMap : Dictionary<string, OutputConfig>
 
 public class Config
 {
+    public AppConfig? App { get; set; }
+    
     public TransactionLayoutsConfigMap? TransactionLayouts { get; set; }
     
     public InputsConfigMap? Inputs { get; set; }

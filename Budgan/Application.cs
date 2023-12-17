@@ -35,14 +35,19 @@ public class Application
         Builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         Builder.Configuration.AddJsonFile($"appsettings.{Builder.Environment.EnvironmentName}.json", true, true);
 
-        Builder.Services.Configure<CsvSettings>(Builder.Configuration.GetSection("CSV"));
-
+        Builder.Services
+            .Configure<AppConfig>(Builder.Configuration.GetSection("Budgan"))
+            .PostConfigure<AppConfig>(config =>
+            {
+                var dateValue = config.DateFormat ?? "YYYYMMDD"; 
+                config.DateFormat = dateValue.Replace('Y', 'y').Replace('D', 'd');
+            });
+        
         Builder.Services
             .AddTransient<IFileSystem, FileSystem>()
             .AddScoped<ITransactionsLoader, TransactionsLoader>()
             .AddScoped<ITransactionsWriter, TransactionsWriter>()
             .AddScoped<ITransactionParser, TransactionParser>()
-            .AddSingleton<IState, State>()
             .AddSingleton<ITransactionsRepository, TransactionsRepository>()
             .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>()
             .AddSingleton<ICommandLineParser, CommandLineParser>()
@@ -65,6 +70,8 @@ public class Application
         {
             Guard.Against.Null(App, message: "no host application instance");
 
+            var config = App.Services.GetService<IOptions<AppConfig>>();
+            
             var cmdlineParser = App.Services.GetService<ICommandLineParser>();
             Guard.Against.Null(cmdlineParser);
 

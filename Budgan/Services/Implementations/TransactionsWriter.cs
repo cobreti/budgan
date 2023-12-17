@@ -13,8 +13,6 @@ public class TransactionsWriter : ITransactionsWriter
 {
     public ILogger<TransactionsWriter>  Logger { get; }
     
-    public IState State { get; }
-    
     public ITransactionsRepository TransactionsRepository { get; }
     
     public IFileSystem FileSystem { get; }
@@ -22,11 +20,9 @@ public class TransactionsWriter : ITransactionsWriter
     public TransactionsWriter(
         ILogger<TransactionsWriter> logger,
         ITransactionsRepository transactionsRepository,
-        IFileSystem fileSystem,
-        IState state)
+        IFileSystem fileSystem)
     {
         Logger = logger;
-        State = state;
         TransactionsRepository = transactionsRepository;
         FileSystem = fileSystem;
     }
