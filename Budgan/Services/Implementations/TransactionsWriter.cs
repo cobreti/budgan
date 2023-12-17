@@ -27,7 +27,7 @@ public class TransactionsWriter : ITransactionsWriter
         FileSystem = fileSystem;
     }
 
-    public void Write(string filePath, IEnumerable<BankTransaction> transactions)
+    public void Write(string filePath, string? dateFormat, IEnumerable<BankTransaction> transactions)
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -46,7 +46,7 @@ public class TransactionsWriter : ITransactionsWriter
             
         foreach (var transaction in transactions)
         {
-            var csvTransaction = new CsvTransactionOut(transaction);
+            var csvTransaction = new CsvTransactionOut(transaction, dateFormat);
             csvWriter.WriteRecord<CsvTransactionOut>(csvTransaction);
             csvWriter.NextRecord();
             csvWriter.Flush();

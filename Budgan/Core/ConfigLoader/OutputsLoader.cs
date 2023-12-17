@@ -39,7 +39,8 @@ public class OutputsLoader : IConfigLoader
         {
             if (null != outputConfig.File)
             {
-                TransactionsWriter.Write(outputConfig.File, TransactionsRepository.GetAllTransactions());
+                var dateFormat = outputConfig.DateFormat?.Replace('Y', 'y').Replace('D', 'd');
+                TransactionsWriter.Write(outputConfig.File, dateFormat, TransactionsRepository.GetAllTransactions());
             }
         }
     }
