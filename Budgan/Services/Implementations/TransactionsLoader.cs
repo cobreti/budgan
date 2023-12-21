@@ -27,7 +27,7 @@ public class TransactionsLoader : ITransactionsLoader
         BankTransactionLayoutSettings = bankTransactionLayoutSettings;
     }
 
-    public void Load(string path, string layoutName)
+    public void Load(string key, string path, string layoutName)
     {
         try
         {
@@ -47,16 +47,19 @@ public class TransactionsLoader : ITransactionsLoader
             if (FileSystem.Directory.Exists(path))
             {
                 var files = FileSystem.Directory.GetFiles(path);
-
+                
                 foreach (var file in files)
                 {
-                    ReadFile(file, layout);
+                    var relPath = FileSystem.Path.GetRelativePath(path, file);
+                    var fileId = $"{key} : {relPath}";
+                    Logger.LogDebug(relPath);
+                    ReadFile(fileId, file, layout);
                 }
             }
 
             if (FileSystem.File.Exists(path))
             {
-                ReadFile(path, layout);
+                ReadFile(key, path, layout);
             }
         }
         catch (Exception e)
@@ -72,7 +75,7 @@ public class TransactionsLoader : ITransactionsLoader
         return string.Compare(extension, ".csv", StringComparison.InvariantCultureIgnoreCase) == 0;
     }
 
-    public void ReadFile(string file, BankTransactionsLayout layout)
+    public void ReadFile(string fileId, string file, BankTransactionsLayout layout)
     {
         if (!IsValidFile(file))
         {
@@ -83,6 +86,6 @@ public class TransactionsLoader : ITransactionsLoader
         Logger.LogDebug("source file : {0}", file);
 
         using var reader = new StreamReader(file);
-        TransactionsParser.Parse(file, reader, layout);
+        TransactionsParser.Parse(fileId, file, reader, layout);
     }
 }

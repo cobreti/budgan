@@ -36,7 +36,7 @@ public class TransactionParser : ITransactionParser
         DateFormat = AppConfigOptions.Value.DateFormat;
     }
 
-    public void Parse(string file, StreamReader streamReader, BankTransactionsLayout layout)
+    public void Parse(string fileId, string file, StreamReader streamReader, BankTransactionsLayout layout)
     {
         var minColumnsRequired = layout.MinColumnsRequired ?? 2;
         
@@ -55,7 +55,7 @@ public class TransactionParser : ITransactionParser
             csv.ReadHeader();
             while (csv.Read())
             {
-                ParseRow(file, csv.Parser, layout);
+                ParseRow(fileId, csv.Parser, layout);
             }
         }
         

@@ -1,8 +1,16 @@
 {
   "Inputs": {
-    "bank": {
+    "card-local": {
       "source": "/Users/dannythibaudeau/dev/documents/statement/card_local",
       "layout": "Credit"
+    },
+    "card-web": {
+      "source": "/Users/dannythibaudeau/dev/documents/statement/card_web",
+      "layout": "Credit"
+    },
+    "check": {
+      "source": "/Users/dannythibaudeau/dev/documents/statement/check",
+      "layout": "Account"
     }
   }
 }

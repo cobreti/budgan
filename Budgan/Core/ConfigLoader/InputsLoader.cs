@@ -30,7 +30,7 @@ public class InputsLoader : IConfigLoader
         {
             if (inputConfig.Source != null && inputConfig.Layout != null)
             {
-                TransactionsLoader.Load(inputConfig.Source, inputConfig.Layout);
+                TransactionsLoader.Load(name, inputConfig.Source, inputConfig.Layout);
             }
             else
             {

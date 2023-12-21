@@ -2,5 +2,5 @@ namespace Budgan.Services.Interfaces;
 
 public interface ITransactionsLoader
 {
-    void Load(string path, string layout);
+    void Load(string key, string path, string layout);
 }
