@@ -4,15 +4,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Budgan.Core.ConfigLoader;
 
-public class InputsLoader : IConfigLoader
+public class InputsSectionLoader : IConfigSectionLoader
 {
     public InputsConfigMap Inputs { get; }
-    public ILogger<InputsLoader> Logger { get; }
+    public ILogger<InputsSectionLoader> Logger { get; }
     public ITransactionsLoader TransactionsLoader { get; }
 
-    public InputsLoader(
+    public InputsSectionLoader(
         InputsConfigMap inputs,
-        ILogger<InputsLoader> logger,
+        ILogger<InputsSectionLoader> logger,
         ITransactionsLoader transactionsLoader )
     {
         Logger = logger;
@@ -20,11 +20,7 @@ public class InputsLoader : IConfigLoader
         TransactionsLoader = transactionsLoader;
     }
     
-    public void ProcessLayout()
-    {
-    }
-
-    public void ProcessInput()
+    public void Process()
     {
         foreach (var (name, inputConfig) in Inputs)
         {
@@ -37,9 +33,5 @@ public class InputsLoader : IConfigLoader
                 Logger.LogError("Invalid values for input {inputName}", name);
             }
         }
-    }
-
-    public void ProcessOutputs()
-    {
     }
 }

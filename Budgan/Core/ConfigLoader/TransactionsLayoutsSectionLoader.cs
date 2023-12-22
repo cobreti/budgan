@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Budgan.Core.ConfigLoader;
 
-public class TransactionsLayoutsLoader : IConfigLoader
+public class TransactionsLayoutsSectionLoader : IConfigSectionLoader
 {
     public TransactionLayoutsConfigMap TransactionLayoutsConfig { get; }
-    public ILogger<TransactionsLayoutsLoader> Logger { get; }
+    public ILogger<TransactionsLayoutsSectionLoader> Logger { get; }
     
     public IBankTransactionLayoutSettings LayoutSettings { get; }
 
-    public TransactionsLayoutsLoader(
+    public TransactionsLayoutsSectionLoader(
         TransactionLayoutsConfigMap transactionLayoutsConfig,
-        ILogger<TransactionsLayoutsLoader> logger,
+        ILogger<TransactionsLayoutsSectionLoader> logger,
         IBankTransactionLayoutSettings layoutSettings)
     {
         TransactionLayoutsConfig = transactionLayoutsConfig;
@@ -22,21 +22,13 @@ public class TransactionsLayoutsLoader : IConfigLoader
         LayoutSettings = layoutSettings;
     }
     
-    public void ProcessLayout()
+    public void Process()
     {
         foreach (var (name, layout) in TransactionLayoutsConfig)
         {
             LayoutSettings.AddOrReplace(BankTransactionLayoutFromFileLayout(name, layout));
         }
 
-    }
-
-    public void ProcessInput()
-    {
-    }
-
-    public void ProcessOutputs()
-    {
     }
     
     public BankTransactionsLayout BankTransactionLayoutFromFileLayout(string name, FileLayout layout)

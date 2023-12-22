@@ -1,10 +1,7 @@
 using Budgan.Core.ConfigLoader;
-using Budgan.Options;
 using Budgan.Options.Runtime;
-using Budgan.Services.Interfaces;
 using CommandLine;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Budgan.Services.CommandLineParsing;
 
@@ -12,24 +9,14 @@ public class CommandLineParser : ICommandLineParser
 {
     public ILogger<CommandLineParser> Logger { get; }
     
-    public IBankTransactionLayoutSettings LayoutSettings { get; }
-    
-    public ITransactionsLoader TransactionsLoader { get; }
-    
-    public IConfigLoaderFactory ConfigLoaderFactory { get; }
-
-    public List<IConfigLoader> ConfigLoaders { get; } = new();
+    public IConfigLoader ConfigLoader { get; }
 
     public CommandLineParser(
         ILogger<CommandLineParser> logger,
-        ITransactionsLoader transactionsLoader,
-        IConfigLoaderFactory configLoaderFactory,
-        IBankTransactionLayoutSettings layoutSettings )
+        IConfigLoader configLoader)
     {
         Logger = logger;
-        LayoutSettings = layoutSettings;
-        TransactionsLoader = transactionsLoader;
-        ConfigLoaderFactory = configLoaderFactory;
+        ConfigLoader = configLoader;
     }
 
     public void Parse(string[] args)
@@ -54,12 +41,10 @@ public class CommandLineParser : ICommandLineParser
             {
                 foreach (var s in c.Config)
                 {
-                    ReadConfigFile(s);
+                    ConfigLoader.AddFromFile(s);
                 }
                 
-                ConfigLoaders.ForEach(loader => loader.ProcessLayout());
-                ConfigLoaders.ForEach(loader => loader.ProcessInput());
-                ConfigLoaders.ForEach(loader => loader.ProcessOutputs());
+                ConfigLoader.ProcessConfig();
             })
             .WithNotParsed(errors =>
             {
@@ -68,41 +53,5 @@ public class CommandLineParser : ICommandLineParser
                     Logger.LogError("{error}", error);
                 }
             });
-    }
-
-    public void ReadConfigFile(string file)
-    {
-        try
-        {
-            using (var stream = new StreamReader(file))
-            {
-                var json = stream.ReadToEnd();
-                var config = JsonConvert.DeserializeObject<Config>(json);
-
-                if (config?.TransactionLayouts != null)
-                {
-                    var loader = ConfigLoaderFactory.Create(config.TransactionLayouts);
-                    ConfigLoaders.Add(loader);
-                }
-
-                if (config?.Inputs != null)
-                {
-                    var loader = ConfigLoaderFactory.Create(config.Inputs);
-                    ConfigLoaders.Add(loader);
-                }
-
-                if (config?.Outputs != null)
-                {
-                    var loader = ConfigLoaderFactory.Create(config.Outputs);
-                    ConfigLoaders.Add(loader);
-                }
-
-                Logger.LogDebug(json);
-            }
-        }
-        catch (Exception e)
-        {
-            Logger.LogError(e.Message);
-        }
     }
 }

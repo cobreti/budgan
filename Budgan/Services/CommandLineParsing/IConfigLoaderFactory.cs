@@ -5,7 +5,7 @@ namespace Budgan.Services.CommandLineParsing;
 
 public interface IConfigLoaderFactory
 {
-    IConfigLoader Create(TransactionLayoutsConfigMap transactionsLayout);
-    IConfigLoader Create(InputsConfigMap inputsConfig);
-    IConfigLoader Create(OutputsConfigMap outputsConfig);
+    TransactionsLayoutsSectionLoader Create(TransactionLayoutsConfigMap transactionsLayout);
+    InputsSectionLoader Create(InputsConfigMap inputsConfig);
+    OutputsSectionLoader Create(OutputsConfigMap outputsConfig);
 }

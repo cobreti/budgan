@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Ardalis.GuardClauses;
+using Budgan.Core.ConfigLoader;
 using Budgan.Options;
 using Budgan.Options.Runtime;
 using Budgan.Services;
@@ -42,7 +43,7 @@ public class Application
                 var dateValue = config.DateFormat ?? "YYYYMMDD"; 
                 config.DateFormat = dateValue.Replace('Y', 'y').Replace('D', 'd');
             });
-        
+
         Builder.Services
             .AddTransient<IFileSystem, FileSystem>()
             .AddScoped<ITransactionsLoader, TransactionsLoader>()
@@ -52,7 +53,9 @@ public class Application
             .AddSingleton<ITransactionsContainerFactory, TransactionsContainerFactory>()
             .AddSingleton<ICommandLineParser, CommandLineParser>()
             .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>()
-            .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>();
+            .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>()
+            .AddTransient<IConfigSectionRepository, ConfigSectionRepository>()
+            .AddScoped<IConfigLoader, ConfigLoader>();
 
         Builder.Services
             .AddTransient<IIdentityTransactionsProcessor, IdentityTransactionsProcessor>();

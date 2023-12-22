@@ -4,20 +4,20 @@ using Microsoft.Extensions.Logging;
 
 namespace Budgan.Core.ConfigLoader;
 
-public class OutputsLoader : IConfigLoader
+public class OutputsSectionLoader : IConfigSectionLoader
 {
     public OutputsConfigMap Outputs { get; }
-    public ILogger<OutputsLoader> Logger { get; }
+    public ILogger<OutputsSectionLoader> Logger { get; }
     
     public ITransactionsRepository TransactionsRepository { get; }
     
     public ITransactionsWriter TransactionsWriter { get; }
 
-    public OutputsLoader(
+    public OutputsSectionLoader(
         OutputsConfigMap outputs,
         ITransactionsRepository transactionsRepository,
         ITransactionsWriter transactionsWriter,
-        ILogger<OutputsLoader> logger)
+        ILogger<OutputsSectionLoader> logger)
     {
         Logger = logger;
         Outputs = outputs;
@@ -25,15 +25,7 @@ public class OutputsLoader : IConfigLoader
         TransactionsWriter = transactionsWriter;
     }
     
-    public void ProcessLayout()
-    {
-    }
-
-    public void ProcessInput()
-    {
-    }
-
-    public void ProcessOutputs()
+    public void Process()
     {
         foreach (var (name, outputConfig) in Outputs)
         {

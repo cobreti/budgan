@@ -32,29 +32,29 @@ public class ConfigLoaderFactory : IConfigLoaderFactory
         TransactionsWriter = transactionsWriter;
     }
     
-    public IConfigLoader Create(TransactionLayoutsConfigMap transactionsLayout)
+    public TransactionsLayoutsSectionLoader Create(TransactionLayoutsConfigMap transactionsLayout)
     {
-        return new TransactionsLayoutsLoader(
+        return new TransactionsLayoutsSectionLoader(
             transactionsLayout,
-            LoggerFactory.CreateLogger<TransactionsLayoutsLoader>(),
+            LoggerFactory.CreateLogger<TransactionsLayoutsSectionLoader>(),
             LayoutSettings);
     }
 
-    public IConfigLoader Create(InputsConfigMap inputsConfig)
+    public InputsSectionLoader Create(InputsConfigMap inputsConfig)
     {
-        return new InputsLoader(
+        return new InputsSectionLoader(
             inputsConfig,
-            LoggerFactory.CreateLogger<InputsLoader>(),
+            LoggerFactory.CreateLogger<InputsSectionLoader>(),
             TransactionsLoader);
     }
 
-    public IConfigLoader Create(OutputsConfigMap outputsConfig)
+    public OutputsSectionLoader Create(OutputsConfigMap outputsConfig)
     {
-        return new OutputsLoader(
+        return new OutputsSectionLoader(
             outputsConfig,
             TransactionsRepository,
             TransactionsWriter,
-            LoggerFactory.CreateLogger<OutputsLoader>());
+            LoggerFactory.CreateLogger<OutputsSectionLoader>());
     }
     
 }
