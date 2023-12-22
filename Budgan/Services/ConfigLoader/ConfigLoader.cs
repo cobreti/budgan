@@ -1,9 +1,8 @@
 using Budgan.Options;
-using Budgan.Services.CommandLineParsing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Budgan.Core.ConfigLoader;
+namespace Budgan.Services.ConfigLoader;
 
 public class ConfigLoader : IConfigLoader
 {

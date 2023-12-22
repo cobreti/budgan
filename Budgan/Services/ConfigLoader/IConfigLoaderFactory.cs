@@ -1,7 +1,6 @@
-using Budgan.Core.ConfigLoader;
 using Budgan.Options;
 
-namespace Budgan.Services.CommandLineParsing;
+namespace Budgan.Services.ConfigLoader;
 
 public interface IConfigLoaderFactory
 {

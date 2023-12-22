@@ -1,10 +1,8 @@
-using Budgan.Core.ConfigLoader;
 using Budgan.Options;
 using Budgan.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Budgan.Services.CommandLineParsing;
+namespace Budgan.Services.ConfigLoader;
 
 public class ConfigLoaderFactory : IConfigLoaderFactory
 {

@@ -3,7 +3,7 @@ using Budgan.Options;
 using Budgan.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Budgan.Core.ConfigLoader;
+namespace Budgan.Services.ConfigLoader;
 
 public class TransactionsLayoutsSectionLoader : IConfigSectionLoader
 {
