@@ -1,3 +1,5 @@
+using BudganEngine.Options;
+
 namespace Budgan.Options.Runtime;
 
 public class LayoutOptions

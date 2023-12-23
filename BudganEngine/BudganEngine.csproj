@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -9,23 +8,16 @@
 
     <ItemGroup>
       <PackageReference Include="Ardalis.GuardClauses" Version="4.3.0" />
-      <PackageReference Include="CommandLineParser" Version="2.9.1" />
       <PackageReference Include="CsvHelper" Version="30.0.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="System.IO.Abstractions" Version="20.0.4" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BudganEngine\BudganEngine.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Options\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

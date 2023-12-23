@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgan", "Budgan\Budgan.csproj", "{EF709549-3475-4B05-96A2-6330F13A6A13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudganEngine", "BudganEngine\BudganEngine.csproj", "{333B7A8E-4E23-4BEB-A943-E749D910ABE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{EF709549-3475-4B05-96A2-6330F13A6A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF709549-3475-4B05-96A2-6330F13A6A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF709549-3475-4B05-96A2-6330F13A6A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

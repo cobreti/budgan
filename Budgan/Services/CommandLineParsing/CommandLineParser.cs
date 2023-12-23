@@ -1,5 +1,5 @@
 using Budgan.Options.Runtime;
-using Budgan.Services.ConfigLoader;
+using BudganEngine.Services.ConfigLoader;
 using CommandLine;
 using Microsoft.Extensions.Logging;
 
