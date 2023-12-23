@@ -7,10 +7,11 @@ public static class LoggerExtension
 {
     public static void LogTransaction(this ILogger logger, string message, BankTransaction bankTransaction)
     {
-        logger.LogDebug("{message} -- {layout name}\t{origin}\t{datetransaction}\t{dateinscription}\t{amount}\t{description}\t[{key}]",
+        logger.LogDebug("{message} -- {layout name}\t{inputId}\t{relativePath}\t{datetransaction}\t{dateinscription}\t{amount}\t{description}\t[{key}]",
             message,
             bankTransaction.LayoutName,
-            bankTransaction.Origin,
+            bankTransaction.Source.InputId,
+            bankTransaction.Source.FileRelativePath,
             bankTransaction.DateTransaction,
             bankTransaction.DateInscription,
             bankTransaction.Amount,

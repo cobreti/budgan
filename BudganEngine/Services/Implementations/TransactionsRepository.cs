@@ -35,13 +35,13 @@ public class TransactionsRepository : ITransactionsRepository
 
     public ITransactionsContainer GetContainerForTransaction(BankTransaction bankTransaction)
     {
-        if (Containers.TryGetValue(bankTransaction.Origin, out var containerForTransaction))
+        if (Containers.TryGetValue(bankTransaction.Source.InputId, out var containerForTransaction))
         {
             return containerForTransaction;
         }
 
         var container =
-            TransactionsContainerFactory.CreateTransactionsContainer(bankTransaction.LayoutName, bankTransaction.Origin);
+            TransactionsContainerFactory.CreateTransactionsContainer(bankTransaction.LayoutName, bankTransaction.Source.InputId);
         Containers.Add(container.Origin, container);
 
         return container;

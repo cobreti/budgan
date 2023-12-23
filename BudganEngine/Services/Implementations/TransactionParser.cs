@@ -36,7 +36,7 @@ public class TransactionParser : ITransactionParser
         DateFormat = AppConfigOptions.Value.DateFormat;
     }
 
-    public void Parse(string fileId, string file, StreamReader streamReader, BankTransactionsLayout layout)
+    public void Parse(BankTransactionSource transactionSource, string file, StreamReader streamReader, BankTransactionsLayout layout)
     {
         var minColumnsRequired = layout.MinColumnsRequired ?? 2;
         
@@ -55,13 +55,13 @@ public class TransactionParser : ITransactionParser
             csv.ReadHeader();
             while (csv.Read())
             {
-                ParseRow(fileId, csv.Parser, layout);
+                ParseRow(transactionSource, csv.Parser, layout);
             }
         }
         
     }
     
-    public void ParseRow(string origin, IParser parser, BankTransactionsLayout layout)
+    public void ParseRow(BankTransactionSource transactionSource, IParser parser, BankTransactionsLayout layout)
     {
         try
         {
@@ -83,7 +83,7 @@ public class TransactionParser : ITransactionParser
             {
                 Key = keyBuilder.ToString().Replace(" ", ""),
                 LayoutName = layout.Name,
-                Origin = origin,
+                Source = transactionSource,
                 CardNumber = GetColumnValue(parser, layout.CardNumber),
                 DateTransaction = GetDateColumnValue(parser, layout.DateTransaction),
                 DateInscription = GetDateColumnValue(parser, layout.DateTransaction),

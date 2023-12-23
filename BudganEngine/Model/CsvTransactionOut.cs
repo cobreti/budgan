@@ -16,7 +16,7 @@ public class CsvTransactionOut
 
     [Index(5), Name("LayoutName")] public string LayoutName => BankTransaction.LayoutName;
     
-    [Index(6), Name("Origin")] public string Origin => BankTransaction.Origin;
+    [Index(6), Name("Origin")] public string Origin => $"{BankTransaction.Source.InputId} : {BankTransaction.Source.FileRelativePath}";
 
     [Ignore]
     public BankTransaction BankTransaction { get; }
