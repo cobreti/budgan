@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgan", "Budgan\Budgan.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudganEngine", "BudganEngine\BudganEngine.csproj", "{333B7A8E-4E23-4BEB-A943-E749D910ABE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudganEngineTest", "BudganEngineTest\BudganEngineTest.csproj", "{DD53B4A5-10E6-47E6-A87B-B3FFCED18CDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333B7A8E-4E23-4BEB-A943-E749D910ABE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD53B4A5-10E6-47E6-A87B-B3FFCED18CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD53B4A5-10E6-47E6-A87B-B3FFCED18CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD53B4A5-10E6-47E6-A87B-B3FFCED18CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD53B4A5-10E6-47E6-A87B-B3FFCED18CDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
