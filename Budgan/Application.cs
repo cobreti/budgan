@@ -4,6 +4,7 @@ using Budgan.Services.CommandLineParsing;
 using BudganEngine.Options;
 using BudganEngine.Services.ConfigLoader;
 using BudganEngine.Services.Implementations;
+using BudganEngine.Services.Indexes;
 using BudganEngine.Services.Interfaces;
 using BudganEngine.Services.TransactionsProcessors;
 using Microsoft.Extensions.Options;
@@ -51,6 +52,7 @@ public class Application
             .AddSingleton<ICommandLineParser, CommandLineParser>()
             .AddSingleton<IBankTransactionLayoutSettings, BankTransactionLayoutSettings>()
             .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>()
+            .AddSingleton<ITransactionsByDescription, TransactionsByDescription>()
             .AddTransient<IConfigSectionRepository, ConfigSectionRepository>()
             .AddScoped<IConfigLoader, ConfigLoader>();
 
@@ -77,27 +79,12 @@ public class Application
 
             cmdlineParser.Parse(Args);
 
-            // var stateService = App.Services.GetService<IState>();
-            // Guard.Against.Null(stateService, message: "unble to access application state");
-            //
-            // stateService.UpdateFromCommandLineArgs(Args);
-            // if (!stateService.Valid)
-            // {
-            //     throw new Exception("Invalid state from command line");
-            // }
-            //
-            // var transactionsLoader = App.Services.GetService<ITransactionsLoader>();
-            // Guard.Against.Null(transactionsLoader, message: "unable to find SourceLoader service");
-            //
-            // transactionsLoader.Load();
-            //
-            // var transactionsWriter = App.Services.GetService<ITransactionsWriter>();
-            // Guard.Against.Null(transactionsWriter, message: "unable to find TransactionsWriter service");
-            //
-            // var transactionsMgr = App.Services.GetService<ITransactionsMgr>();
-            // Guard.Against.Null(transactionsMgr, "unable to get transactions mgr");
-            //
-            // transactionsWriter.Write("test.csv", transactionsMgr.GetAllTransactions());
+            var index = App.Services.GetService<ITransactionsByDescription>();
+            Guard.Against.Null(index);
+
+            index.Build();
+
+            Console.WriteLine("after index build");
         }
         catch (Exception e)
         {
