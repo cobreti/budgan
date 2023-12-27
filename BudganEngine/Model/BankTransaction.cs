@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace BudganEngine.Model;
 
+[ExcludeFromCodeCoverage]
 public class BankTransaction
 {
     public string Key { get; init; }
