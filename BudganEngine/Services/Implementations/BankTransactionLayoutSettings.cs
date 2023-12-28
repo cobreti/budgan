@@ -6,7 +6,7 @@ namespace BudganEngine.Services.Implementations;
 
 public class BankTransactionLayoutSettings : IBankTransactionLayoutSettings
 {
-    public Dictionary<string, BankTransactionsLayout> Layouts { get; set; } = new();
+    public Dictionary<string, BankTransactionsLayout> Layouts { get; } = new();
     
     public ILogger<BankTransactionLayoutSettings> Logger { get; }
 
