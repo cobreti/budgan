@@ -24,8 +24,4 @@
       <ProjectReference Include="..\BudganEngine\BudganEngine.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Options\" />
-    </ItemGroup>
-
 </Project>
