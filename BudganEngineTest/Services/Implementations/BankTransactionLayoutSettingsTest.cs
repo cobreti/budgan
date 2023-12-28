@@ -15,6 +15,12 @@ public class BankTransactionLayoutSettingsTest
     {
         LayoutSettings = new BankTransactionLayoutSettings(LoggerMock.Object);
     }
+
+    [Fact]
+    public void Construction()
+    {
+        Assert.Equal(LoggerMock.Object, LayoutSettings.Logger);
+    }
     
     [Fact]
     public void AddOrReplace_AddNewLayout_LayoutAdded()
