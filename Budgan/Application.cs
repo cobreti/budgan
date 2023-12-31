@@ -7,6 +7,7 @@ using BudganEngine.Services.Implementations;
 using BudganEngine.Services.Indexes;
 using BudganEngine.Services.Interfaces;
 using BudganEngine.Services.TransactionsProcessors;
+using CsvHelper;
 using Microsoft.Extensions.Options;
 
 namespace Budgan;
@@ -54,6 +55,7 @@ public class Application
             .AddSingleton<IConfigLoaderFactory, ConfigLoaderFactory>()
             .AddSingleton<ITransactionsByDescription, TransactionsByDescription>()
             .AddTransient<IConfigSectionRepository, ConfigSectionRepository>()
+            .AddTransient<ICsvReaderFactory, CsvReaderFactory>()
             .AddScoped<IConfigLoader, ConfigLoader>();
 
         Builder.Services

@@ -19,15 +19,19 @@ public class TransactionParser : ITransactionParser
     
     public IOptions<AppConfig> AppConfigOptions { get; }
     
+    public ICsvReaderFactory CsvReaderFactory { get; }
+    
     public string DateFormat { get; }
 
     public TransactionParser(
         ILogger<TransactionParser> logger,
         IOptions<AppConfig> appConfigOptions,
+        ICsvReaderFactory csvReaderFactory,
         ITransactionsRepository transactionsRepository)
     {
         Logger = logger;
         AppConfigOptions = appConfigOptions;
+        CsvReaderFactory = csvReaderFactory;
         TransactionsRepository = transactionsRepository;
         
         Guard.Against.Null(AppConfigOptions.Value, message: "AppConfig not found : no date format available");
@@ -42,26 +46,23 @@ public class TransactionParser : ITransactionParser
         
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            MissingFieldFound = (args) =>
-            {
-            },
             AllowComments = true,
             ShouldSkipRecord = (args) => args.Row.Parser.Count < minColumnsRequired
         };
         
-        using (var csv = new CsvReader(streamReader, config))
-        {
-            csv.Read();
-            csv.ReadHeader();
-            while (csv.Read())
-            {
-                ParseRow(transactionSource, csv.Parser, layout);
-            }
-        }
+        // using (CsvHelper.IReader csv = new CsvReader(streamReader, config))
         
+        using var csv = CsvReaderFactory.CreateReader(streamReader, config);
+
+        csv.Read();
+        csv.ReadHeader();
+        while (csv.Read())
+        {
+            ParseRow(transactionSource, csv.Parser, layout);
+        }
     }
     
-    public void ParseRow(BankTransactionSource transactionSource, IParser parser, BankTransactionsLayout layout)
+    public virtual void ParseRow(BankTransactionSource transactionSource, IParser parser, BankTransactionsLayout layout)
     {
         try
         {
@@ -86,7 +87,7 @@ public class TransactionParser : ITransactionParser
                 Source = transactionSource,
                 CardNumber = GetColumnValue(parser, layout.CardNumber),
                 DateTransaction = GetDateColumnValue(parser, layout.DateTransaction),
-                DateInscription = GetDateColumnValue(parser, layout.DateTransaction),
+                DateInscription = GetDateColumnValue(parser, layout.DateInscription),
                 Amount = GetColumnValue(parser, layout.Amount),
                 Description = GetColumnValue(parser, layout.Description)
             };
