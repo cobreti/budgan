@@ -4,6 +4,6 @@ namespace BudganEngine.Services.Interfaces;
 
 public interface ICsvReaderFactory
 {
-    CsvHelper.IReader CreateReader(StreamReader streamReader, CsvConfiguration config);
+    CsvHelper.IReader CreateFromFile(string file, int minColumnsRequired);
 }
 

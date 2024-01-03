@@ -19,19 +19,19 @@ public class TransactionParser : ITransactionParser
     
     public IOptions<AppConfig> AppConfigOptions { get; }
     
-    public ICsvReaderFactory CsvReaderFactory { get; }
+    // public ICsvReaderFactory CsvReaderFactory { get; }
     
     public string DateFormat { get; }
 
     public TransactionParser(
         ILogger<TransactionParser> logger,
         IOptions<AppConfig> appConfigOptions,
-        ICsvReaderFactory csvReaderFactory,
+        // ICsvReaderFactory csvReaderFactory,
         ITransactionsRepository transactionsRepository)
     {
         Logger = logger;
         AppConfigOptions = appConfigOptions;
-        CsvReaderFactory = csvReaderFactory;
+        // CsvReaderFactory = csvReaderFactory;
         TransactionsRepository = transactionsRepository;
         
         Guard.Against.Null(AppConfigOptions.Value, message: "AppConfig not found : no date format available");
@@ -40,25 +40,25 @@ public class TransactionParser : ITransactionParser
         DateFormat = AppConfigOptions.Value.DateFormat;
     }
 
-    public void Parse(BankTransactionSource transactionSource, string file, StreamReader streamReader, BankTransactionsLayout layout)
+    public void Parse(BankTransactionSource transactionSource, string file, CsvHelper.IReader csvParser, BankTransactionsLayout layout)
     {
-        var minColumnsRequired = layout.MinColumnsRequired ?? 2;
+        // var minColumnsRequired = layout.MinColumnsRequired ?? 2;
         
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            AllowComments = true,
-            ShouldSkipRecord = (args) => args.Row.Parser.Count < minColumnsRequired
-        };
+        // var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        // {
+        //     AllowComments = true,
+        //     ShouldSkipRecord = (args) => args.Row.Parser.Count < minColumnsRequired
+        // };
         
         // using (CsvHelper.IReader csv = new CsvReader(streamReader, config))
         
-        using var csv = CsvReaderFactory.CreateReader(streamReader, config);
+        // using var csv = CsvReaderFactory.CreateReader(streamReader, config);
 
-        csv.Read();
-        csv.ReadHeader();
-        while (csv.Read())
+        csvParser.Read();
+        csvParser.ReadHeader();
+        while (csvParser.Read())
         {
-            ParseRow(transactionSource, csv.Parser, layout);
+            ParseRow(transactionSource, csvParser.Parser, layout);
         }
     }
     

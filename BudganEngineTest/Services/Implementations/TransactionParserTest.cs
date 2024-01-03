@@ -20,8 +20,7 @@ public class TransactionParser_ParseRowMocked : TransactionParser
     public TransactionParser_ParseRowMocked(
         ILogger<TransactionParser> logger, 
         IOptions<AppConfig> appConfigOptions, 
-        ICsvReaderFactory csvReaderFactory, 
-        ITransactionsRepository transactionsRepository) : base(logger, appConfigOptions, csvReaderFactory, transactionsRepository)
+        ITransactionsRepository transactionsRepository) : base(logger, appConfigOptions, transactionsRepository)
     {
     }
 
@@ -40,15 +39,15 @@ public class TransactionParserTest
 
     public Mock<IOptions<AppConfig>> AppConfigOptionsMock { get; } = new();
     
-    public Mock<ICsvReaderFactory> CsvReaderFactoryMock { get; } = new();
+    // public Mock<ICsvReaderFactory> CsvReaderFactoryMock { get; } = new();
     
     public TransactionParser TransactionParser { get; }
     
-    public StreamReader CsvStreamReader { get; set; }
+    // public StreamReader CsvStreamReader { get; set; }
     
-    public CsvConfiguration CsvReaderConfig { get; set; }
+    // public CsvConfiguration CsvReaderConfig { get; set; }
     
-    public CsvReader? CsvReader { get; set; }
+    // public CsvReader? CsvReader { get; set; }
     
     public BankTransactionsLayout Layout { get; }
     
@@ -77,24 +76,24 @@ public class TransactionParserTest
             DateFormat = "dd/MM/yyyy"
         });
         
-        CsvReaderFactoryMock
-            .Setup(x => x.CreateReader(It.IsAny<StreamReader>(), It.IsAny<CsvConfiguration>()))
-            .Callback<StreamReader, CsvConfiguration>((reader, configuration) =>
-            {
-                Console.WriteLine("before returns");
-                CsvStreamReader = reader;
-                CsvReaderConfig = configuration;
-            })
-            .Returns(() =>
-            {
-                CsvReader = new CsvReader(CsvStreamReader, CsvReaderConfig);
-                return CsvReader;
-            });
+        // CsvReaderFactoryMock
+        //     .Setup(x => x.CreateReader(It.IsAny<StreamReader>(), It.IsAny<CsvConfiguration>()))
+        //     .Callback<StreamReader, CsvConfiguration>((reader, configuration) =>
+        //     {
+        //         Console.WriteLine("before returns");
+        //         CsvStreamReader = reader;
+        //         CsvReaderConfig = configuration;
+        //     })
+        //     .Returns(() =>
+        //     {
+        //         CsvReader = new CsvReader(CsvStreamReader, CsvReaderConfig);
+        //         return CsvReader;
+        //     });
 
         TransactionParser = new TransactionParser(
             LoggerMock.Object,
             AppConfigOptionsMock.Object,
-            CsvReaderFactoryMock.Object,
+            // CsvReaderFactoryMock.Object,
             TransactionsRepositoryMock.Object);
     }
 
@@ -117,24 +116,25 @@ public class TransactionParserTest
             .Append("1234761590123456,02/08/2020,09/02/2021,100,test\r\n")
             .ToString();
         
-        var streamReader = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(csvContent)));
+        using var streamReader = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(csvContent)));
+        using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
         
         var transactionParser = new TransactionParser_ParseRowMocked(
             LoggerMock.Object,
             AppConfigOptionsMock.Object,
-            CsvReaderFactoryMock.Object,
+            // CsvReaderFactoryMock.Object,
             TransactionsRepositoryMock.Object);
         
-        transactionParser.Parse(TransactionSource, "test", streamReader, Layout);
+        transactionParser.Parse(TransactionSource, "test", csvReader, Layout);
 
-        Assert.NotNull(CsvReader);
-        Assert.NotNull(CsvReader.HeaderRecord);
-        Assert.Equal(5, CsvReader.HeaderRecord.Length);
-        Assert.Equal("CardNumber", CsvReader.HeaderRecord[0]);
-        Assert.Equal("DateTransaction", CsvReader.HeaderRecord[1]);
-        Assert.Equal("DateInscription", CsvReader.HeaderRecord[2]);
-        Assert.Equal("Amount", CsvReader.HeaderRecord[3]);
-        Assert.Equal("Description", CsvReader.HeaderRecord[4]);
+        Assert.NotNull(csvReader);
+        Assert.NotNull(csvReader.HeaderRecord);
+        Assert.Equal(5, csvReader.HeaderRecord.Length);
+        Assert.Equal("CardNumber", csvReader.HeaderRecord[0]);
+        Assert.Equal("DateTransaction", csvReader.HeaderRecord[1]);
+        Assert.Equal("DateInscription", csvReader.HeaderRecord[2]);
+        Assert.Equal("Amount", csvReader.HeaderRecord[3]);
+        Assert.Equal("Description", csvReader.HeaderRecord[4]);
         Assert.Equal(2, transactionParser.ParseRowCount);
     }
 

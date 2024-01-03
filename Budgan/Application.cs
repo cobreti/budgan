@@ -56,6 +56,7 @@ public class Application
             .AddSingleton<ITransactionsByDescription, TransactionsByDescription>()
             .AddTransient<IConfigSectionRepository, ConfigSectionRepository>()
             .AddTransient<ICsvReaderFactory, CsvReaderFactory>()
+            // .AddTransient<ITextReaderFactory, TextReaderFactory>()
             .AddScoped<IConfigLoader, ConfigLoader>();
 
         Builder.Services

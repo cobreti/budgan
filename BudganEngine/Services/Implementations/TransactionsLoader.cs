@@ -15,15 +15,19 @@ public class TransactionsLoader : ITransactionsLoader
     
     public IBankTransactionLayoutSettings BankTransactionLayoutSettings { get; }
     
+    public ICsvReaderFactory CsvReaderFactory { get; }
+    
     public TransactionsLoader(
         ILogger<TransactionsLoader> logger,
         ITransactionParser transactionsParser,
+        ICsvReaderFactory csvReaderFactory,
         IBankTransactionLayoutSettings bankTransactionLayoutSettings,
         IFileSystem fileSystem)
     {
         Logger = logger;
         FileSystem = fileSystem;
         TransactionsParser = transactionsParser;
+        CsvReaderFactory = csvReaderFactory;
         BankTransactionLayoutSettings = bankTransactionLayoutSettings;
     }
 
@@ -86,7 +90,7 @@ public class TransactionsLoader : ITransactionsLoader
         return string.Compare(extension, ".csv", StringComparison.InvariantCultureIgnoreCase) == 0;
     }
 
-    public void ReadFile(BankTransactionSource transactionSource, string file, BankTransactionsLayout layout)
+    public virtual void ReadFile(BankTransactionSource transactionSource, string file, BankTransactionsLayout layout)
     {
         if (!IsValidFile(file))
         {
@@ -96,7 +100,8 @@ public class TransactionsLoader : ITransactionsLoader
         
         Logger.LogDebug("source file : {0}", file);
 
-        using var reader = new StreamReader(file);
-        TransactionsParser.Parse(transactionSource, file, reader, layout);
+        using var csvReader = CsvReaderFactory.CreateFromFile(file, layout.MinColumnsRequired ?? 1);
+        // using var reader = TextReaderFactory.CreateFromFile(file);
+        TransactionsParser.Parse(transactionSource, file, csvReader, layout);
     }
 }
