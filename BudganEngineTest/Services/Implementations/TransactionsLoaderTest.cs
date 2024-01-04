@@ -174,4 +174,95 @@ public class TransactionsLoaderTest
         Assert.Equal(BankTransactionsLayout, transactionsLoader.Layouts[1]);
         
     }
+
+    [Fact]
+    public void Load_File()
+    {
+        var fileMock = new Mock<IFile>();
+        fileMock
+            .Setup(x => x.Exists(It.IsAny<string>()))
+            .Returns(true);
+        FileSystemMock
+            .SetupGet(x => x.File)
+            .Returns(fileMock.Object);
+
+        var pathMock = new Mock<IPath>();
+        pathMock
+            .Setup(x => x.Exists(It.IsAny<string>()))
+            .Returns(true);
+        FileSystemMock
+            .SetupGet(x => x.Path)
+            .Returns(pathMock.Object);
+
+        var directoryMock = new Mock<IDirectory>();
+        directoryMock
+            .Setup(x => x.Exists(It.IsAny<string>()))
+            .Returns(false);
+
+        FileSystemMock
+            .SetupGet(x => x.Directory)
+            .Returns(directoryMock.Object);
+        
+        var transactionsLoader = new TransactionsLoaderWithoutReadFile(
+            LoggerMock.Object,
+            TransactionsParserMock.Object,
+            CsvReaderFactoryMock.Object,
+            BankTransactionLayoutSettingsMock.Object,
+            FileSystemMock.Object);
+
+        transactionsLoader.Load("key", "path", "layout");
+
+        Assert.Single(transactionsLoader.TransactionSources);
+        Assert.Equal("key", transactionsLoader.TransactionSources[0].InputId);
+        Assert.Equal("path", transactionsLoader.TransactionSources[0].FileRelativePath);
+        Assert.Single(transactionsLoader.Files);
+        Assert.Equal("path", transactionsLoader.Files[0]);
+        Assert.Single(transactionsLoader.Layouts);
+        Assert.Equal(BankTransactionsLayout, transactionsLoader.Layouts[0]);
+    }
+    
+    [Fact]
+    public void IsValidFile_LowercaseExtension()
+    {
+        var pathMock = new Mock<IPath>();
+        pathMock
+            .Setup(x => x.GetExtension(It.IsAny<string>()))
+            .Returns(".csv");
+        
+        FileSystemMock
+            .SetupGet(x => x.Path)
+            .Returns(pathMock.Object);
+        
+        Assert.True(TransactionsLoader.IsValidFile("file.csv"));
+    }
+    
+    [Fact]
+    public void IsValidFile_UppercaseExtension()
+    {
+        var pathMock = new Mock<IPath>();
+        pathMock
+            .Setup(x => x.GetExtension(It.IsAny<string>()))
+            .Returns(".CSV");
+        
+        FileSystemMock
+            .SetupGet(x => x.Path)
+            .Returns(pathMock.Object);
+        
+        Assert.True(TransactionsLoader.IsValidFile("file.CSV"));
+    }
+
+    [Fact]
+    public void IsValidFile_InvalidExtension()
+    {
+        var pathMock = new Mock<IPath>();
+        pathMock
+            .Setup(x => x.GetExtension(It.IsAny<string>()))
+            .Returns(".txt");
+        
+        FileSystemMock
+            .SetupGet(x => x.Path)
+            .Returns(pathMock.Object);
+        
+        Assert.False(TransactionsLoader.IsValidFile("file.txt"));
+    }
 }
