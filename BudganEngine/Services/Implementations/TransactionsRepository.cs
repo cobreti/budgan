@@ -28,11 +28,7 @@ public class TransactionsRepository : ITransactionsRepository
         container.Add(bankTransaction);
         // Logger.LogTransaction("-->", transaction);
     }
-
-    public void LogTransaction(string message, BankTransaction bankTransaction)
-    {
-    }
-
+    
     public ITransactionsContainer GetContainerForTransaction(BankTransaction bankTransaction)
     {
         if (Containers.TryGetValue(bankTransaction.Source.InputId, out var containerForTransaction))

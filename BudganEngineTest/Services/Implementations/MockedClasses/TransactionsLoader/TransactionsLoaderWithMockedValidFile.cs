@@ -1,16 +1,15 @@
 using System.IO.Abstractions;
-using BudganEngine.Services.Implementations;
 using BudganEngine.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace BudganEngineTest.Services.Implementations.Mock;
+namespace BudganEngineTest.Services.Implementations.MockedClasses.TransactionsLoader;
 
-public class TransactionsLoaderWithMockedValidFile : TransactionsLoader
+public class TransactionsLoaderWithMockedValidFile : BudganEngine.Services.Implementations.TransactionsLoader
 {
     public bool ValidFile { get; set; } = true;
 
     public TransactionsLoaderWithMockedValidFile(
-        ILogger<TransactionsLoader> logger,
+        ILogger<BudganEngine.Services.Implementations.TransactionsLoader> logger,
         ITransactionParser transactionsParser,
         ICsvReaderFactory csvReaderFactory,
         IBankTransactionLayoutSettings bankTransactionLayoutSettings,
