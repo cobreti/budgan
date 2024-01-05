@@ -1,4 +1,5 @@
 using System.IO.Abstractions;
+using Ardalis.GuardClauses;
 using BudganEngine.Model;
 using BudganEngine.Services.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -84,7 +85,7 @@ public class TransactionsLoader : ITransactionsLoader
         }
     }
 
-    public bool IsValidFile(string file)
+    public virtual bool IsValidFile(string file)
     {
         var extension = FileSystem.Path.GetExtension(file);
         return string.Compare(extension, ".csv", StringComparison.InvariantCultureIgnoreCase) == 0;
@@ -94,13 +95,14 @@ public class TransactionsLoader : ITransactionsLoader
     {
         if (!IsValidFile(file))
         {
-            Logger.LogError("invalid file found : {file}", file);
-            return;
+            Logger.LogError("invalid file : {file}", file);
+            throw new ArgumentException("invalid file");
         }
         
         Logger.LogDebug("source file : {0}", file);
 
         using var csvReader = CsvReaderFactory.CreateFromFile(file, layout.MinColumnsRequired ?? 1);
+        Guard.Against.Null(csvReader, nameof(csvReader));
         // using var reader = TextReaderFactory.CreateFromFile(file);
         TransactionsParser.Parse(transactionSource, file, csvReader, layout);
     }

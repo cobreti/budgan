@@ -2,34 +2,12 @@ using System.IO.Abstractions;
 using BudganEngine.Model;
 using BudganEngine.Services.Implementations;
 using BudganEngine.Services.Interfaces;
+using BudganEngineTest.Services.Implementations.Mock;
+using CsvHelper;
 using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace BudganEngineTest.Services.Implementations;
-
-public class TransactionsLoaderWithoutReadFile : TransactionsLoader
-{
-    public List<BankTransactionSource> TransactionSources { get; } = new();
-    public List<string> Files { get; } = new();
-    public List<BankTransactionsLayout> Layouts { get; } = new();
-
-    public TransactionsLoaderWithoutReadFile(
-        ILogger<TransactionsLoader> logger,
-        ITransactionParser transactionsParser,
-        ICsvReaderFactory csvReaderFactory,
-        IBankTransactionLayoutSettings bankTransactionLayoutSettings,
-        IFileSystem fileSystem) : base(logger, transactionsParser, csvReaderFactory, bankTransactionLayoutSettings, fileSystem)
-    {
-    }
-
-    public override void ReadFile(BankTransactionSource transactionSource, string file, BankTransactionsLayout layout)
-    {
-        TransactionSources.Add(transactionSource);
-        Files.Add(file);
-        Layouts.Add(layout);
-    }
-
-}
 
 public class TransactionsLoaderTest
 {
@@ -152,7 +130,7 @@ public class TransactionsLoaderTest
             .Setup(x => x.GetRelativePath(It.IsAny<string>(), It.Is<string>(x => x == "file2")))
             .Returns("relPathB");
         
-        var transactionsLoader = new TransactionsLoaderWithoutReadFile(
+        var transactionsLoader = new TransactionsLoaderWithMockedReadFile(
             LoggerMock.Object,
             TransactionsParserMock.Object,
             CsvReaderFactoryMock.Object,
@@ -203,7 +181,7 @@ public class TransactionsLoaderTest
             .SetupGet(x => x.Directory)
             .Returns(directoryMock.Object);
         
-        var transactionsLoader = new TransactionsLoaderWithoutReadFile(
+        var transactionsLoader = new TransactionsLoaderWithMockedReadFile(
             LoggerMock.Object,
             TransactionsParserMock.Object,
             CsvReaderFactoryMock.Object,
@@ -264,5 +242,75 @@ public class TransactionsLoaderTest
             .Returns(pathMock.Object);
         
         Assert.False(TransactionsLoader.IsValidFile("file.txt"));
+    }
+
+    [Fact]
+    public void ReadFile()
+    {
+        var transactionSource = new BankTransactionSource()
+        {
+            FileRelativePath = "file",
+            InputId = "input-id"
+        };
+        
+        var transactionsLoader = new TransactionsLoaderWithMockedValidFile (
+            LoggerMock.Object,
+            TransactionsParserMock.Object,
+            CsvReaderFactoryMock.Object,
+            BankTransactionLayoutSettingsMock.Object,
+            FileSystemMock.Object);
+
+        var csvReaderMock = new Mock<IReader>();
+
+        CsvReaderFactoryMock
+            .Setup(x => x.CreateFromFile(It.IsAny<string>(), It.IsAny<int>()))
+            .Returns(csvReaderMock.Object);
+        
+        transactionsLoader.ReadFile(transactionSource, "file", BankTransactionsLayout);
+        
+        TransactionsParserMock
+            .Verify(x => x.Parse(transactionSource, "file", csvReaderMock.Object, BankTransactionsLayout), Times.Once);
+    }
+
+    [Fact]
+    public void ReadFile_InvalidFile()
+    {
+        var transactionSource = new BankTransactionSource()
+        {
+            FileRelativePath = "file",
+            InputId = "input-id"
+        };
+
+        var transactionsLoader = new TransactionsLoaderWithMockedValidFile (
+            LoggerMock.Object,
+            TransactionsParserMock.Object,
+            CsvReaderFactoryMock.Object,
+            BankTransactionLayoutSettingsMock.Object,
+            FileSystemMock.Object);
+
+        transactionsLoader.ValidFile = false;
+        
+        Assert.Throws<ArgumentException>(() => transactionsLoader.ReadFile(transactionSource, "file", BankTransactionsLayout));
+    }
+    
+    [Fact]
+    public void ReadFile_NullFile()
+    {
+        var transactionSource = new BankTransactionSource()
+        {
+            FileRelativePath = "file",
+            InputId = "input-id"
+        };
+
+        var transactionsLoader = new TransactionsLoaderWithMockedValidFile (
+            LoggerMock.Object,
+            TransactionsParserMock.Object,
+            CsvReaderFactoryMock.Object,
+            BankTransactionLayoutSettingsMock.Object,
+            FileSystemMock.Object);
+
+        transactionsLoader.ValidFile = false;
+        
+        Assert.Throws<ArgumentException>(() => transactionsLoader.ReadFile(transactionSource, null!, BankTransactionsLayout));
     }
 }
