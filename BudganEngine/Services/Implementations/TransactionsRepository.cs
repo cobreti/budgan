@@ -26,7 +26,6 @@ public class TransactionsRepository : ITransactionsRepository
         var container = GetContainerForTransaction(bankTransaction);
 
         container.Add(bankTransaction);
-        // Logger.LogTransaction("-->", transaction);
     }
     
     public ITransactionsContainer GetContainerForTransaction(BankTransaction bankTransaction)
