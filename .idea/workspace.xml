@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="" />
+    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="added package-lock file">
+      <change afterPath="$PROJECT_DIR$/budgan-wui/src/components/ChooseOfxFile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/src/router/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/router/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/vite.config.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,10 +65,16 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "/Users/dannythibaudeau/dev/cobreti/Budgan/budgan-wui/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/budgan-wui/src/components" />
+      <recent name="$PROJECT_DIR$/budgan-wui/src/views" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -70,8 +84,25 @@
       <option name="presentableId" value="Default" />
       <updated>1704651520623</updated>
       <workItem from="1704651521642" duration="24000" />
-      <workItem from="1705164701092" duration="1130000" />
+      <workItem from="1705164701092" duration="8765000" />
     </task>
+    <task id="LOCAL-00001" summary="added vuejs ui">
+      <option name="closed" value="true" />
+      <created>1705166072428</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705166072428</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added package-lock file">
+      <option name="closed" value="true" />
+      <created>1705166440108</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705166440108</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,5 +118,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added vuejs ui" />
+    <MESSAGE value="added package-lock file" />
+    <option name="LAST_COMMIT_MESSAGE" value="added package-lock file" />
   </component>
 </project>
