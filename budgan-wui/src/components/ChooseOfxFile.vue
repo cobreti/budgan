@@ -25,7 +25,16 @@
 
 
 <script lang="ts">
-// const ofxFileModel = defineModel();
+
+import {ServicesTypes} from '@/services/types';
+import type {ILocalFilePicker} from '@/services/localFilePicker';
+
+declare global {
+  interface Window {
+    showOpenFilePicker(options: any): Promise<FileSystemFileHandle[]>
+  }
+}
+
 export default {
   props: {
   },
@@ -34,12 +43,37 @@ export default {
       ofxFileName: [] = []
     }
   },
+  inject: [
+      'container'
+  ],
   methods: {
-    onFileNameUpdated: (files: []) => {
+    onFileNameUpdated: (files: File[]) => {
       console.log(files);
     },
-    onLoad: () => {
-      console.log('loading file ...');
+    async onLoad() {
+      var filePicker : ILocalFilePicker = this.container.get(ServicesTypes.LocalFilePicker);
+
+      var res = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "qfx",
+            accept: {
+              "text/ofx": [".qfx"]
+            }
+          }
+        ]
+      });
+
+      const file = await res[0].getFile();
+
+      const reader = new FileReader();
+      // reader.onload = () => {
+      //   var content : string = reader.result as string;
+      // }
+
+      reader.readAsText(file);
+
+      console.log('loading file ...', res);
     }
   },
   mounted() {
@@ -47,7 +81,8 @@ export default {
   },
   computed: {
     canLoad() : Boolean {
-      return this.ofxFileName.length > 0
+      return true;
+      //return this.ofxFileName.length > 0
     }
   }
 }

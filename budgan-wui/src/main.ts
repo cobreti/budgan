@@ -7,11 +7,18 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import colors from 'vuetify/util/colors';
 import 'vuetify/styles';
+import { container } from './setupInversify';
 
 import App from './App.vue'
 import router from './router'
 
+// App.provide = {
+//     container
+// };
+
 const app = createApp(App)
+
+app.provide('container', container);
 
 const vuetify = createVuetify({
     theme: {
