@@ -29,6 +29,7 @@
 import {computed, inject} from 'vue';
 import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
+import type {IOfxParser} from '@/services/ofxParser';
 
 const container = inject('container') as Container;
 const ofxFileName = defineModel<File[]>();
@@ -45,8 +46,13 @@ function onLoad(event: Event) {
 
   reader.onload = () => {
     const content : string = reader.result as string;
+    const ofxParser : IOfxParser = container.get(ServicesTypes.OfxParser);
 
-    console.log(content);
+    if (ofxParser) {
+      ofxParser.parse(content);
+    }
+
+    // console.log(content);
   };
 
   reader.readAsText(ofxFileName.value[0]);
