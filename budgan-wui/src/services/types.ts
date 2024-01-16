@@ -1,3 +1,3 @@
 export const ServicesTypes = {
-    LocalFilePicker: 'LocalFilePicker'
+    OfxParser: 'OfxParser'
 }

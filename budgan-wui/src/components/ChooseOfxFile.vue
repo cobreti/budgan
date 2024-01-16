@@ -24,66 +24,37 @@
 </style>
 
 
-<script lang="ts">
+<script setup lang="ts">
 
+import {computed, inject} from 'vue';
+import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
-import type {ILocalFilePicker} from '@/services/localFilePicker';
 
-declare global {
-  interface Window {
-    showOpenFilePicker(options: any): Promise<FileSystemFileHandle[]>
-  }
+const container = inject('container') as Container;
+const ofxFileName = defineModel<File[]>();
+const canLoad = computed(() => {
+  return ofxFileName.value && ofxFileName.value.length > 0
+});
+
+function onLoad(event: Event) {
+
+  if (!ofxFileName.value)
+    return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const content : string = reader.result as string;
+
+    console.log(content);
+  };
+
+  reader.readAsText(ofxFileName.value[0]);
 }
 
-export default {
-  props: {
-  },
-  data() {
-    return {
-      ofxFileName: [] = []
-    }
-  },
-  inject: [
-      'container'
-  ],
-  methods: {
-    onFileNameUpdated: (files: File[]) => {
-      console.log(files);
-    },
-    async onLoad() {
-      var filePicker : ILocalFilePicker = this.container.get(ServicesTypes.LocalFilePicker);
+function onFileNameUpdated(files: File[]) {
 
-      var res = await window.showOpenFilePicker({
-        types: [
-          {
-            description: "qfx",
-            accept: {
-              "text/ofx": [".qfx"]
-            }
-          }
-        ]
-      });
-
-      const file = await res[0].getFile();
-
-      const reader = new FileReader();
-      // reader.onload = () => {
-      //   var content : string = reader.result as string;
-      // }
-
-      reader.readAsText(file);
-
-      console.log('loading file ...', res);
-    }
-  },
-  mounted() {
-
-  },
-  computed: {
-    canLoad() : Boolean {
-      return true;
-      //return this.ofxFileName.length > 0
-    }
-  }
 }
+
 </script>
+

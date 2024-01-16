@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import {Container} from 'inversify';
-import {type ILocalFilePicker, LocalFilePicker} from '@/services/localFilePicker';
 import {ServicesTypes} from '@/services/types';
+import {OfxParser} from '@/services/ofxParser';
 
 const container = new Container();
 
-container.bind(ServicesTypes.LocalFilePicker).to(LocalFilePicker);
+container.bind(ServicesTypes.OfxParser).to(OfxParser);
 
 export {
     container
