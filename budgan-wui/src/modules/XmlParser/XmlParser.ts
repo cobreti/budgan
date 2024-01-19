@@ -1,3 +1,4 @@
+import type {XmlParserSource} from '@XmlParser/XmlParserSource';
 
 export interface IXmlParser {
 
@@ -17,15 +18,13 @@ export class XmlParser implements IXmlParser {
 
     get totalChars(): number { return this.totalChars_; }
 
-    parse(xmlData: string): void {
+    parse(source: XmlParserSource): void {
 
         const start = performance.now();
 
-        const chars = [...xmlData];
+        this.totalChars_ = source.xmlData.length;
 
-        this.totalChars_ = chars.length;
-
-        chars.forEach((c) => {
+        source.xmlData.forEach((c) => {
             this.handleFctPtr_.apply(this, [c]);
         });
 

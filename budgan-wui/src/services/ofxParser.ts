@@ -1,5 +1,6 @@
 import {injectable} from 'inversify';
 import {XmlStatsParser} from '@XmlParser/XmlStatsParser';
+import {XmlParserSource} from '@XmlParser/XmlParserSource';
 
 export interface IOfxParser {
     parse(ofxData: string) : void;
@@ -19,8 +20,9 @@ export class OfxParser implements IOfxParser {
 
     parse(ofxData: string) : void
     {
-        var xmlStatsParser = new XmlStatsParser();
-        xmlStatsParser.parse(ofxData);
+        const xmlStatsParser = new XmlStatsParser();
+        const xmlSource = new XmlParserSource(ofxData);
+        xmlStatsParser.parse(xmlSource);
 
         console.debug('non-closing tags :', xmlStatsParser.nonClosingTags);
         console.debug('normal tags : ', xmlStatsParser.normalTags);
