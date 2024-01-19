@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="added package-lock file">
-      <change afterPath="$PROJECT_DIR$/budgan-wui/src/components/ChooseOfxFile.vue" afterDir="false" />
+    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="- improved xml parser&#10;- added stats gathering on xml data">
+      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlStatsParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlTypes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/src/router/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/router/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/src/services/ofxParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/services/ofxParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,12 +25,12 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "cobreti"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;cobreti&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -54,21 +53,22 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "wpa",
-    "last_opened_file_path": "/Users/dannythibaudeau/dev/cobreti/Budgan",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/dannythibaudeau/dev/cobreti/Budgan/budgan-wui/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;wpa&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dannythibaudeau/dev/cobreti/Budgan&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/dannythibaudeau/dev/cobreti/Budgan/budgan-wui/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/budgan-wui/src/components" />
@@ -84,7 +84,8 @@
       <option name="presentableId" value="Default" />
       <updated>1704651520623</updated>
       <workItem from="1704651521642" duration="24000" />
-      <workItem from="1705164701092" duration="8765000" />
+      <workItem from="1705164701092" duration="37026000" />
+      <workItem from="1705626538981" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="added vuejs ui">
       <option name="closed" value="true" />
@@ -102,7 +103,47 @@
       <option name="project" value="LOCAL" />
       <updated>1705166440108</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- added vuetify&#10;- added simple page to select a file from disk with a load button">
+      <option name="closed" value="true" />
+      <created>1705191328693</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705191328693</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added inversify and injected IoC container at app level">
+      <option name="closed" value="true" />
+      <created>1705273431375</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1705273431375</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updated chooseOfxFile vue to use composition mode instead of options">
+      <option name="closed" value="true" />
+      <created>1705366661428</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705366661428</updated>
+    </task>
+    <task id="LOCAL-00006" summary="started implementating ofx parser">
+      <option name="closed" value="true" />
+      <created>1705369226469</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1705369226469</updated>
+    </task>
+    <task id="LOCAL-00007" summary="- improved xml parser&#10;- added stats gathering on xml data">
+      <option name="closed" value="true" />
+      <created>1705540625060</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705540625060</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +163,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added vuejs ui" />
     <MESSAGE value="added package-lock file" />
-    <option name="LAST_COMMIT_MESSAGE" value="added package-lock file" />
+    <MESSAGE value="- added vuetify&#10;- added simple page to select a file from disk with a load button" />
+    <MESSAGE value="added inversify and injected IoC container at app level" />
+    <MESSAGE value="updated chooseOfxFile vue to use composition mode instead of options" />
+    <MESSAGE value="started implementating ofx parser" />
+    <MESSAGE value="- improved xml parser&#10;- added stats gathering on xml data" />
+    <option name="LAST_COMMIT_MESSAGE" value="- improved xml parser&#10;- added stats gathering on xml data" />
   </component>
 </project>

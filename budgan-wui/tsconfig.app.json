@@ -7,7 +7,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@XmlParser/*": ["./src/modules/XmlParser/*"]
     },
     "types": ["reflect-metadata"],
     "experimentalDecorators": true,

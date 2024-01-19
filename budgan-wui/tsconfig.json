@@ -15,6 +15,6 @@
     "module": "NodeNext",
     "types": ["reflect-metadata"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
   }
 }
