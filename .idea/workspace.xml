@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="- improved xml parser&#10;- added stats gathering on xml data">
-      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlStatsParser.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlTypes.ts" afterDir="false" />
+    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="added xmlParserSource">
+      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlTreeParser.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/src/services/ofxParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/src/services/ofxParser.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budgan-wui/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +84,10 @@
       <workItem from="1704651521642" duration="24000" />
       <workItem from="1705164701092" duration="37026000" />
       <workItem from="1705626538981" duration="15000" />
+      <workItem from="1705626556028" duration="2035000" />
+      <workItem from="1705628599433" duration="29000" />
+      <workItem from="1705628630685" duration="46000" />
+      <workItem from="1705628678441" duration="60000" />
     </task>
     <task id="LOCAL-00001" summary="added vuejs ui">
       <option name="closed" value="true" />
@@ -143,7 +145,23 @@
       <option name="project" value="LOCAL" />
       <updated>1705540625060</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="- split xmlparser into multiple files&#10;- added use of ts path alias">
+      <option name="closed" value="true" />
+      <created>1705626853046</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705626853046</updated>
+    </task>
+    <task id="LOCAL-00009" summary="added xmlParserSource">
+      <option name="closed" value="true" />
+      <created>1705627345711</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1705627345711</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +186,8 @@
     <MESSAGE value="updated chooseOfxFile vue to use composition mode instead of options" />
     <MESSAGE value="started implementating ofx parser" />
     <MESSAGE value="- improved xml parser&#10;- added stats gathering on xml data" />
-    <option name="LAST_COMMIT_MESSAGE" value="- improved xml parser&#10;- added stats gathering on xml data" />
+    <MESSAGE value="- split xmlparser into multiple files&#10;- added use of ts path alias" />
+    <MESSAGE value="added xmlParserSource" />
+    <option name="LAST_COMMIT_MESSAGE" value="added xmlParserSource" />
   </component>
 </project>

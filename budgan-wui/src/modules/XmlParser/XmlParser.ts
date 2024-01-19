@@ -12,19 +12,27 @@ export class XmlParser implements IXmlParser {
     parseTime_: number = 0;
     totalChars_: number = 0;
 
+    source_: XmlParserSource;
+
+    constructor(source: XmlParserSource) {
+        this.source_ = source;
+    }
+
     handleFctPtr_ : (c: string) => void = this.handleChar;
 
     get parseTime(): number { return this.parseTime_; }
 
     get totalChars(): number { return this.totalChars_; }
 
-    parse(source: XmlParserSource): void {
+    get source(): XmlParserSource | null { return this.source_; }
+
+    parse(): void {
 
         const start = performance.now();
 
-        this.totalChars_ = source.xmlData.length;
+        this.totalChars_ = this.source_.xmlData.length;
 
-        source.xmlData.forEach((c) => {
+        this.source_.xmlData.forEach((c) => {
             this.handleFctPtr_.apply(this, [c]);
         });
 
