@@ -19,9 +19,42 @@ export class XmlTreeParser extends XmlParser {
 
     nodeStack_: XmlNode[] = [];
 
-    get currentNode() : XmlNode { return this.nodeStack_[this.nodeStack_.length-1]; }
+    get currentNode() : XmlNode | null {
+
+        if (this.nodeStack_.length == 0) {
+            return null;
+        }
+
+        return this.nodeStack_[this.nodeStack_.length-1];
+    }
 
     get xmlTree(): XmlTree { return this.xmlTree_; }
+
+
+    removeCurrentNodeIfNonClosingTag() {
+        const node = this.currentNode;
+
+        if (node === null) {
+            return;
+        }
+
+        const isNonClosingTag = this.source_.nonClosingTags.has(node.tag);
+        if (isNonClosingTag) {
+            this.nodeStack_.pop();
+        }
+    }
+
+    setTreeRoot(node: XmlNode) {
+        if (this.xmlTree_.root) {
+            return;
+        }
+
+        if (this.source_.nonClosingTags.has(node.tag)) {
+            return;
+        }
+
+        this.xmlTree_.root = node;
+    }
 
     onOpeningTag(tagValue: string): void {
 
@@ -30,42 +63,31 @@ export class XmlTreeParser extends XmlParser {
             children: []
         };
 
-        if (this.nodeStack_.length > 0) {
-            const currentNode = this.currentNode;
-            const isNonClosingTag = this.source_.nonClosingTags.has(currentNode.tag);
+        this.removeCurrentNodeIfNonClosingTag();
 
-            if (isNonClosingTag) {
-                this.nodeStack_.pop();
-            }
-        }
+        const currentNode = this.currentNode;
 
-        if (this.nodeStack_.length > 0) {
-            const currentNode = this.currentNode;
-
+        if (currentNode) {
             currentNode.children = [...currentNode.children, node];
         }
         else {
-            if (!this.xmlTree_.root && !this.source_.nonClosingTags.has(tagValue)) {
-                this.xmlTree_.root = node;
-            }
+            this.setTreeRoot(node);
         }
 
         this.nodeStack_.push(node);
     }
 
     onClosingTag(tagValue: string): void {
-        const currentNode = this.currentNode;
-        const isNonClosingTag = this.source_.nonClosingTags.has(currentNode.tag);
-        if (isNonClosingTag) {
-            this.nodeStack_.pop();
-        }
+        this.removeCurrentNodeIfNonClosingTag();
 
         this.nodeStack_.pop();
     }
 
     onTagContent(tagContent: string): void {
-        if (this.nodeStack_.length > 0) {
-            this.currentNode.content = tagContent.trim();
+        const currentNode = this.currentNode;
+
+        if (currentNode) {
+            currentNode.content = tagContent.trim();
         }
     }
 
