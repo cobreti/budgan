@@ -6,11 +6,12 @@ import {XmlParser} from '@XmlParser/XmlParser';
 
 describe('XmlParser', async () => {
 
+    const xmlData = '<xml>some value</xml>';
     var source: XmlParserSource;
     var parser: XmlParser;
 
     beforeEach( async() => {
-        source = new XmlParserSource("<xml>some value</xml>");
+        source = new XmlParserSource(xmlData);
         parser = new XmlParser(source);
     });
 
@@ -20,7 +21,7 @@ describe('XmlParser', async () => {
 
     test('construction', () => {
 
-        expect(parser.source_).toEqual(source);
+        expect(parser.source).toEqual(source);
     })
 
     test('handleChar with <', async () => {
@@ -90,6 +91,28 @@ describe('XmlParser', async () => {
         expect(onClosingTagSpy).toHaveBeenCalledWith('tagValue');
         expect(parser.charAggr_).toEqual([]);
         expect(parser.handleFctPtr_).toEqual(parser.handleChar);
+    });
+
+    test('parse', async() => {
+
+            var nowValue = 0;
+
+            const onOpeningTagSpy = vi.spyOn(parser, 'onOpeningTag');
+            const onClosingTagSpy = vi.spyOn(parser, 'onClosingTag');
+            const onTagContentSpy = vi.spyOn(parser, 'onTagContent');
+            const onPostProcessingSpy = vi.spyOn(parser, 'onPostProcessing');
+            const perfNowSpy = vi.spyOn(performance, 'now').mockImplementation(() => {
+                return nowValue ++;
+            });
+
+            parser.parse();
+
+            expect(onOpeningTagSpy).toHaveBeenCalledWith('xml');
+            expect(onClosingTagSpy).toHaveBeenCalledWith('xml');
+            expect(onTagContentSpy).toHaveBeenCalledWith('some value');
+            expect(onPostProcessingSpy).toHaveBeenCalled();
+            expect(parser.totalChars).toEqual(xmlData.length);
+            expect(parser.parseTime).toEqual(1);
     });
 })
 
