@@ -1,8 +1,5 @@
 import type {XmlParserSource} from '@XmlParser/XmlParserSource';
-
-export interface IXmlParser {
-
-}
+import type {IXmlParser} from '@XmlParser/IXmlParser';
 
 
 export class XmlSyntaxParser implements IXmlParser {
