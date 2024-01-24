@@ -1,114 +1,97 @@
-import type {XmlParserSource} from '@XmlParser/XmlParserSource';
+import {XmlSyntaxParser} from '@XmlParser/XmlSyntaxParser';
 
-export interface IXmlParser {
+export type XmlNode = {
+    tag: string;
+    content?: string;
+    children: XmlNode[];
+};
 
+
+export type XmlTree = {
+    root?: XmlNode;
 }
 
 
-export class XmlParser implements IXmlParser {
+export class XmlParser extends XmlSyntaxParser {
 
-    charAggr_ :string[] = [];
+    xmlTree_ : XmlTree = {
+    };
 
-    parseTime_: number = 0;
-    totalChars_: number = 0;
+    nodeStack_: XmlNode[] = [];
 
-    source_: XmlParserSource;
+    get currentNode() : XmlNode | null {
 
-    constructor(source: XmlParserSource) {
-        this.source_ = source;
+        if (this.nodeStack_.length == 0) {
+            return null;
+        }
+
+        return this.nodeStack_[this.nodeStack_.length-1];
     }
 
-    handleFctPtr_ : (c: string) => void = this.handleChar;
-
-    get parseTime(): number { return this.parseTime_; }
-
-    get totalChars(): number { return this.totalChars_; }
-
-    get source(): XmlParserSource | null { return this.source_; }
-
-    parse(): void {
-
-        const start = performance.now();
-
-        this.totalChars_ = this.source_.xmlData.length;
-
-        this.source_.xmlData.forEach((c) => {
-            this.handleFctPtr_.apply(this, [c]);
-        });
-
-        const end = performance.now();
-
-        this.onPostProcessing();
-
-        this.parseTime_ = end - start;
-    }
-
-    onPostProcessing(): void {}
-    onOpeningTag(tagValue: string): void {}
-    onClosingTag(tagValue: string): void {}
-    onTagContent(tagContent: string): void {}
+    get xmlTree(): XmlTree { return this.xmlTree_; }
 
 
-    handleChar(c : string) {
+    removeCurrentNodeIfNonClosingTag() {
+        const node = this.currentNode;
 
-        switch (c) {
-            case '<': {
-                const value = this.charAggr_.join("");
-                this.onTagContent(value);
+        if (node === null) {
+            return;
+        }
 
-                this.charAggr_ = [];
-                this.handleFctPtr_ = this.handleChar_InTag;
-            }
-                break;
-
-            default: {
-                this.charAggr_.push(c);
-            }
+        const isNonClosingTag = this.source_.nonClosingTags.has(node.tag);
+        if (isNonClosingTag) {
+            this.nodeStack_.pop();
         }
     }
 
-    handleChar_InTag(c : string) {
+    setTreeRoot(node: XmlNode) {
+        if (this.xmlTree_.root) {
+            return;
+        }
 
-        switch (c) {
-            case '>': {
-                const tag = this.charAggr_.join("");
+        if (this.source_.nonClosingTags.has(node.tag)) {
+            return;
+        }
 
-                this.onOpeningTag(tag);
+        this.xmlTree_.root = node;
+    }
 
-                this.charAggr_ = [];
-                this.handleFctPtr_ = this.handleChar;
-            }
-                break;
+    onOpeningTag(tagValue: string): void {
 
-            case '/': {
-                this.charAggr_ = [];
-                this.handleFctPtr_ = this.handleChar_InClosingTag;
-            }
-                break;
+        const node : XmlNode = {
+            tag: tagValue,
+            children: []
+        };
 
-            default: {
-                this.charAggr_.push(c);
-            }
+        this.removeCurrentNodeIfNonClosingTag();
+
+        const currentNode = this.currentNode;
+
+        if (currentNode) {
+            currentNode.children = [...currentNode.children, node];
+        }
+        else {
+            this.setTreeRoot(node);
+        }
+
+        this.nodeStack_.push(node);
+    }
+
+    onClosingTag(tagValue: string): void {
+        this.removeCurrentNodeIfNonClosingTag();
+
+        this.nodeStack_.pop();
+    }
+
+    onTagContent(tagContent: string): void {
+        const currentNode = this.currentNode;
+
+        if (currentNode) {
+            currentNode.content = tagContent.trim();
         }
     }
 
-    handleChar_InClosingTag(c: string) {
-        switch (c) {
-            case '>': {
-                const tag = this.charAggr_.join("");
-
-                this.onClosingTag(tag);
-
-                this.charAggr_ = [];
-                this.handleFctPtr_ = this.handleChar;
-            }
-                break;
-
-            default: {
-                this.charAggr_.push(c);
-            }
-        }
+    onPostProcessing() {
     }
+
 }
-
-

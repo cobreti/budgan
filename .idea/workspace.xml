@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="added xmlParserSource">
-      <change afterPath="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlTreeParser.ts" afterDir="false" />
+    <list default="true" id="ff08e893-58de-443f-8e76-e3d5d50af9bf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/tsconfig.app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/budgan-wui/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/budgan-wui/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="1" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -51,27 +51,131 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;wpa&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/dannythibaudeau/dev/cobreti/Budgan&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/dannythibaudeau/dev/cobreti/Budgan/budgan-wui/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Vitest.XmlParser.construction.executor": "Coverage",
+    "Vitest.XmlParser.executor": "Coverage",
+    "Vitest.XmlParser.handleChar with <.executor": "Run",
+    "Vitest.XmlParser.handleChar with character.executor": "Coverage",
+    "Vitest.XmlParser.handleChar_InClosingTag with >.executor": "Coverage",
+    "Vitest.XmlParser.handleChar_InClosingTag with a character value.executor": "Coverage",
+    "Vitest.XmlParser.handleChar_InTag with /.executor": "Coverage",
+    "Vitest.XmlParser.handleChar_InTag with >.executor": "Coverage",
+    "Vitest.XmlParser.handleChar_InTag with character.executor": "Coverage",
+    "Vitest.XmlParser.parse.executor": "Coverage",
+    "git-widget-placeholder": "wpa",
+    "last_opened_file_path": "/Users/dannythibaudeau/dev/cobreti/Budgan",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/dannythibaudeau/dev/cobreti/Budgan/budgan-wui/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/budgan-wui/src/components" />
       <recent name="$PROJECT_DIR$/budgan-wui/src/views" />
     </key>
+  </component>
+  <component name="RunManager" selected="Vitest.XmlParser.construction">
+    <configuration name="XmlParser" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="XmlParser.construction" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+        <test-name value="construction" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="XmlParser.handleChar_InClosingTag with &gt;" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+        <test-name value="handleChar_InClosingTag with &gt;" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="XmlParser.handleChar_InClosingTag with a character value" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+        <test-name value="handleChar_InClosingTag with a character value" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="XmlParser.handleChar_InTag with /" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+        <test-name value="handleChar_InTag with /" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="XmlParser.parse" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/budgan-wui/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/budgan-wui" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/budgan-wui/src/modules/XmlParser/XmlParser.spec.ts" />
+      <test-names>
+        <test-name value="XmlParser" />
+        <test-name value="parse" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Vitest.XmlParser.construction" />
+        <item itemvalue="Vitest.XmlParser.parse" />
+        <item itemvalue="Vitest.XmlParser" />
+        <item itemvalue="Vitest.XmlParser.handleChar_InClosingTag with &gt;" />
+        <item itemvalue="Vitest.XmlParser.handleChar_InClosingTag with a character value" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -88,6 +192,8 @@
       <workItem from="1705628599433" duration="29000" />
       <workItem from="1705628630685" duration="46000" />
       <workItem from="1705628678441" duration="60000" />
+      <workItem from="1705628740600" duration="11126000" />
+      <workItem from="1705965758523" duration="2225000" />
     </task>
     <task id="LOCAL-00001" summary="added vuejs ui">
       <option name="closed" value="true" />
@@ -161,7 +267,39 @@
       <option name="project" value="LOCAL" />
       <updated>1705627345711</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="first implementation of XmlTreeParser">
+      <option name="closed" value="true" />
+      <created>1705631392044</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705631392044</updated>
+    </task>
+    <task id="LOCAL-00011" summary="simplified code">
+      <option name="closed" value="true" />
+      <created>1705858175330</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1705858175330</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added istanbul test coverage&#10;added unit tests for XmlParser class">
+      <option name="closed" value="true" />
+      <created>1705873256472</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705873256472</updated>
+    </task>
+    <task id="LOCAL-00013" summary="completed unit tests for xmlParser class">
+      <option name="closed" value="true" />
+      <created>1705966799006</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1705966799006</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,6 +326,21 @@
     <MESSAGE value="- improved xml parser&#10;- added stats gathering on xml data" />
     <MESSAGE value="- split xmlparser into multiple files&#10;- added use of ts path alias" />
     <MESSAGE value="added xmlParserSource" />
-    <option name="LAST_COMMIT_MESSAGE" value="added xmlParserSource" />
+    <MESSAGE value="first implementation of XmlTreeParser" />
+    <MESSAGE value="simplified code" />
+    <MESSAGE value="added istanbul test coverage&#10;added unit tests for XmlParser class" />
+    <MESSAGE value="completed unit tests for xmlParser class" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed unit tests for xmlParser class" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_InClosingTag_with__.info" NAME="XmlParser.handleChar_InClosingTag with &gt; Coverage Results" MODIFIED="1705873160170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_parse.info" NAME="XmlParser.parse Coverage Results" MODIFIED="1705966704290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_InTag_with_character.info" NAME="XmlParser.handleChar_InTag with character Coverage Results" MODIFIED="1705872032388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_InTag_with__.info" NAME="XmlParser.handleChar_InTag with &gt; Coverage Results" MODIFIED="1705872721240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_construction.info" NAME="XmlParser.construction Coverage Results" MODIFIED="1705966750101" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_with__.info" NAME="XmlParser.handleChar with &lt; Coverage Results" MODIFIED="1705871791725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_with_character.info" NAME="XmlParser.handleChar with character Coverage Results" MODIFIED="1705871973243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser.info" NAME="XmlParser Coverage Results" MODIFIED="1705965826516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Budgan$XmlParser_handleChar_InClosingTag_with_a_character_value.info" NAME="XmlParser.handleChar_InClosingTag with a character value Coverage Results" MODIFIED="1705873013557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="VitestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

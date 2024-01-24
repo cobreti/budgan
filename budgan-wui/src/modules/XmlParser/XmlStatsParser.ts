@@ -1,7 +1,7 @@
-import {XmlParser} from '@XmlParser/XmlParser';
+import {XmlSyntaxParser} from '@XmlParser/XmlSyntaxParser';
 import type {TagsStats} from '@XmlParser/XmlTypes';
 
-export class XmlStatsParser extends XmlParser {
+export class XmlStatsParser extends XmlSyntaxParser {
 
     tagsStats_:TagsStats = {};
 

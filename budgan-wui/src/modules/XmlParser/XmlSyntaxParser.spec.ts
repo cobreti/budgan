@@ -1,18 +1,18 @@
 
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import {XmlParserSource} from '@XmlParser/XmlParserSource';
-import {XmlParser} from '@XmlParser/XmlParser';
+import {XmlSyntaxParser} from '@XmlParser/XmlSyntaxParser';
 
 
-describe('XmlParser', async () => {
+describe('XmlSyntaxParser', async () => {
 
     const xmlData = '<xml>some value</xml>';
     var source: XmlParserSource;
-    var parser: XmlParser;
+    var parser: XmlSyntaxParser;
 
     beforeEach( async() => {
         source = new XmlParserSource(xmlData);
-        parser = new XmlParser(source);
+        parser = new XmlSyntaxParser(source);
     });
 
     afterEach( async() => {

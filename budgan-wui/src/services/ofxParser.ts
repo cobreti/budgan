@@ -1,7 +1,7 @@
 import {injectable} from 'inversify';
 import {XmlStatsParser} from '@XmlParser/XmlStatsParser';
 import {XmlParserSource} from '@XmlParser/XmlParserSource';
-import {XmlTreeParser} from '@XmlParser/XmlTreeParser';
+import {XmlParser} from '@XmlParser/XmlParser';
 
 export interface IOfxParser {
     parse(ofxData: string) : void;
@@ -33,7 +33,7 @@ export class OfxParser implements IOfxParser {
         console.debug('size (in characters) : ', xmlStatsParser.totalChars);
 
         xmlSource.nonClosingTags = xmlStatsParser.nonClosingTags;
-        const xmlTreeParser = new XmlTreeParser(xmlSource);
+        const xmlTreeParser = new XmlParser(xmlSource);
         xmlTreeParser.parse();
 
         console.debug('parsing time (ms) : ', xmlTreeParser.parseTime);
