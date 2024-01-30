@@ -212,4 +212,51 @@ describe('XmlParser', () => {
         expect(xmlParser.nodeStack_.length).to.equal(1);
         expect(xmlParser.nodeStack_[0].content).toEqual("content");
     });
+
+    test('simple xml tree', () => {
+
+        const parserSource = new XmlParserSource("<a>value a<b>value b</b></a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        xmlParser.parse();
+
+        expect(xmlParser.xmlTree_.root).toEqual({
+            tag: "a",
+            content: 'value a',
+            children: [
+                {
+                    tag: "b",
+                    content: 'value b',
+                    children: []
+                }
+            ]
+        });
+    });
+
+    test('xml tree with non-closing tag', () => {
+
+        const parserSource = new XmlParserSource("<a>value a<b>value b<c>value c</c></a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        parserSource.nonClosingTags_.add("b");
+
+        xmlParser.parse();
+
+        expect(xmlParser.xmlTree_.root).toEqual({
+            tag: "a",
+            content: 'value a',
+            children: [
+                {
+                    tag: "b",
+                    content: 'value b',
+                    children: []
+                },
+                {
+                    tag: "c",
+                    content: 'value c',
+                    children: []
+                }
+            ]
+        });
+    });
 });

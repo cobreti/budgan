@@ -50,8 +50,10 @@ export class XmlSyntaxParser implements IXmlParser {
 
         switch (c) {
             case '<': {
-                const value = this.charAggr_.join("");
-                this.onTagContent(value);
+                if (this.charAggr_.length > 0) {
+                    const value = this.charAggr_.join("");
+                    this.onTagContent(value);
+                }
 
                 this.charAggr_ = [];
                 this.handleFctPtr_ = this.handleChar_InTag;

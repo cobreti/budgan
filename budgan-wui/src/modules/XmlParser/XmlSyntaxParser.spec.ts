@@ -36,6 +36,18 @@ describe('XmlSyntaxParser', async () => {
         expect(parser.handleFctPtr_).toEqual(parser.handleChar_InTag);
     });
 
+    test('handleChar with < and no content', () => {
+
+        const onTagContentSpy = vi.spyOn(parser, 'onTagContent');
+
+        // parser.charAggr_ = "value".split('');
+        parser.handleChar('<');
+
+        expect(onTagContentSpy).not.toHaveBeenCalled();
+        expect(parser.charAggr_).toEqual([]);
+        expect(parser.handleFctPtr_).toEqual(parser.handleChar_InTag);
+    });
+
     test('handleChar with character', async() => {
 
         parser.handleChar('t');
