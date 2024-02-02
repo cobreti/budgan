@@ -35,6 +35,16 @@ describe('XmlParser', () => {
         expect(xmlParser.xmlTree).to.equal(xmlParser.xmlTree_);
     });
 
+    test('headerContent getter', () => {
+
+            const parserSource = new XmlParserSource("");
+            const xmlParser = new XmlParser(parserSource);
+
+            xmlParser.headerContent_ = ['version="1.0" encoding="UTF-8"'];
+
+            expect(xmlParser.headerContent).toEqual(['version="1.0" encoding="UTF-8"']);
+    });
+
     test('removeCurrentNodeIfNonClosingTag with no current node', () => {
 
         const parserSource = new XmlParserSource("<a><b></b></a>");
