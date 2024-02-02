@@ -78,7 +78,19 @@ export class XmlParser extends XmlSyntaxParser {
     }
 
     onClosingTag(tagValue: string): void {
+        if (!this.currentNode) {
+            throw new Error(`closing tag ${tagValue} outside of tree root`);
+        }
+
         this.removeCurrentNodeIfNonClosingTag();
+
+        if (this.source_.nonClosingTags_.has(tagValue)) {
+            throw new Error(`Non-closing tag ${tagValue} cannot have a closing tag`);
+        }
+
+        if (this.currentNode.tag !== tagValue) {
+            throw new Error(`Invalid closing tag ${tagValue} for tag ${this.currentNode.tag}`);
+        }
 
         this.nodeStack_.pop();
     }

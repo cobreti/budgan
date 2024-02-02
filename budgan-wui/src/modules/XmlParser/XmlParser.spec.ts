@@ -179,6 +179,43 @@ describe('XmlParser', () => {
         expect(xmlParser.nodeStack_.length).to.equal(0);
     });
 
+    test('onClosingTag outside of tree root', () => {
+
+        const parserSource = new XmlParserSource("");
+        const xmlParser = new XmlParser(parserSource);
+
+        expect(() => xmlParser.onClosingTag("a")).toThrowError('closing tag a outside of tree root');
+    });
+
+    test('onClosingTag mismatch with current tag', () => {
+
+        const parserSource = new XmlParserSource("");
+        const xmlParser = new XmlParser(parserSource);
+        const node = {
+            tag: "a",
+            children: []
+        };
+
+        xmlParser.nodeStack_.push(node);
+
+        expect(() => xmlParser.onClosingTag("b")).toThrowError('Invalid closing tag b for tag a');
+    });
+
+    test('onClosingTag with non-closing tag', () => {
+
+        const parserSource = new XmlParserSource("");
+        const xmlParser = new XmlParser(parserSource);
+        const node = {
+            tag: "a",
+            children: []
+        };
+
+        xmlParser.nodeStack_.push(node);
+        parserSource.nonClosingTags_.add("a");
+
+        expect(() => xmlParser.onClosingTag("a")).toThrowError('Non-closing tag a cannot have a closing tag');
+    });
+
     test('onTagContent', () => {
 
         const parserSource = new XmlParserSource("<a><b></b></a>");
@@ -258,5 +295,74 @@ describe('XmlParser', () => {
                 }
             ]
         });
+    });
+
+    test('xml tree with non-closing tag and no content', () => {
+
+        const parserSource = new XmlParserSource("<a>value a<b><c>value c</c></a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        parserSource.nonClosingTags_.add("b");
+
+        xmlParser.parse();
+
+        expect(xmlParser.xmlTree_.root).toEqual({
+            tag: "a",
+            content: 'value a',
+            children: [
+                {
+                    tag: "b",
+                    children: []
+                },
+                {
+                    tag: "c",
+                    content: 'value c',
+                    children: []
+                }
+            ]
+        });
+    });
+
+    test('xml tree with mutliple non-closing tags', () => {
+
+        const parserSource = new XmlParserSource("<a>value a<b>value b<c>value c</c><d>value d</a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        parserSource.nonClosingTags_.add("b");
+        parserSource.nonClosingTags_.add("d");
+
+        xmlParser.parse();
+
+        expect(xmlParser.xmlTree_.root).toEqual({
+            tag: "a",
+            content: 'value a',
+            children: [
+                {
+                    tag: "b",
+                    content: 'value b',
+                    children: []
+                },
+                {
+                    tag: "c",
+                    content: 'value c',
+                    children: []
+                },
+                {
+                    tag: "d",
+                    content: 'value d',
+                    children: []
+                }
+            ]
+        });
+    });
+
+    test('xml tree with invalid tag being marked as non-closing but has a closing tag', () => {
+
+        const parserSource = new XmlParserSource("<a>value a<b>value b</b><c>value c</c></a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        parserSource.nonClosingTags_.add("b");
+
+        expect(() => xmlParser.parse()).toThrowError('Non-closing tag b cannot have a closing tag');
     });
 });
