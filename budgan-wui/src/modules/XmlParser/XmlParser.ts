@@ -19,6 +19,10 @@ export class XmlParser extends XmlSyntaxParser {
 
     nodeStack_: XmlNode[] = [];
 
+    headerContent_: string[] = [];
+
+    xmlHeaderTagRegex_ = new RegExp("^\\?xml\\s*(.+)\\s*\\?$");
+
     get currentNode() : XmlNode | null {
 
         if (this.nodeStack_.length == 0) {
@@ -29,6 +33,8 @@ export class XmlParser extends XmlSyntaxParser {
     }
 
     get xmlTree(): XmlTree { return this.xmlTree_; }
+
+    get headerContent(): string[] { return this.headerContent_; }
 
 
     removeCurrentNodeIfNonClosingTag() {
@@ -57,6 +63,16 @@ export class XmlParser extends XmlSyntaxParser {
     }
 
     onOpeningTag(tagValue: string): void {
+
+        if (this.xmlHeaderTagRegex_.test(tagValue)) {
+            const matches = tagValue.match(this.xmlHeaderTagRegex_);
+
+            if (matches != null) {
+                this.headerContent_.push(matches[1]);
+            }
+
+            return;
+        }
 
         const node : XmlNode = {
             tag: tagValue,
@@ -100,6 +116,9 @@ export class XmlParser extends XmlSyntaxParser {
 
         if (currentNode) {
             currentNode.content = tagContent.trim();
+        }
+        else {
+            this.headerContent_.push(tagContent.trim());
         }
     }
 

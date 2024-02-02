@@ -365,4 +365,36 @@ describe('XmlParser', () => {
 
         expect(() => xmlParser.parse()).toThrowError('Non-closing tag b cannot have a closing tag');
     });
+
+    test('xml tree with xml header values before opening tag', () => {
+
+        const parserSource = new XmlParserSource("<?xml version=\"1.0\" encoding=\"UTF-8\"?><a>value a<b>value b</b></a>");
+        const xmlParser = new XmlParser(parserSource);
+
+        xmlParser.parse();
+
+        expect(xmlParser.xmlTree_.root).toEqual({
+            tag: "a",
+            content: 'value a',
+            children: [
+                {
+                    tag: "b",
+                    content: 'value b',
+                    children: []
+                }
+            ]
+        });
+
+        expect(xmlParser.headerContent_).toEqual(['version="1.0" encoding="UTF-8"']);
+    });
+
+    test('xml tree with non-xml header before opening tag', () => {
+
+            const parserSource = new XmlParserSource("some header value<a>value a<b>value b</b></a>");
+            const xmlParser = new XmlParser(parserSource);
+
+            xmlParser.parse();
+
+            expect(xmlParser.headerContent_).toEqual(['some header value']);
+    })
 });
