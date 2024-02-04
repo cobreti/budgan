@@ -8,7 +8,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@XmlParser/*": ["./src/modules/XmlParser/*"]
+      "@XmlParser/*": ["./src/modules/XmlParser/*"],
+      "@models/*": ["./src/models/*"]
     },
     "types": ["reflect-metadata"],
     "experimentalDecorators": true,
