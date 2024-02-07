@@ -3,7 +3,7 @@ import {XmlStatsParser} from '@XmlParser/XmlStatsParser';
 import {XmlParserSource} from '@XmlParser/XmlParserSource';
 import type {XmlNode} from '@XmlParser/XmlParser';
 import {XmlParser} from '@XmlParser/XmlParser';
-import type {OfxDocument} from '@models/ofxDocument';
+import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
 
 export interface IOfxParser {
     parse(ofxData: string) : void;
@@ -11,20 +11,56 @@ export interface IOfxParser {
 
 type NodeHandlerContext = {
     ofxDoc: OfxDocument;
+    ofxTransaction?: OfxTransaction;
 }
 
-type NodeHandler = (context: NodeHandlerContext, node: XmlNode) => void;
+type NodeHandlerFct = (context: NodeHandlerContext, node: XmlNode) => void;
 
-
+type NodeHandlers = {
+    openHandler?: NodeHandlerFct
+    closeHandler?: NodeHandlerFct
+}
 
 @injectable()
 export class OfxParser implements IOfxParser {
 
     ofxDoc_ : OfxDocument | null = null;
 
-    tagHandlerTable_ : { [key: string]: NodeHandler } = {
-        'DTSTART': this.handle_DTSTART,
-        'DTEND': this.handle_DTEND
+    tagHandlerTable_ : { [key: string]: NodeHandlers } = {
+        'DTSTART': {
+            openHandler: this.handle_open_DTSTART
+        },
+        'DTEND': {
+            openHandler: this.handle_open_DTEND
+        },
+        'CURDEF': {
+            openHandler: this.handle_open_CURDEF
+        },
+        'ACCTTYPE': {
+            openHandler: this.handle_open_ACCTTYPE
+        },
+        'ACCTID': {
+            openHandler: this.handle_open_ACCTID
+        },
+        'STMTTRN': {
+            openHandler: this.handle_open_STMTTRN,
+            closeHandler: this.handle_close_STMTTRN
+        },
+        'TRNTYPE': {
+            openHandler: this.handle_open_TRNTYPE
+        },
+        'DTPOSTED': {
+            openHandler: this.handle_open_DTPOSTED
+        },
+        'TRNAMT': {
+            openHandler: this.handle_open_TRNAMT
+        },
+        'NAME': {
+            openHandler: this.handle_open_NAME
+        },
+        'FITID': {
+            openHandler: this.handle_open_FITID
+        }
     }
 
     constructor() {
@@ -68,14 +104,19 @@ export class OfxParser implements IOfxParser {
     iterateOfxNodeContent(context: NodeHandlerContext, node: XmlNode) {
 
         if (node.tag in this.tagHandlerTable_) {
-            const handler = this.tagHandlerTable_[node.tag];
-            handler.call(this, context, node);
+            const handler = this.tagHandlerTable_[node.tag].openHandler;
+            handler?.call(this, context, node);
         }
 
         if (node.children) {
             node.children.forEach((child) => {
                 this.iterateOfxNodeContent(context, child);
             });
+        }
+
+        if (node.tag in this.tagHandlerTable_) {
+            const handler = this.tagHandlerTable_[node.tag].closeHandler;
+            handler?.call(this, context, node);
         }
     }
 
@@ -106,7 +147,8 @@ export class OfxParser implements IOfxParser {
             security: ofxSecurity,
             encoding: ofxEncoding,
             charset: ofxCharset,
-            compression: ofxCompression
+            compression: ofxCompression,
+            transactions: [],
         };
     }
 
@@ -118,17 +160,104 @@ export class OfxParser implements IOfxParser {
         return '';
     }
 
-    handle_DTSTART(context: NodeHandlerContext, node: XmlNode) {
+    handle_open_DTSTART(context: NodeHandlerContext, node: XmlNode) {
 
         if (node.content) {
             context.ofxDoc.startDate = this.dateFromOfxDateValue(node.content);
         }
     }
 
-    handle_DTEND(context: NodeHandlerContext, node: XmlNode) {
+    handle_open_DTEND(context: NodeHandlerContext, node: XmlNode) {
 
         if (node.content) {
             context.ofxDoc.endDate = this.dateFromOfxDateValue(node.content);
+        }
+    }
+
+    handle_open_CURDEF(context: NodeHandlerContext, node: XmlNode) {
+        if (node.content) {
+            context.ofxDoc.currency = node.content;
+        }
+    };
+
+    handle_open_ACCTTYPE(context: NodeHandlerContext, node: XmlNode) {
+        if (node.content) {
+            context.ofxDoc.accountType = node.content;
+        }
+    }
+
+    handle_open_ACCTID(context: NodeHandlerContext, node: XmlNode) {
+        if (node.content) {
+            context.ofxDoc.accountId = node.content;
+        }
+    }
+
+    handle_open_STMTTRN(context: NodeHandlerContext, node: XmlNode) {
+        if (context.ofxTransaction) {
+            throw new Error("Nested transactions are not supported");
+        }
+
+        context.ofxTransaction = {
+
+        };
+    }
+
+    handle_close_STMTTRN(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to close");
+        }
+
+        context.ofxDoc.transactions.push(context.ofxTransaction);
+        context.ofxTransaction = undefined;
+    }
+
+    handle_open_TRNTYPE(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to set type");
+        }
+
+        if (node.content) {
+            context.ofxTransaction.type = node.content;
+        }
+    }
+
+    handle_open_DTPOSTED(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to set date");
+        }
+
+        if (node.content) {
+            context.ofxTransaction.datePosted = this.dateFromOfxDateValue(node.content);
+        }
+    }
+
+    handle_open_TRNAMT(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to set amount");
+        }
+
+        if (node.content) {
+            context.ofxTransaction.amount = parseFloat(node.content);
+        }
+    }
+
+    handle_open_NAME(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to set name");
+        }
+
+        if (node.content) {
+            context.ofxTransaction.name = node.content;
+        }
+    }
+
+    handle_open_FITID(context: NodeHandlerContext, node: XmlNode) {
+        if (!context.ofxTransaction) {
+            throw new Error("No transaction to set fitId");
+        }
+
+        if (node.content) {
+            context.ofxTransaction.fitId = node.content;
         }
     }
 
