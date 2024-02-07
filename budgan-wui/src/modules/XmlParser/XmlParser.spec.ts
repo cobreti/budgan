@@ -45,6 +45,14 @@ describe('XmlParser', () => {
             expect(xmlParser.headerContent).toEqual(['version="1.0" encoding="UTF-8"']);
     });
 
+    test('xmlTree getter', () => {
+            
+            const parserSource = new XmlParserSource("<a><b></b></a>");
+            const xmlParser = new XmlParser(parserSource);
+    
+            expect(xmlParser.xmlTree).to.equal(xmlParser.xmlTree_);
+    });
+
     test('removeCurrentNodeIfNonClosingTag with no current node', () => {
 
         const parserSource = new XmlParserSource("<a><b></b></a>");
@@ -82,12 +90,15 @@ describe('XmlParser', () => {
             children: []
         };
 
+        const popSpy = vi.spyOn(xmlParser.nodeStack_, 'pop');
+
         xmlParser.nodeStack_.push(node);
         parserSource.nonClosingTags_.add("a");
 
         xmlParser.removeCurrentNodeIfNonClosingTag();
 
         expect(xmlParser.nodeStack_.length).to.equal(0);
+        expect(popSpy).toBeCalled();
     });
 
     test('setTreeRoot with existing root', () => {
