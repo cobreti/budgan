@@ -6,7 +6,14 @@ import {XmlParser} from '@XmlParser/XmlParser';
 import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
 
 export interface IOfxParser {
-    parse(ofxData: string) : void;
+    parse(ofxData: string) : OfxParseResult;
+}
+
+export type OfxParseResult = {
+
+    document?: OfxDocument;
+    header?: string[];
+    parsingTime?: number;
 }
 
 type NodeHandlerContext = {
@@ -24,7 +31,7 @@ type NodeHandlers = {
 @injectable()
 export class OfxParser implements IOfxParser {
 
-    ofxDoc_ : OfxDocument | null = null;
+    ofxDoc_ : OfxDocument | undefined = undefined;
 
     tagHandlerTable_ : { [key: string]: NodeHandlers } = {
         'DTSTART': {
@@ -67,38 +74,48 @@ export class OfxParser implements IOfxParser {
         console.debug('OfxParser constructor');
     }
 
-    parse(ofxData: string) : void
+    parse(ofxData: string) : OfxParseResult
     {
         const xmlSource = new XmlParserSource(ofxData);
         const xmlStatsParser = new XmlStatsParser(xmlSource);
+        const xmlParser = new XmlParser(xmlSource);
         xmlStatsParser.parse();
 
-        console.debug('non-closing tags :', xmlStatsParser.nonClosingTags);
-        console.debug('normal tags : ', xmlStatsParser.normalTags);
-        console.debug('non-opening tags : ', xmlStatsParser.nonOpeningTags);
-        console.debug('problematic tags : ', xmlStatsParser.problematicTags);
-        console.debug('parsing time (ms) : ', xmlStatsParser.parseTime);
-        console.debug('size (in characters) : ', xmlStatsParser.totalChars);
+        try {
+            console.debug('non-closing tags :', xmlStatsParser.nonClosingTags);
+            console.debug('normal tags : ', xmlStatsParser.normalTags);
+            console.debug('non-opening tags : ', xmlStatsParser.nonOpeningTags);
+            console.debug('problematic tags : ', xmlStatsParser.problematicTags);
+            console.debug('parsing time (ms) : ', xmlStatsParser.parseTime);
+            console.debug('size (in characters) : ', xmlStatsParser.totalChars);
 
-        xmlSource.nonClosingTags = xmlStatsParser.nonClosingTags;
-        const xmlParser = new XmlParser(xmlSource);
-        xmlParser.parse();
+            xmlSource.nonClosingTags = xmlStatsParser.nonClosingTags;
 
-        console.debug('parsing time (ms) : ', xmlParser.parseTime);
-        console.debug('size (in characters) : ', xmlParser.totalChars);
-        console.debug('xml tree : ', xmlParser.xmlTree);
-        console.debug('ofx header : ', xmlParser.headerContent);
+            xmlParser.parse();
 
-        this.ofxDoc_ = this.createOfxDocument(xmlParser.headerContent);
+            console.debug('parsing time (ms) : ', xmlParser.parseTime);
+            console.debug('size (in characters) : ', xmlParser.totalChars);
+            console.debug('xml tree : ', xmlParser.xmlTree);
+            console.debug('ofx header : ', xmlParser.headerContent);
 
-        if (xmlParser.xmlTree.root) {
-            let context : NodeHandlerContext = {
-                ofxDoc: this.ofxDoc_
-            };
-            this.iterateOfxNodeContent(context, xmlParser.xmlTree.root);
+            this.ofxDoc_ = this.createOfxDocument(xmlParser.headerContent);
+
+            if (xmlParser.xmlTree.root) {
+                let context: NodeHandlerContext = {
+                    ofxDoc: this.ofxDoc_
+                };
+                this.iterateOfxNodeContent(context, xmlParser.xmlTree.root);
+            }
+        }
+        catch (e) {
+            console.error('Error parsing ofx data : ', e);
         }
 
-        console.log('ofxDocument : ', this.ofxDoc_);
+        return {
+            document: this.ofxDoc_,
+            header: xmlParser.headerContent,
+            parsingTime: xmlStatsParser.parseTime + xmlParser.parseTime
+        }
     }
 
     iterateOfxNodeContent(context: NodeHandlerContext, node: XmlNode) {

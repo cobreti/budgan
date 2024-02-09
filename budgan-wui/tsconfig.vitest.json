@@ -4,6 +4,12 @@
   "compilerOptions": {
     "composite": true,
     "lib": [],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@XmlParser/*": ["./src/modules/XmlParser/*"],
+      "@models/*": ["./src/models/*"]
+    },
     "types": ["node", "jsdom"]
   }
 }

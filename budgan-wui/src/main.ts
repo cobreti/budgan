@@ -22,7 +22,7 @@ app.provide('container', container);
 
 const vuetify = createVuetify({
     theme: {
-        defaultTheme: 'dark',
+        defaultTheme: 'light',
         themes: {
             dark: {
                 colors: {

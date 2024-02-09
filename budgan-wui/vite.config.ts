@@ -20,7 +20,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@XmlParser': fileURLToPath(new URL('./src/modules/XmlParser', import.meta.url)),
+      '@models': fileURLToPath( new URL('./src/models', import.meta.url)),
     }
   }
 })
