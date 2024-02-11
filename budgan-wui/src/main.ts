@@ -12,11 +12,9 @@ import { container } from './setupInversify';
 import App from './App.vue'
 import router from './router'
 
-// App.provide = {
-//     container
-// };
 
 const app = createApp(App)
+const pinia = createPinia();
 
 app.provide('container', container);
 
@@ -38,7 +36,7 @@ const vuetify = createVuetify({
 });
 
 app.use(vuetify);
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')

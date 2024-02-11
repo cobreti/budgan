@@ -27,6 +27,7 @@
 <script setup lang="ts">
 
 import {computed, inject} from 'vue';
+import { useBankAccountsStore } from '@/stores/bankAccounts';
 import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
 import type {IOfxParser} from '@/services/ofxParser';
@@ -39,6 +40,9 @@ const ofxFileName = defineModel<File[]>();
 const canLoad = computed(() => {
   return ofxFileName.value && ofxFileName.value.length > 0
 });
+
+const bankAccountsStore = useBankAccountsStore();
+const { getAccountById, createAccount } = bankAccountsStore;
 
 let accountsRepository : IBankAccountsRepository | undefined;
 
@@ -71,30 +75,45 @@ function onFileNameUpdated(files: File[]) {
 
 }
 
-function addNewBankAccount(document: OfxDocument) {
+function getOrCreateBankAccount(accountId: string) : BankAccount {
 
-  if (!accountsRepository) {
-    accountsRepository = container.get(ServicesTypes.BankAccountsRepository) as IBankAccountsRepository;
 
-    if (!accountsRepository) {
-      throw new Error('BankAccountsRepository not found in container.');
-    }
+  const account = getAccountById(accountId);
+  if (account) {
+    return account;
   }
+
+  return createAccount(accountId);
+}
+
+function addNewBankAccount(document: OfxDocument) {
 
   if (document.accountId == undefined) {
     throw new Error('Account ID not found in OFX file.');
   }
 
-  const account = accountsRepository.getOrCreateAccount(document.accountId);
-  createAccountTransactions(document);
+  const account = getOrCreateBankAccount(document.accountId);
+
+
+  // if (!accountsRepository) {
+  //   accountsRepository = container.get(ServicesTypes.BankAccountsRepository) as IBankAccountsRepository;
+  //
+  //   if (!accountsRepository) {
+  //     throw new Error('BankAccountsRepository not found in container.');
+  //   }
+  // }
+  //
+  //
+  // const account = accountsRepository.getOrCreateAccount(document.accountId);
+  // createAccountTransactions(document);
 }
 
 function createAccountTransactions(document: OfxDocument) {
-  const accountTransactions = new BankAccountTransactions(document.startDate, document.endDate);
-
-  document.transactions.forEach(transaction => {
-    accountTransactions.add(transaction);
-  });
+  // const accountTransactions = new BankAccountTransactions(document.startDate, document.endDate);
+  //
+  // document.transactions.forEach(transaction => {
+  //   accountTransactions.add(transaction);
+  // });
 }
 
 </script>
