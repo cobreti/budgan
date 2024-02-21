@@ -133,27 +133,6 @@ function addNewBankAccount(document: OfxDocument) {
 
     account.transactions.push(transactions);
   }
-
-
-  // if (!accountsRepository) {
-  //   accountsRepository = container.get(ServicesTypes.BankAccountsRepository) as IBankAccountsRepository;
-  //
-  //   if (!accountsRepository) {
-  //     throw new Error('BankAccountsRepository not found in container.');
-  //   }
-  // }
-  //
-  //
-  // const account = accountsRepository.getOrCreateAccount(document.accountId);
-  // createAccountTransactions(document);
-}
-
-function createAccountTransactions(document: OfxDocument) {
-  // const accountTransactions = new BankAccountTransactions(document.startDate, document.endDate);
-  //
-  // document.transactions.forEach(transaction => {
-  //   accountTransactions.add(transaction);
-  // });
 }
 
 </script>
