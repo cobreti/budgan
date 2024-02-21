@@ -22,33 +22,19 @@ export type BankAccount = {
     transactions: BankAccountTransactions[];
 }
 
+export type BankAccountTable = {[key: string]: BankAccount};
+
+
 export type BankAccountsStore = {
-    accounts: Ref<{[key: string]: BankAccount}>
+    accounts: Ref<BankAccountTable>
     getAccountById: (accountId: string) => BankAccount;
     createAccount: (accountId: string) => BankAccount;
+    getOrCreateAccountById: (accountId: string) => BankAccount;
 }
 
 export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bankTransactions',  () => {
     const name = ref("test");
-    const accounts = ref({
-        '1234': {
-            accountId: '1234',
-            accountType: 'checking',
-            transactions: [
-                {
-                    dateStart: new Date(),
-                    dateEnd: new Date(),
-                    transactions: [
-                        {
-                            transactionId: '1',
-                            date: new Date(),
-                            amount: 100,
-                            description: 'Initial deposit'
-                        }
-                    ]
-                }
-            ]
-        }
+    const accounts = ref<BankAccountTable>({
     });
 
     function getAccountById(accountId: string) {
@@ -66,9 +52,18 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
         return account;
     }
 
+    function getOrCreateAccountById(accountId: string) {
+        let account = getAccountById(accountId);
+        if (!account) {
+            account = createAccount(accountId);
+        }
+        return account;
+    }
+
     return {
         accounts,
         getAccountById,
-        createAccount
+        createAccount,
+        getOrCreateAccountById
     }
 });
