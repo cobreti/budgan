@@ -32,7 +32,7 @@ import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
 import type {IOfxParser} from '@/services/ofxParser';
 import type {IBankAccountsRepository} from '@/services/BankAccountsRepository';
-import type {OfxDocument} from '@models/ofxDocument';
+import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
 
 const container = inject('container') as Container;
 const ofxFileName = defineModel<File[]>();
@@ -41,7 +41,6 @@ const canLoad = computed(() => {
 });
 
 const bankAccountsStore = useBankAccountsStore();
-const { getOrCreateAccountById } = bankAccountsStore;
 
 let accountsRepository : IBankAccountsRepository | undefined;
 
@@ -74,6 +73,32 @@ function onFileNameUpdated(files: File[]) {
 
 }
 
+function OfxToBankAccountTransaction(ofxTransaction: OfxTransaction) : BankAccountTransaction {
+  if (ofxTransaction.fitId == undefined) {
+    throw new Error('Transaction ID not found in OFX file.');
+  }
+
+  if (ofxTransaction.datePosted == undefined) {
+    throw new Error('Transaction date not found in OFX file.');
+  }
+
+  if (ofxTransaction.amount == undefined) {
+    throw new Error('Transaction amount not found in OFX file.');
+  }
+
+  if (ofxTransaction.type == undefined) {
+    throw new Error('Transaction type not found in OFX file.');
+  }
+
+  return {
+    transactionId: ofxTransaction.fitId,
+    date: ofxTransaction.datePosted,
+    amount: ofxTransaction.amount,
+    type: ofxTransaction.type,
+    description: ofxTransaction.name || ''
+  }
+}
+
 function addNewBankAccount(document: OfxDocument) {
 
   if (document.accountId == undefined) {
@@ -88,50 +113,13 @@ function addNewBankAccount(document: OfxDocument) {
     throw new Error('End date not found in OFX file.');
   }
 
-  const account = getOrCreateAccountById(document.accountId);
-
-  account.accountType = account.accountType || document.accountType;
+  const account = bankAccountsStore.getOrCreateAccount(document.accountId, document.accountType || '');
 
   if (document.transactions && document.transactions.length > 0) {
 
-    const transactions : BankAccountTransactions = {
-      dateStart: document.startDate,
-      dateEnd: document.endDate,
-      transactions: []
-    }
+    const bankAccountTransactions = document.transactions.map(OfxToBankAccountTransaction);
 
-    document.transactions.forEach(transaction => {
-
-      try {
-        if (transaction.fitId == undefined) {
-          throw new Error('Transaction ID not found in OFX file.');
-        }
-
-        if (transaction.datePosted == undefined) {
-          throw new Error('Transaction date not found in OFX file.');
-        }
-
-        if (transaction.amount == undefined) {
-          throw new Error('Transaction amount not found in OFX file.');
-        }
-
-        const newTransaction : BankAccountTransaction = {
-          transactionId: transaction.fitId,
-          date: transaction.datePosted,
-          amount: transaction.amount,
-          type: transaction.type,
-          description: transaction.name || ''
-        }
-
-        transactions.transactions.push(newTransaction);
-      }
-      catch (error) {
-        console.error(error);
-      }
-
-    });
-
-    account.transactions.push(transactions);
+    bankAccountsStore.addTransactions(account.accountId, document.startDate, document.endDate, bankAccountTransactions);
   }
 }
 
