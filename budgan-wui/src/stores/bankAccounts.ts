@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import {type Ref, ref} from 'vue';
 
 
+declare type TransactionIdsTable = {[key: string]: undefined};
+
 export type BankAccountTransaction = {
     transactionId: string;
     date: Date;
@@ -20,7 +22,7 @@ export type BankAccountTransactions = {
 export type BankAccount = {
     accountId: string;
     accountType: string | undefined;
-    transactionsId: Set<string>;
+    transactionsId: TransactionIdsTable
     transactions: BankAccountTransactions[];
 }
 
@@ -48,7 +50,7 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
         const account: BankAccount = {
             accountId: accountId,
             accountType: accountType,
-            transactionsId: new Set<string>(),
+            transactionsId: {},
             transactions: []
         }
         accounts.value[accountId] = account;
@@ -80,13 +82,16 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
         }
 
         const newTransactions = transactions.filter((transaction) => {
-            return !account.transactionsId.has(transaction.transactionId);
+
+            return !(transaction.transactionId in account.transactionsId);
         });
 
         if (newTransactions.length > 0) {
-            newTransactions.forEach((transaction) => {
-                account.transactionsId.add(transaction.transactionId);
-            });
+            const ids = newTransactions.map(transaction => transaction.transactionId)
+                .reduce((acc : TransactionIdsTable, id) => {
+                    acc[id] = undefined;
+                    return acc },
+                    {});
 
             const bankAccountTransactions: BankAccountTransactions = {
                 dateStart: startDate,
@@ -94,7 +99,8 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
                 transactions: newTransactions
             }
 
-            account.transactions.push(bankAccountTransactions);
+            account.transactionsId = {...account.transactionsId, ...ids};
+            account.transactions = [...account.transactions, bankAccountTransactions];
         }
     }
 
