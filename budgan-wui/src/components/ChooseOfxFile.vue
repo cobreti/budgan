@@ -1,25 +1,36 @@
 <template>
-  <div>
-    <v-card class="pt-4 pr-4 pl-4 pb-4 mb-8">
+  <div class="d-flex flex-row align-content-start ma-2">
+    <v-card class="file-input pt-4 pr-4 pl-4 pb-4 mr-2">
       <v-file-input
+          class="w-100"
           v-model="ofxFileName"
           @update:modelValue="onFileNameUpdated"
           accept=".ofx"
         ></v-file-input>
+      <v-col class="text-center">
+        <v-btn
+            :disabled="!canLoad"
+            @click="onLoad">
+          Load
+        </v-btn>
+      </v-col>
     </v-card>
-    <v-col class="text-center">
-      <v-btn
-          :disabled="!canLoad"
-          @click="onLoad"
-        >
-        Load
-      </v-btn>
-    </v-col>
+    <v-card class="content ml-2">
+      hello world
+    </v-card>
   </div>
 </template>
 
 
 <style scoped>
+
+  .file-input {
+    flex: 1 1 0;
+  }
+
+  .content {
+    flex: 2 1 0;
+  }
 
 </style>
 
