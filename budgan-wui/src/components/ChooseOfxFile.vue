@@ -16,7 +16,7 @@
       </v-col>
     </v-card>
     <v-card class="content ml-2">
-      hello world
+      <accounts-list></accounts-list>
     </v-card>
   </div>
 </template>
@@ -42,8 +42,8 @@ import {type BankAccountTransaction, type BankAccountTransactions, useBankAccoun
 import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
 import type {IOfxParser} from '@/services/ofxParser';
-import type {IBankAccountsRepository} from '@/services/BankAccountsRepository';
 import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
+import AccountsList from '@/components/accounts/AccountsList.vue';
 
 const container = inject('container') as Container;
 const ofxFileName = defineModel<File[]>();
@@ -52,8 +52,6 @@ const canLoad = computed(() => {
 });
 
 const bankAccountsStore = useBankAccountsStore();
-
-let accountsRepository : IBankAccountsRepository | undefined;
 
 
 function onLoad(event: Event) {
