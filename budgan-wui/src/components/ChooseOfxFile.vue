@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row align-content-start ma-2">
+  <div class="d-flex flex-row align-content-start ma-2 flex-row">
     <v-card class="file-input pt-4 pr-4 pl-4 pb-4 mr-2">
       <v-file-input
           class="w-100"
@@ -30,6 +30,14 @@
 
   .content {
     flex: 2 1 0;
+  }
+
+  accounts-list {
+    height: 20em;
+  }
+
+  .flex-row {
+    height: 20em;
   }
 
 </style>
