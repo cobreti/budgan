@@ -2,7 +2,7 @@
 
   <div class="transactions-list-panel">
     <ul>
-      <li v-for="transaction in transactions" :key="transaction.id">
+      <li v-for="transaction in transactions" :key="transaction.transactionId">
         {{transaction.date}} - {{transaction.amount}}
       </li>
     </ul>
