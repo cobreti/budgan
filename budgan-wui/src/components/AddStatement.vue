@@ -34,15 +34,12 @@
     min-height: 10em;
   }
 
-  .flex-row {
-  }
-
 </style>
 
 <script setup lang="ts">
   import {useAddStatementStore} from '@/stores/add-statement-store';
 
-  const ofxFileName = defineModel<File[]>();import AccountsList from '@/components/accounts/AccountsList.vue';
+  const ofxFileName = defineModel<File[]>();
   import AddStatementAccount from '@/components/accounts/AddStatementAccount.vue';
   const addStatementStore = useAddStatementStore();
 
