@@ -46,12 +46,13 @@
 <script setup lang="ts">
 
 import {computed, inject} from 'vue';
-import {type BankAccountTransaction, type BankAccountTransactions, useBankAccountsStore} from '@/stores/bankAccounts';
+import {useBankAccountsStore} from '@/stores/bankAccounts';
 import type {Container} from 'inversify';
 import {ServicesTypes} from '@/services/types';
 import type {IOfxParser} from '@/services/ofxParser';
 import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
 import AccountsList from '@/components/accounts/AccountsList.vue';
+import type {BankAccountTransaction} from '@models/BankAccountTypes';
 
 const container = inject('container') as Container;
 const ofxFileName = defineModel<File[]>();

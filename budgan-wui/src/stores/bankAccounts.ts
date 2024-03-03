@@ -1,36 +1,19 @@
 import { defineStore } from 'pinia'
 import {type Ref, ref} from 'vue';
+import type {
+    BankAccount,
+    BankAccountTransaction,
+    BankAccountTransactionsGroup,
+    TransactionIdsTable
+} from '@models/BankAccountTypes';
 
 
-declare type TransactionIdsTable = {[key: string]: undefined};
 
-export type BankAccountTransaction = {
-    transactionId: string;
-    date: Date;
-    amount: number;
-    type: string;
-    description: string;
-}
-
-export type BankAccountTransactions = {
-
-    dateStart: Date;
-    dateEnd: Date;
-    transactions: BankAccountTransaction[];
-}
-
-export type BankAccount = {
-    accountId: string;
-    accountType: string | undefined;
-    transactionsId: TransactionIdsTable
-    transactions: BankAccountTransactions[];
-}
-
-export type BankAccountTable = {[key: string]: BankAccount};
+export type BankAccountsDictionary = {[key: string]: BankAccount};
 
 
 export type BankAccountsStore = {
-    accounts: Ref<BankAccountTable>
+    accounts: Ref<BankAccountsDictionary>
     getAccountById: (accountId: string) => BankAccount;
     createAccount: (accountId: string,  accountType: string) => BankAccount;
     getOrCreateAccount: (accountId: string, accountType: string) => BankAccount;
@@ -39,7 +22,7 @@ export type BankAccountsStore = {
 
 export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bankTransactions',  () => {
 
-    const accounts = ref<BankAccountTable>({});
+    const accounts = ref<BankAccountsDictionary>({});
 
     function getAccountById(accountId: string) {
             return accounts.value[accountId];
@@ -93,7 +76,7 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
                     return acc },
                     {});
 
-            const bankAccountTransactions: BankAccountTransactions = {
+            const bankAccountTransactions: BankAccountTransactionsGroup = {
                 dateStart: startDate,
                 dateEnd: endDate,
                 transactions: newTransactions

@@ -39,7 +39,8 @@
 
 
 <script setup lang="ts">
-import type {BankAccountTransaction, BankAccountTransactions} from '@/stores/bankAccounts';
+
+import type {BankAccountTransaction} from '@models/BankAccountTypes';
 
 const props = defineProps<{
   transactions: BankAccountTransaction[]

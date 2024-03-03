@@ -16,6 +16,11 @@ const router = createRouter({
       component: ChooseOfxFile
     },
     {
+      path: '/add-statement',
+      name: 'addStatement',
+      component: () => import('../components/AddStatement.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

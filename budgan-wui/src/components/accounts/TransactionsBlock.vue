@@ -34,11 +34,10 @@
 
 
 <script setup lang="ts">
-  import type {BankAccountTransactions} from '@/stores/bankAccounts';
   import TransactionsList from '@/components/accounts/TransactionsList.vue';
-  import transactionsBlock from '@/components/accounts/TransactionsBlock.vue';
+  import type {BankAccountTransactionsGroup} from '@models/BankAccountTypes';
 
   const props = defineProps<{
-    bankAccountTransactions: BankAccountTransactions[]
+    bankAccountTransactions: BankAccountTransactionsGroup[]
   }>();
 </script>

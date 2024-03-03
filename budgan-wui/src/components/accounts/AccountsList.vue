@@ -46,7 +46,6 @@
 
 import {useBankAccountsStore} from '@/stores/bankAccounts';
 import {computed} from 'vue';
-import TransactionsBlock from '@/components/accounts/TransactionsBlock.vue';
 
 const bankAccountsStore = useBankAccountsStore();
 
