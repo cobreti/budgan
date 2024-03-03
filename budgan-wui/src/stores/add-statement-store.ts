@@ -1,8 +1,6 @@
 import {defineStore} from 'pinia';
 import {ref, type Ref} from 'vue';
 import type {BankAccount, BankAccountTransaction, TransactionIdsTable} from '@models/BankAccountTypes';
-import {timer} from 'rxjs';
-import {resolve} from 'inversify/lib/resolution/resolver';
 import type {IOfxParser} from '@/services/ofxParser';
 import {ServicesTypes} from '@/services/types';
 import {container} from '@/setupInversify';
