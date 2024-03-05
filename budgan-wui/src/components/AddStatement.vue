@@ -1,6 +1,6 @@
 <template>
-  <div class="page-container">
-    <div class="d-flex flex-column align-content-start ma-2">
+  <div class="page-container pa-2">
+    <div class="d-flex flex-column align-content-start h-100">
       <v-card class="file-input-card pt-4 pr-4 pl-4 pb-4 mr-2 mb-2">
         <label for="ofx-file-input">
           Choose an OFX file

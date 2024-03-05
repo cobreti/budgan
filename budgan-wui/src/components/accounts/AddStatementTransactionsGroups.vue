@@ -1,12 +1,13 @@
 <template>
-  <div class="container ma-4 mt-4">
+  <div class="container ma-4 mt-4 h-100">
     <add-statement-transactions-group v-for="transactionsGroup in transactionsGroups" :transactions-group="transactionsGroup"></add-statement-transactions-group>
   </div>
 </template>
 
 <style scoped>
   .container {
-    height: 20em;
+    min-height: 20em;
+    height: 100%;
   }
 </style>
 
