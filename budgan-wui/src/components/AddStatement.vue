@@ -15,6 +15,7 @@
         ></v-file-input>
       </v-card>
       <v-card class="action-card" :class="{'d-none': !statementPresent}">
+        <div class="ml-5 mt-1">{{filename}}</div>
         <v-card-actions class="d-flex flex-grow-1 flex-row justify-center">
           <v-btn>Add</v-btn>
           <v-btn @click="onDiscard()">Discard</v-btn>
@@ -37,7 +38,7 @@
     flex: 1 1 0;
     display: block;
     position: relative;
-    min-height: 3em;
+    min-height: 5em;
   }
 
   .file-input-card {
@@ -55,6 +56,10 @@
   import AddStatementAccount from '@/components/add-statement/AddStatementAccount.vue';
   import {computed} from 'vue';
   const addStatementStore = useAddStatementStore();
+
+  const filename = computed(() => {
+    return addStatementStore.loadedAccount.filename;
+  });
 
   const statementPresent = computed(() => {
     return addStatementStore.loadedAccount.account != undefined;

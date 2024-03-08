@@ -9,24 +9,28 @@ import type {OfxDocument, OfxTransaction} from '@models/ofxDocument';
 export declare type LoadedAccount = {
     loading: boolean,
     account: BankAccount | undefined;
+    filename: string | undefined;
 }
 
 export type AddStatementStore = {
     loadedAccount: Ref<LoadedAccount>;
     loadOfxFile: (file: File) => void;
+    clear: () => void;
 };
 
 export const useAddStatementStore = defineStore<string, AddStatementStore>('addStatement',  () => {
 
     const loadedAccount = ref<LoadedAccount>({
         loading: false,
-        account: undefined
+        account: undefined,
+        filename: undefined
     });
 
     function loadOfxFile(file: File) : void {
         loadedAccount.value = {
             loading: true,
-            account: undefined
+            account: undefined,
+            filename: file.name
         };
 
         const reader = new FileReader();
@@ -34,6 +38,14 @@ export const useAddStatementStore = defineStore<string, AddStatementStore>('addS
         reader.onload = () => onOfxLoaded(reader.result as string);
 
         reader.readAsText(file);
+    }
+
+    function clear() {
+        loadedAccount.value = {
+            loading: false,
+            account: undefined,
+            filename: undefined
+        };
     }
 
     function onOfxLoaded(content: string) {
@@ -108,13 +120,15 @@ export const useAddStatementStore = defineStore<string, AddStatementStore>('addS
 
             loadedAccount.value = {
                 loading: false,
-                account: account
+                account: account,
+                filename: loadedAccount.value.filename
             }
         }
     }
 
     return {
         loadedAccount,
-        loadOfxFile
+        loadOfxFile,
+        clear
     }
 });
