@@ -21,11 +21,7 @@
   const addStatementStore = useAddStatementStore();
 
   const transactionsGroups = computed(() => {
-    if (!addStatementStore.loadedAccount.account) {
-      throw new Error("Transactions group not loaded")
-    }
-
-    return addStatementStore.loadedAccount.account.transactions;
+    return addStatementStore.loadedAccount.account?.transactions;
   });
 
 

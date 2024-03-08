@@ -6,11 +6,11 @@
       <div class="d-flex flex-row justify-space-between">
         <div>
           <span class="title">Account # : </span>
-          <span>{{account.accountId}}</span>
+          <span>{{accountId}}</span>
         </div>
         <div>
           <span class="title">Account type : </span>
-          <span>{{account.accountType}}</span>
+          <span>{{accountType}}</span>
         </div>
       </div>
       <add-statement-transactions-groups class="mt-2 h-100"></add-statement-transactions-groups>
@@ -31,12 +31,12 @@
 
   const addStatementStore = useAddStatementStore();
 
-  const account = computed(() => {
-    if (!addStatementStore.loadedAccount.account) {
-      throw new Error("Account not loaded")
-    }
+  const accountId = computed(() => {
+    return addStatementStore.loadedAccount.account?.accountId;
+  })
 
-    return addStatementStore.loadedAccount.account;
-  });
+  const accountType = computed(() => {
+    return addStatementStore.loadedAccount.account?.accountType;
+  })
 
 </script>
