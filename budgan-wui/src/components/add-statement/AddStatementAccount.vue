@@ -27,7 +27,7 @@
 
   import {useAddStatementStore} from '@/stores/add-statement-store';
   import {computed} from 'vue';
-  import AddStatementTransactionsGroups from '@/components/accounts/AddStatementTransactionsGroups.vue';
+  import AddStatementTransactionsGroups from '@/components/add-statement/AddStatementTransactionsGroups.vue';
 
   const addStatementStore = useAddStatementStore();
 

@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
   import { type BankAccountTransactionsGroup } from '@models/BankAccountTypes';
-  import AddStatementTransaction from '@/components/accounts/AddStatementTransaction.vue';
+  import AddStatementTransaction from '@/components/add-statement/AddStatementTransaction.vue';
 
   const props = defineProps<{
     transactionsGroup: BankAccountTransactionsGroup

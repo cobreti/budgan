@@ -40,7 +40,7 @@
   import {useAddStatementStore} from '@/stores/add-statement-store';
 
   const ofxFileName = defineModel<File[]>();
-  import AddStatementAccount from '@/components/accounts/AddStatementAccount.vue';
+  import AddStatementAccount from '@/components/add-statement/AddStatementAccount.vue';
   const addStatementStore = useAddStatementStore();
 
   function onFileNameUpdated(files: File[]) {
