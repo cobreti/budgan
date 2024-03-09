@@ -14,14 +14,14 @@
             accept=".ofx"
         ></v-file-input>
       </v-card>
-      <v-card class="action-card" :class="{'d-none': !statementPresent}">
+      <v-card class="action-card" v-show="statementPresent">
         <div class="ml-5 mt-1">{{filename}}</div>
         <v-card-actions class="d-flex flex-grow-1 flex-row justify-center">
           <v-btn @click="onAdd()">Add</v-btn>
           <v-btn @click="onDiscard()">Discard</v-btn>
         </v-card-actions>
       </v-card>
-      <v-card class="pt-4 pr-4 pl-4 pb-4 mr-2 mt-2" :class="{'d-none': !statementPresent}">
+      <v-card class="pt-4 pr-4 pl-4 pb-4 mr-2 mt-2" v-show="statementPresent">
         <add-statement-account></add-statement-account>
       </v-card>
     </div>
