@@ -18,6 +18,7 @@ export type BankAccountsStore = {
     createAccount: (accountId: string,  accountType: string) => BankAccount;
     getOrCreateAccount: (accountId: string, accountType: string) => BankAccount;
     addTransactions: (accountId: string, startDate: Date, endDate: Date, transactions: BankAccountTransaction[]) => void;
+    addWithBankAccount: (account: BankAccount) => void;
 }
 
 export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bankTransactions',  () => {
@@ -87,11 +88,54 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
         }
     }
 
+    function sanitizeTransactionsGroup(destAccount: BankAccount, transactionsGroup: BankAccountTransactionsGroup) {
+
+        const newTransactions = transactionsGroup.transactions.filter((transaction) => {
+            return !(transaction.transactionId in destAccount.transactionsId);
+        });
+
+        return {
+            dateStart: transactionsGroup.dateStart,
+            dateEnd: transactionsGroup.dateEnd,
+            transactions: newTransactions
+        } as BankAccountTransactionsGroup;
+    }
+
+    function addWithBankAccount(account: BankAccount) {
+
+        const existingAccount = getAccountById(account.accountId);
+        if (!existingAccount) {
+            accounts.value[account.accountId] = account;
+            return;
+        }
+
+        const sanitizedTransactionsGroup = account.transactions.map((transactionsGroup) => {
+                return sanitizeTransactionsGroup(existingAccount, transactionsGroup);
+            })
+            .filter((transactionsGroup) => transactionsGroup.transactions.length > 0);
+
+        if (sanitizedTransactionsGroup.length > 0) {
+            const newIds = sanitizedTransactionsGroup
+                .reduce((acc: TransactionIdsTable, transactionGroup) => {
+                    const ids = transactionGroup.transactions.map(transaction => transaction.transactionId)
+                        .reduce((idsAcc:TransactionIdsTable, id) => {
+                            idsAcc[id] = undefined;
+                            return idsAcc;
+                        }, {});
+                    return {...acc, ...ids};
+                }, {});
+
+            existingAccount.transactionsId = {...existingAccount.transactionsId, ...newIds};
+            existingAccount.transactions = [...existingAccount.transactions, ...sanitizedTransactionsGroup];
+        }
+    }
+
     return {
         accounts,
         getAccountById,
         createAccount,
         getOrCreateAccount,
-        addTransactions
+        addTransactions,
+        addWithBankAccount
     }
 });

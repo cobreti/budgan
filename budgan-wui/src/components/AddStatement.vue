@@ -17,7 +17,7 @@
       <v-card class="action-card" :class="{'d-none': !statementPresent}">
         <div class="ml-5 mt-1">{{filename}}</div>
         <v-card-actions class="d-flex flex-grow-1 flex-row justify-center">
-          <v-btn>Add</v-btn>
+          <v-btn @click="onAdd()">Add</v-btn>
           <v-btn @click="onDiscard()">Discard</v-btn>
         </v-card-actions>
       </v-card>
@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
   import {useAddStatementStore} from '@/stores/add-statement-store';
+  import {useBankAccountsStore} from '@/stores/bankAccounts';
 
   const ofxFileName = defineModel<File[]>();
   import AddStatementAccount from '@/components/add-statement/AddStatementAccount.vue';
@@ -72,9 +73,22 @@
     }
   }
 
-  function onDiscard() {
+  function clear() {
     ofxFileName.value = [];
     addStatementStore.clear();
   }
+
+  function onDiscard() {
+    clear();
+  }
+
+  function onAdd() {
+    const account = addStatementStore.loadedAccount.account;
+    if (account != undefined) {
+      useBankAccountsStore().addWithBankAccount(account);
+      clear();
+    }
+  }
+
 </script>
 
