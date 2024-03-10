@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
   <div>
     <v-app full-height="100%">
@@ -12,9 +8,13 @@ import { RouterView } from 'vue-router'
           ></v-img>
         </template>
         <template v-slot:prepend>
-          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"></v-app-bar-nav-icon>
         </template>
       </v-app-bar>
+      <v-navigation-drawer fullHeight="true" v-model="showDrawer">
+        <v-list-item title="Home" :to="{path: '/'}"></v-list-item>
+        <v-list-item title="Add statement" :to="{path: '/add-statement'}"></v-list-item>
+      </v-navigation-drawer>
       <v-main scrollable="false">
         <RouterView v-slot="{Component, route}">
           <transition :name="route.meta.transition || 'fade'">
@@ -29,3 +29,10 @@ import { RouterView } from 'vue-router'
 <style scoped>
 
 </style>
+
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+
+let showDrawer = defineModel<boolean>({default: false});
+
+</script>
