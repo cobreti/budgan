@@ -1,11 +1,10 @@
 import './assets/main.css'
-
+import '@mdi/font/css/materialdesignicons.css'
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify';
 import { createPinia } from 'pinia'
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-import colors from 'vuetify/util/colors';
 import 'vuetify/styles';
 import { container } from './setupInversify';
 
@@ -30,6 +29,9 @@ const vuetify = createVuetify({
                 }
             }
         }
+    },
+    icons: {
+        defaultSet: 'mdi'
     },
     components,
     directives
