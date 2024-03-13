@@ -8,7 +8,7 @@
           <span class="title">Account # : </span>
           <span>{{accountId}}</span>
         </div>
-        <div>
+        <div v-show="accountType != ''">
           <span class="title">Account type : </span>
           <span>{{accountType}}</span>
         </div>
