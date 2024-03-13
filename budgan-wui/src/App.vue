@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app full-height="100%">
+    <v-app :full-height="true">
       <v-app-bar color="teal-darken-4" image="https://picsum.photos/1920/1080?random">
         <template v-slot:image>
           <v-img
@@ -11,11 +11,8 @@
           <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"></v-app-bar-nav-icon>
         </template>
       </v-app-bar>
-      <v-navigation-drawer fullHeight="true" v-model="showDrawer">
-        <v-list-item title="Home" :to="{path: '/'}"></v-list-item>
-        <v-list-item title="Add statement" :to="{path: '/add-statement'}"></v-list-item>
-      </v-navigation-drawer>
-      <v-main scrollable="false">
+      <navigation-drawer :show-drawer="showDrawer"/>
+      <v-main :scrollable="false">
         <RouterView v-slot="{Component, route}">
           <transition :name="route.meta.transition || 'fade'">
             <component :is="Component" />
@@ -32,6 +29,7 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 let showDrawer = defineModel<boolean>({default: false});
 
