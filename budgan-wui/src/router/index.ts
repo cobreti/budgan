@@ -22,6 +22,11 @@ const router = createRouter({
       meta: { transition: 'slide-right' }
     },
     {
+      path: '/accounts',
+      name: 'accounts',
+      component: () => import('../views/AccountsView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

@@ -3,6 +3,7 @@
     <v-navigation-drawer :fullHeight="true" v-model="props.showDrawer">
       <v-list-item title="Home" :to="{path: '/'}"></v-list-item>
       <v-list-item title="Add statement" :to="{path: '/add-statement'}"></v-list-item>
+      <v-list-item title="Accounts" :to="{path: '/accounts'}"></v-list-item>
     </v-navigation-drawer>
   </div>
 </template>
