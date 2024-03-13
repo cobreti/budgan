@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: '/add-statement',
       name: 'addStatement',
-      component: () => import('../components/AddStatement.vue'),
+      component: () => import('../views/AddStatementView.vue'),
       meta: { transition: 'slide-right' }
     },
     {
