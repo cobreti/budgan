@@ -1,15 +1,11 @@
 import { defineStore } from 'pinia'
 import {type Ref, ref} from 'vue';
 import type {
-    BankAccount,
+    BankAccount, BankAccountsDictionary,
     BankAccountTransaction,
     BankAccountTransactionsGroup,
     TransactionIdsTable
 } from '@models/BankAccountTypes';
-
-
-
-export type BankAccountsDictionary = {[key: string]: BankAccount};
 
 
 export type BankAccountsStore = {

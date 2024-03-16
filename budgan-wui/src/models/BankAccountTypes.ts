@@ -21,3 +21,5 @@ export type BankAccount = {
     transactionsId: TransactionIdsTable
     transactions: BankAccountTransactionsGroup[];
 }
+
+export type BankAccountsDictionary = {[key: string]: BankAccount};
