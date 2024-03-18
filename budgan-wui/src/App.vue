@@ -14,9 +14,6 @@
       <navigation-drawer :show-drawer="showDrawer"/>
       <v-main :scrollable="false">
         <RouterView v-slot="{Component, route}">
-          <transition :name="route.meta.transition || 'fade'">
-            <component :is="Component" />
-          </transition>
         </RouterView>
       </v-main>
     </v-app>

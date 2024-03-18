@@ -14,6 +14,9 @@
     <div class="d-block ma-2">
       Imported ofx count : {{props.account?.transactions.length}}
     </div>
+    <div class="text-center">
+      <a href="/accounts/{{props.account?.accountId}}">View</a>
+    </div>
   </v-card>
 </template>
 

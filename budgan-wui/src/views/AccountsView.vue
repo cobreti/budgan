@@ -26,10 +26,4 @@ const store = useBankAccountsStore();
 
 const accounts : ComputedRef<BankAccountsDictionary> = computed(() => store.accounts);
 
-const tiles: string[] = [];
-
-for (let i = 0; i < 10; i++) {
-  tiles.push(`Tile ${i}`);
-}
-
 </script>

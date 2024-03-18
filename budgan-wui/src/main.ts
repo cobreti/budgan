@@ -7,6 +7,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import 'vuetify/styles';
 import { container } from './setupInversify';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 import App from './App.vue'
 import router from './router'
@@ -14,6 +15,8 @@ import router from './router'
 
 const app = createApp(App)
 const pinia = createPinia();
+
+pinia.use(piniaPluginPersistedstate)
 
 app.provide('container', container);
 
