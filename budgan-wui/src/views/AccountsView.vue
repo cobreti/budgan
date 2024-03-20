@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import AccountTile from '@/components/AccountTile.vue';
-import {useBankAccountsStore} from '@/stores/bankAccounts';
+import {useBankAccountsStore} from '@/stores/bankAccounts-store';
 import {computed, type ComputedRef} from 'vue';
 import type {BankAccountsDictionary} from '@models/BankAccountTypes';
 

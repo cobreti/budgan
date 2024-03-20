@@ -112,6 +112,7 @@ export const useAddStatementStore = defineStore<string, AddStatementStore>('addS
                         return acc;
                     }, {}),
                 transactions: [{
+                    id: crypto.randomUUID(),
                     dateStart: document.startDate,
                     dateEnd: document.endDate,
                     transactions: bankAccountTransactions
