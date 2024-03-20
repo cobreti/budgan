@@ -15,7 +15,7 @@
       Imported ofx count : {{props.account?.transactions.length}}
     </div>
     <div class="text-center">
-      <a :href="`/account/${props.account?.accountId}`">View</a>
+      <RouterLink :to="accountViewLink">View</RouterLink>
     </div>
   </v-card>
 </template>
@@ -34,6 +34,10 @@ type AccountTileProps = {
 }
 
 const props = defineProps<AccountTileProps>();
+
+const accountViewLink = computed(() => {
+  return `/account/${props.account?.accountId}`;
+});
 
 const minDate = computed(() => {
   if (props.account) {

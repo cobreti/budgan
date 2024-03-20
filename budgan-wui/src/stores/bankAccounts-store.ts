@@ -29,6 +29,7 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
         });
 
         return {
+            ...transactionsGroup,
             dateStart: transactionsGroup.dateStart,
             dateEnd: transactionsGroup.dateEnd,
             transactions: newTransactions
@@ -79,6 +80,7 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
                 const account = accounts[accountId];
                 account.transactions = account.transactions.map((transactionsGroup : BankAccountTransactionsGroup) => {
                     return {
+                        ...transactionsGroup,
                         dateStart: new Date(transactionsGroup.dateStart),
                         dateEnd: new Date(transactionsGroup.dateEnd),
                         transactions: transactionsGroup.transactions.map((transaction :BankAccountTransaction) => {
@@ -89,6 +91,14 @@ export const useBankAccountsStore = defineStore<string, BankAccountsStore>('bank
                         })
                     };
                 });
+                account.transactionsId = account.transactions.reduce((acc: TransactionIdsTable, group: BankAccountTransactionsGroup) => {
+                    const ids = group.transactions.map((transaction : BankAccountTransaction) => transaction.transactionId)
+                        .reduce((idsAcc:TransactionIdsTable, id: string) => {
+                            idsAcc[id] = undefined;
+                            return idsAcc;
+                        }, {});
+                    return {...acc, ...ids};
+                }, {});
             }
         }
     }
