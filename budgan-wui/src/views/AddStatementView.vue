@@ -21,7 +21,7 @@
           <v-btn @click="onDiscard()">Discard</v-btn>
         </v-card-actions>
       </v-card>
-      <v-card class="pt-4 pr-4 pl-4 pb-4 mr-2 mt-2 h-100" v-show="statementPresent">
+      <v-card class="pt-4 pr-4 pl-4 pb-4 mt-2 h-100" v-show="statementPresent">
         <add-statement-account></add-statement-account>
       </v-card>
     </div>

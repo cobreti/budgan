@@ -8,20 +8,21 @@ export type AccountViewTransaction = BankAccountTransaction & {
 
 
 export type AccountViewStore = {
-    transactions: Ref<AccountViewTransaction[]>;
+    viewTransactions: Ref<AccountViewTransaction[]>;
     account: Ref<BankAccount | undefined>;
     addBankAccount: (bankAccount: BankAccount) => void;
 };
 
+
 export const useAccountViewStore = defineStore<string, AccountViewStore>('accountView',  () => {
 
-    const transactions = ref<AccountViewTransaction[]>([]);
+    const viewTransactions = ref<AccountViewTransaction[]>([]);
     const account = ref<BankAccount>();
 
     function addBankAccount(bankAccount: BankAccount) {
         account.value = bankAccount;
 
-        transactions.value = bankAccount.transactions.reduce((acc: AccountViewTransaction[], group) => {
+        viewTransactions.value = bankAccount.transactions.reduce((acc: AccountViewTransaction[], group) => {
             const groupId = group.id;
 
             const viewTransactions = group.transactions.reduce((tacc: AccountViewTransaction[], transaction) => {
@@ -33,7 +34,7 @@ export const useAccountViewStore = defineStore<string, AccountViewStore>('accoun
     }
 
     return {
-        transactions,
+        viewTransactions,
         account,
         addBankAccount
     };
