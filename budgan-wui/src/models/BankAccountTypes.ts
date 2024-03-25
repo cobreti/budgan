@@ -1,4 +1,4 @@
-export declare type TransactionIdsTable = {[key: string]: undefined};
+export declare type TransactionIdsTable = {[key: string]: object};
 
 export type BankAccountTransaction = {
     transactionId: string;

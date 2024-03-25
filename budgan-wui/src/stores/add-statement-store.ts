@@ -108,7 +108,7 @@ export const useAddStatementStore = defineStore<string, AddStatementStore>('addS
                 accountType: document.accountType || '',
                 transactionsId: bankAccountTransactions.map(transaction => transaction.transactionId)
                     .reduce((acc: TransactionIdsTable, id) => {
-                        acc[id] = undefined;
+                        acc[id] = {};
                         return acc;
                     }, {}),
                 transactions: [{
