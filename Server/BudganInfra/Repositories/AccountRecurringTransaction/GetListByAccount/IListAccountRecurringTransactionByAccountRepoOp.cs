@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountRecurringTransaction.GetListByAccount;
+
+public interface IListAccountRecurringTransactionByAccountRepoOp : IRepositoryOperationWithResultValue<List<DaoListAccountRecurringTransactionByAccount>>
+{
+}

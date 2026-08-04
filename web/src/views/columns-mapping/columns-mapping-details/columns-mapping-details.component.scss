@@ -1,0 +1,49 @@
+.columns-mapping-details {
+  width: 100%;
+  padding: 1em;
+
+  &__page-title {
+    text-align: center;
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+
+  &__title {
+    margin: 1.5em 0 1em;
+    font-size: 1.5em;
+    color: var(--mat-sys-on-background);
+    text-align: left;
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1em;
+    margin: 0;
+  }
+
+  &__field {
+    background: var(--mat-sys-surface-container);
+    border-radius: 8px;
+    padding: 0.75em 1em;
+
+    dt {
+      font-size: 0.75em;
+      color: var(--mat-sys-on-surface-variant);
+      margin-bottom: 0.25em;
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 500;
+      color: var(--mat-sys-on-surface);
+    }
+  }
+
+  &__index {
+    font-size: 0.85em;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

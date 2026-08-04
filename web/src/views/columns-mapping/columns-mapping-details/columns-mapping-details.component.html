@@ -1,0 +1,49 @@
+<app-page [title]="'columnsMapping.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      page-menu-back
+      icon="arrow_back"
+      [label]="'columnsMapping.back' | translate"
+      (clicked)="onBack()"
+      data-testid="columns-mapping-details-back"
+    />
+    <span class="columns-mapping-details__spacer"></span>
+    <app-page-menu-button
+      icon="delete"
+      variant="danger"
+      [label]="'columnsMapping.delete' | translate"
+      (clicked)="onDelete()"/>
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="columns-mapping-details">
+      @if (mapping(); as m) {
+        <h1 class="columns-mapping-details__title">{{ m.name }}</h1>
+        <dl class="columns-mapping-details__fields">
+          <div class="columns-mapping-details__field">
+            <dt>{{ 'columnsMapping.cardNumberColumn' | translate }}</dt>
+            <dd>{{ m.cardNumberColumnText }} <span class="columns-mapping-details__index">({{ m.cardNumberColumnIndex+1 }}
+              )</span></dd>
+          </div>
+          <div class="columns-mapping-details__field">
+            <dt>{{ 'columnsMapping.dateInscriptionColumn' | translate }}</dt>
+            <dd>{{ m.dateInscriptionColumnText }} <span
+              class="columns-mapping-details__index">({{ m.dateInscriptionColumnIndex+1 }})</span></dd>
+          </div>
+          <div class="columns-mapping-details__field">
+            <dt>{{ 'columnsMapping.amountColumn' | translate }}</dt>
+            <dd>{{ m.amountColumnText }} <span class="columns-mapping-details__index">({{ m.amountColumnIndex+1 }})</span>
+            </dd>
+          </div>
+          <div class="columns-mapping-details__field">
+            <dt>{{ 'columnsMapping.descriptionColumn' | translate }}</dt>
+            <dd>{{ m.descriptionColumnText }} <span
+              class="columns-mapping-details__index">({{ m.descriptionColumnIndex+1 }})</span></dd>
+          </div>
+        </dl>
+      } @else {
+        <h1 class="columns-mapping-details__title">{{ 'columnsMapping.loading' | translate }}</h1>
+      }
+    </div>
+  </app-page-body>
+</app-page>

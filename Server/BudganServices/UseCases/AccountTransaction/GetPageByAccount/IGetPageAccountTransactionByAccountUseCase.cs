@@ -1,0 +1,5 @@
+namespace BudganServices.UseCases.AccountTransaction.GetPageByAccount;
+
+public interface IGetPageAccountTransactionByAccountUseCase : IBaseUseCaseWithResultValue<BOGetPageAccountTransaction>
+{
+}

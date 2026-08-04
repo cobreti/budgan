@@ -1,0 +1,53 @@
+<app-page>
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="folder_open"
+      [label]="'menu.loadAll' | translate"
+      (clicked)="onLoad()"
+    />
+    <app-page-menu-button
+      icon="save"
+      [label]="'menu.saveAll' | translate"
+      [disabled]="!hasData()"
+      (clicked)="onSave()"
+    />
+    <app-page-menu-button
+      icon="table_chart"
+      [label]="'menu.newColumnsMapping' | translate"
+      (clicked)="onNewColumnsMapping()"
+    />
+    <app-page-menu-button
+      icon="account_balance"
+      [label]="'menu.newAccount' | translate"
+      (clicked)="onNewAccount()"
+    />
+    <app-page-menu-button
+      icon="dataset"
+      [label]="'menu.samples' | translate"
+      (clicked)="onSamples()"
+    />
+    <span class="home__menu-spacer"></span>
+    <app-page-menu-button
+      icon="delete_sweep"
+      variant="danger"
+      [label]="'menu.clearAll' | translate"
+      [disabled]="!hasData()"
+      (clicked)="onClearAll()"
+    />
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="menu-page-divider"></div>
+
+    <div class="flex-row">
+      <mat-card class="column-50">
+        <span class="section-title">{{ 'home.columnsMapping' | translate }}</span>
+        <app-columns-mapping-list class="columns-mapping-list"/>
+      </mat-card>
+      <mat-card class="column-50">
+        <span class="section-title">{{ 'home.accounts' | translate }}</span>
+        <app-account-list class="account-list"/>
+      </mat-card>
+    </div>
+  </app-page-body>
+</app-page>

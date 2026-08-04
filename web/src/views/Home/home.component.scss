@@ -1,0 +1,33 @@
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 4em;
+  flex-flow: wrap;
+}
+
+.column-50 {
+  flex: 1;
+  width: 50%;
+  min-width: 400px;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-left: 3em;
+  color: var(--mat-sys-on-background);
+  //text-align: center;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.menu-page-divider {
+  margin: 2em 0;
+  border-bottom: 1px solid var(--mat-sys-outline);
+}
+
+.home__menu-spacer {
+  flex: 1;
+}

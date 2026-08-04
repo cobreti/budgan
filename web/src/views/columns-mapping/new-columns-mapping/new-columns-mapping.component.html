@@ -1,0 +1,79 @@
+<app-page [title]="'newColumnsMapping.title' | translate">
+
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'newColumnsMapping.back' | translate"
+      (clicked)="onCancel()"
+    />
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="new-columns-mapping">
+      <form [formGroup]="form" (ngSubmit)="onCreate()">
+        <mat-form-field>
+          <mat-label>{{ 'newColumnsMapping.namePlaceholder' | translate }}</mat-label>
+          <input matInput formControlName="name"/>
+          @if (form.controls.name.hasError('nameExists')) {
+            <mat-error>{{ 'newColumnsMapping.nameExists' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="new-columns-mapping__file-picker">
+          <button mat-stroked-button type="button" (click)="fileInput.click()">
+            {{ 'newColumnsMapping.chooseFile' | translate }}
+          </button>
+          <span class="new-columns-mapping__file-name">
+        {{ selectedFileName() || ('newColumnsMapping.noFileChosen' | translate) }}
+      </span>
+          <input #fileInput type="file" accept=".csv" hidden (change)="onFileSelected($event)"/>
+          @if (csvParseError()) {
+            <span class="new-columns-mapping__file-error">{{ csvParseError() }}</span>
+          }
+        </div>
+
+        <div class="new-columns-mapping__columns">
+          <mat-form-field>
+            <mat-label>{{ 'newColumnsMapping.cardNumberColumn' | translate }}</mat-label>
+            <mat-select formControlName="cardNumberColumnIndex">
+              @for (header of csvHeaders(); track $index) {
+                <mat-option [value]="$index">{{ header }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'newColumnsMapping.dateInscriptionColumn' | translate }}</mat-label>
+            <mat-select formControlName="dateInscriptionColumnIndex">
+              @for (header of csvHeaders(); track $index) {
+                <mat-option [value]="$index">{{ header }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'newColumnsMapping.amountColumn' | translate }}</mat-label>
+            <mat-select formControlName="amountColumnIndex">
+              @for (header of csvHeaders(); track $index) {
+                <mat-option [value]="$index">{{ header }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'newColumnsMapping.descriptionColumn' | translate }}</mat-label>
+            <mat-select formControlName="descriptionColumnIndex">
+              @for (header of csvHeaders(); track $index) {
+                <mat-option [value]="$index">{{ header }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="new-columns-mapping__actions">
+          <button mat-button type="button" (click)="onCancel()">{{ 'newColumnsMapping.cancel' | translate }}</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ 'newColumnsMapping.create' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </app-page-body>
+</app-page>

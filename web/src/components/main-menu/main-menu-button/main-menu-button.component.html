@@ -1,0 +1,8 @@
+<button
+  class="main-menu-button"
+  type="button"
+  [attr.aria-label]="label()"
+  (click)="clicked.emit()">
+  <mat-icon>{{ icon() }}</mat-icon>
+  <span class="main-menu-button__label">{{ label() }}</span>
+</button>

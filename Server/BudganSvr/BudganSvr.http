@@ -1,0 +1,6 @@
+@BudganSvr_HostAddress = http://localhost:5222
+
+GET {{BudganSvr_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

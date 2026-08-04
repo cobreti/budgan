@@ -1,0 +1,13 @@
+<div class="account-details">
+  <div class="account-details__cards">
+    <app-account-snapshot [accountId]="account().id" />
+    <mat-card class="account-type-card">
+      <mat-card-title class="title">{{ 'account.accountTypeLabel' | translate }}</mat-card-title>
+      <mat-card-content>
+        <p class="account-type-card__value" data-testid="account-details-type">
+          {{ accountTypeLabelKey() | translate }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

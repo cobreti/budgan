@@ -1,0 +1,16 @@
+<div class="new-journal">
+  <h1 class="new-journal__title">{{ 'newJournal.title' | translate }}</h1>
+  <mat-form-field>
+    <mat-label>{{ 'newJournal.namePlaceholder' | translate }}</mat-label>
+    <input matInput [formControl]="nameControl" />
+    @if (nameControl.hasError('nameExists')) {
+      <mat-error>{{ 'newJournal.nameExists' | translate }}</mat-error>
+    }
+  </mat-form-field>
+  <div class="new-journal__actions">
+    <button mat-button (click)="onCancel()">{{ 'newJournal.cancel' | translate }}</button>
+    <button mat-raised-button color="primary" [disabled]="nameControl.invalid" (click)="onCreate()">
+      {{ 'newJournal.create' | translate }}
+    </button>
+  </div>
+</div>

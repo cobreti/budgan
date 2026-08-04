@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountRecurringTransaction.DeleteByAccount;
+
+public interface IDeleteAccountRecurringTransactionByAccountRepoOp : IRepositoryOperation
+{
+}

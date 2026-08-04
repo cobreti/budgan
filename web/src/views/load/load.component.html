@@ -1,0 +1,31 @@
+<app-page [title]="'load.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'load.cancel' | translate"
+      (clicked)="onCancel()"/>
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="load">
+      <div class="load__body">
+        <div class="load__picker">
+          <button
+            mat-stroked-button
+            type="button"
+            data-testid="load-select-file"
+            (click)="onSelectFile()">
+            {{ 'load.selectFile' | translate }}
+          </button>
+          <span class="load__file-name">
+        {{ selectedFileName() || ('load.noFileChosen' | translate) }}
+      </span>
+        </div>
+
+        @if (errorKey(); as key) {
+          <span class="load__error" role="alert">{{ key | translate }}</span>
+        }
+      </div>
+    </div>
+  </app-page-body>
+</app-page>

@@ -1,0 +1,25 @@
+<app-page [title]="'saveAccount.title' | translate">
+
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'saveAccount.cancel' | translate"
+      (clicked)="onCancel()"/>
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="save-account">
+      <div class="save-account__body">
+        <div class="save-account__picker">
+          <button mat-stroked-button type="button" (click)="onSelectFile()">
+            {{ 'saveAccount.chooseFile' | translate }}
+          </button>
+          <span class="save-account__file-name">
+        {{ selectedFileName() || ('saveAccount.noFileChosen' | translate) }}
+      </span>
+        </div>
+      </div>
+    </div>
+  </app-page-body>
+</app-page>
+

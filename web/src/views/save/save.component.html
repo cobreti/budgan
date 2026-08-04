@@ -1,0 +1,24 @@
+<app-page [title]="'save.title' | translate">
+
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'save.back' | translate"
+      (clicked)="onBack()"/>
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="save__body">
+      <div class="save__body">
+        <div class="save__picker">
+          <button mat-stroked-button type="button" (click)="onSelectFile()">
+            {{ 'save.selectFile' | translate }}
+          </button>
+          <span class="save__file-name">
+        {{ selectedFileName() || ('save.noFileChosen' | translate) }}
+      </span>
+        </div>
+      </div>
+    </div>
+  </app-page-body>
+</app-page>

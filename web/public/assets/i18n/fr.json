@@ -1,0 +1,225 @@
+{
+  "app": {
+    "title": "Budgan"
+  },
+  "menu": {
+    "newJournal": "Nouveau journal",
+    "openJournal": "Ouvrir un journal",
+    "newColumnsMapping": "Nouveau mappage de colonnes",
+    "newAccount": "Nouveau compte",
+    "saveAll": "Sauvegarder tout",
+    "loadAll": "Tout charger",
+    "samples": "Exemples",
+    "clearAll": "Tout effacer"
+  },
+  "samples": {
+    "title": "Exemples",
+    "back": "Retour",
+    "sampleAccount": {
+      "title": "Compte exemple",
+      "description": "Chargez un compte exemple prêt à l'emploi pour découvrir Budgan.",
+      "load": "Charger l'exemple"
+    },
+    "loadError": "Impossible de charger les données d'exemple."
+  },
+  "load": {
+    "title": "Tout charger",
+    "selectFile": "Sélectionner un fichier",
+    "noFileChosen": "Aucun fichier sélectionné",
+    "load": "Charger",
+    "cancel": "Annuler",
+    "parseError": "Impossible de lire le fichier. Assurez-vous qu'il s'agit d'une sauvegarde Budgan valide.",
+    "invalidFormat": "Le fichier n'est pas une sauvegarde Budgan valide.",
+    "confirmTitle": "Remplacer toutes les données ?",
+    "confirmMessage": "Cette action supprimera définitivement les données actuelles et les remplacera par le contenu du fichier sélectionné. Cette action est irréversible.",
+    "confirmAccept": "Charger et remplacer",
+    "confirmCancel": "Annuler"
+  },
+  "clearAll": {
+    "title": "Effacer toutes les données ?",
+    "message": "Cette action supprimera définitivement tous les journaux, mappages de colonnes, comptes, fichiers et transactions. Cette action est irréversible.",
+    "confirm": "Tout effacer",
+    "cancel": "Annuler"
+  },
+  "journalList": {
+    "empty": "Aucun journal pour l'instant."
+  },
+  "columnsMappingList": {
+    "empty": "Aucun mappage de colonnes pour l'instant."
+  },
+  "accountList": {
+    "empty": "Aucun compte pour l'instant."
+  },
+  "journal": {
+    "title": "Détails du journal",
+    "loading": "Chargement du journal...",
+    "delete": "Supprimer"
+  },
+  "newJournal": {
+    "title": "Nouveau journal",
+    "namePlaceholder": "Nom du journal",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "nameExists": "Un journal avec ce nom existe déjà."
+  },
+  "home": {
+    "journals": "Journaux",
+    "columnsMapping": "Mappage de colonnes",
+    "accounts": "Comptes"
+  },
+  "columnsMapping": {
+    "title": "Détails du mappage de colonnes",
+    "loading": "Chargement...",
+    "delete": "Supprimer",
+    "cardNumberColumn": "Colonne numéro de carte",
+    "dateInscriptionColumn": "Colonne date d'inscription",
+    "amountColumn": "Colonne montant",
+    "descriptionColumn": "Colonne description",
+    "back": "Retour"
+  },
+  "header": {
+    "switchToDark": "Passer au thème sombre",
+    "switchToLight": "Passer au thème clair",
+    "clientMode": {
+      "pwa": "Application installée (PWA)",
+      "server": "Mode serveur"
+    }
+  },
+  "account": {
+    "title": "Détails du compte",
+    "loading": "Chargement du compte...",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "importFile": "Importer un fichier",
+    "analyze": "Analyser",
+    "confirmDeleteTitle": "Supprimer ce compte ?",
+    "confirmDeleteMessage": "Cette action supprimera définitivement le compte, tous les fichiers importés et toutes ses transactions. Cette action est irréversible.",
+    "confirmDeleteAccept": "Supprimer",
+    "confirmDeleteCancel": "Annuler",
+    "back": "Retour",
+    "accountTypeLabel": "Type de compte"
+  },
+  "analyzeAccount": {
+    "title": "Analyser le compte",
+    "back": "Retour",
+    "analyze": "Analyser",
+    "empty": "Aucune transaction récurrente trouvée. Lancez l'analyse pour les détecter.",
+    "error": "L'analyse a échoué. Veuillez réessayer.",
+    "tableAriaLabel": "Transactions récurrentes",
+    "selectAll": "Tout sélectionner",
+    "columnDescription": "Description",
+    "columnCount": "#",
+    "columnAverageAmount": "Montant moy.",
+    "columnPeriod": "Période (jours)",
+    "columnFirstOccurrence": "Première occurrence",
+    "columnLastOccurrence": "Dernière occurrence",
+    "apply": "Appliquer"
+  },
+  "accountHome": {
+    "tabs": {
+      "details": "Détails",
+      "transactions": "Transactions",
+      "graphs": "Graphiques"
+    }
+  },
+  "balanceTrendGraph": {
+    "title": "Tendance du solde",
+    "ariaLabel": "Graphique de tendance du solde du compte",
+    "noData": "Aucune donnée de solde disponible. Définissez un instantané pour activer le graphique.",
+    "snapshot": "Instantané",
+    "openingBalance": "Solde d'ouverture",
+    "amount": "Montant",
+    "cumulatedBalance": "Solde"
+  },
+  "recurringPieChart": {
+    "title": "Transactions récurrentes",
+    "startMonth": "Mois de début",
+    "endMonth": "Mois de fin",
+    "viewType": "Affichage",
+    "all": "Tout",
+    "expenses": "Dépenses",
+    "incomes": "Revenus",
+    "ariaLabel": "Diagramme circulaire des transactions récurrentes",
+    "noData": "Aucune transaction récurrente trouvée. Lancez l'analyse pour les détecter.",
+    "noDataForRange": "Aucune transaction récurrente pour cette période.",
+    "total": "Total",
+    "completeTotal": "Total (tous les éléments)"
+  },
+  "accountSnapshot": {
+    "title": "Instantané du compte",
+    "date": "Date de l'instantané",
+    "amount": "Montant de l'instantané",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "empty": "Aucun instantané enregistré pour l'instant.",
+    "confirmDeleteTitle": "Supprimer cet instantané ?",
+    "confirmDeleteMessage": "Cette action supprimera définitivement l'instantané de ce compte. Cette action est irréversible.",
+    "confirmDeleteAccept": "Supprimer",
+    "confirmDeleteCancel": "Annuler"
+  },
+  "saveAccount": {
+    "title": "Enregistrer le compte",
+    "chooseFile": "Sélectionner un fichier",
+    "noFileChosen": "Aucun fichier sélectionné",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "save": {
+    "title": "Sauvegarder tout",
+    "selectFile": "Choisir un fichier",
+    "noFileChosen": "Aucun fichier sélectionné",
+    "save": "Sauvegarder",
+    "back": "Retour",
+    "cancel": "Annuler"
+  },
+  "importFile": {
+    "title": "Importer un fichier",
+    "chooseFiles": "Choisir des fichiers CSV",
+    "noFilesChosen": "Aucun fichier sélectionné",
+    "import": "Importer",
+    "back": "Retour",
+    "csvParseError": "Impossible d'analyser le fichier CSV.",
+    "fileAlreadyImported": "Ce fichier a déjà été importé pour ce compte.",
+    "duplicatesSkipped": "{{count}} transaction(s) en double ignorée(s)"
+  },
+  "newAccount": {
+    "title": "Nouveau compte",
+    "namePlaceholder": "Nom du compte",
+    "accountTypePlaceholder": "Type de compte",
+    "accountTypeDebit": "Débit",
+    "accountTypeCredit": "Crédit",
+    "columnsMappingPlaceholder": "Mappage de colonnes",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "nameExists": "Un compte avec ce nom existe déjà."
+  },
+  "transactionTable": {
+    "cardNumber": "Numéro de carte",
+    "dateInscription": "Date d'inscription",
+    "description": "Description",
+    "amount": "Montant",
+    "balance": "Solde",
+    "empty": "Aucune transaction.",
+    "page": "Page",
+    "of": "sur",
+    "goToPage": "Aller à la page",
+    "previousPage": "Page précédente",
+    "nextPage": "Page suivante"
+  },
+  "newColumnsMapping": {
+    "title": "Nouveau mappage de colonnes",
+    "namePlaceholder": "Nom du mappage",
+    "cardNumberColumn": "Colonne numéro de carte",
+    "dateInscriptionColumn": "Colonne date d'inscription",
+    "amountColumn": "Colonne montant",
+    "descriptionColumn": "Colonne description",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "nameExists": "Un mappage de colonnes avec ce nom existe déjà.",
+    "chooseFile": "Choisir un fichier CSV",
+    "noFileChosen": "Aucun fichier sélectionné",
+    "csvParseError": "Impossible de lire le fichier CSV."
+  }
+}

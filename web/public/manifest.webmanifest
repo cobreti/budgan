@@ -1,0 +1,51 @@
+{
+  "name": "Budgan",
+  "short_name": "Budgan",
+  "description": "Personal finance tracking and bank statement journal.",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "theme_color": "#1E3A8A",
+  "background_color": "#F8FAFC",
+  "icons": [
+    {
+      "src": "icons/Budgan48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/Budgan180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/Budgan256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/Budgan512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/budgan.png",
+      "sizes": "1443x966",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Budgan main view"
+    },
+    {
+      "src": "screenshots/budgan.png",
+      "sizes": "1443x966",
+      "type": "image/png",
+      "label": "Budgan main view"
+    }
+  ]
+}

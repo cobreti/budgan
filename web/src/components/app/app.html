@@ -1,0 +1,9 @@
+<div class="app">
+  <app-header></app-header>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" [opened]="mainMenuService.isOpen()">
+      <app-main-menu></app-main-menu>
+    </mat-sidenav>
+    <main></main>
+  </mat-sidenav-container>
+</div>

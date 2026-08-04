@@ -1,0 +1,15 @@
+@if (hasData()) {
+  <div class="balance-trend-graph__chart-container">
+    <canvas
+      baseChart
+      class="balance-trend-graph__canvas"
+      [type]="'line'"
+      [data]="chartData()"
+      [options]="chartOptions"
+      [attr.aria-label]="'balanceTrendGraph.ariaLabel' | translate"
+      role="img"
+    ></canvas>
+  </div>
+} @else {
+  <p class="balance-trend-graph__empty">{{ 'balanceTrendGraph.noData' | translate }}</p>
+}

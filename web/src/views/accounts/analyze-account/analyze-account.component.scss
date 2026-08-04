@@ -1,0 +1,55 @@
+.analyze-account {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__error {
+    color: var(--mat-sys-error, inherit);
+  }
+
+  &__empty {
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+
+  &__table {
+    width: 100%;
+    max-width: 900px;
+
+    .mat-column-select {
+      flex: none;
+      min-width: 64px;
+      width: 64px;
+    }
+
+    .mat-column-transactionCount {
+      flex: none;
+      width: 64px;
+      justify-content: flex-end;
+    }
+
+    .mat-column-averageAmount {
+      flex: none;
+      width: 130px;
+      justify-content: flex-end;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mat-column-periodInDays {
+      flex: none;
+      width: 130px;
+      justify-content: flex-end;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mat-column-description {
+      flex: 1;
+    }
+  }
+}

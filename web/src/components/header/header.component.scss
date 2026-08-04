@@ -1,0 +1,86 @@
+.header {
+  background-color: var(--mat-sys-primary);
+  height: var(--header-height);
+  width: 100%;
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 2rem;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: var(--mat-sys-on-primary);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .brand-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  .title {
+    color: var(--mat-sys-on-primary);
+    user-select: none;
+  }
+
+  .client-mode-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .client-mode-icon {
+    color: var(--mat-sys-on-primary, inherit);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .menu-icon {
+    display: none;
+    color: var(--mat-sys-on-primary);
+  }
+
+
+  [mat-button]:not([disabled]),
+  [mat-icon-button]:not([disabled]),
+  [mat-raised-button]:not([disabled]),
+  [mat-fab]:not([disabled]) {
+    cursor: pointer;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .locale-trigger {
+    color: var(--mat-sys-on-primary);
+  }
+
+  .theme-toggle {
+    color: var(--mat-sys-on-primary);
+  }
+
+  .workspace-name {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--mat-sys-on-primary);
+    max-width: 40%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
+.locale-check--hidden {
+  visibility: hidden;
+}

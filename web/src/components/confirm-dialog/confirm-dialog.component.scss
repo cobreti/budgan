@@ -1,0 +1,14 @@
+.confirm-dialog {
+  &__title {
+    color: var(--mat-sys-on-surface, inherit);
+  }
+
+  &__message {
+    color: var(--mat-sys-on-surface-variant, inherit);
+    white-space: pre-line;
+  }
+
+  &__confirm--danger {
+    color: var(--mat-sys-error, inherit);
+  }
+}

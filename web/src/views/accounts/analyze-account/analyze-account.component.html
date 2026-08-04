@@ -1,0 +1,116 @@
+<app-page [title]="'analyzeAccount.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'analyzeAccount.back' | translate"
+      (clicked)="onBack()"
+      data-testid="analyze-account-back"
+    />
+  </app-page-menu>
+  <app-page-body page-body>
+    <div class="analyze-account">
+      <div class="analyze-account__actions">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="isAnalyzing()"
+          (click)="onAnalyze()"
+          data-testid="analyze-account-run"
+        >
+          @if (isAnalyzing()) {
+            <mat-progress-spinner diameter="20" mode="indeterminate" />
+          } @else {
+            <mat-icon>manage_search</mat-icon>
+          }
+          {{ 'analyzeAccount.analyze' | translate }}
+        </button>
+        <button
+          mat-raised-button
+          [disabled]="!hasChanges() || isAnalyzing() || isApplying()"
+          (click)="onApply()"
+          data-testid="analyze-account-apply"
+        >
+          @if (isApplying()) {
+            <mat-progress-spinner diameter="20" mode="indeterminate" />
+          } @else {
+            <mat-icon>check</mat-icon>
+          }
+          {{ 'analyzeAccount.apply' | translate }}
+        </button>
+      </div>
+
+      @if (errorKey()) {
+        <p class="analyze-account__error" role="alert">{{ errorKey()! | translate }}</p>
+      }
+
+      @if (recurringTransactions().length > 0) {
+        <mat-table
+          class="analyze-account__table"
+          [dataSource]="recurringTransactions()"
+          [attr.aria-label]="'analyzeAccount.tableAriaLabel' | translate"
+        >
+          <!-- Select column -->
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox
+                [checked]="allSelected()"
+                [indeterminate]="someSelected()"
+                (change)="toggleAll()"
+                [attr.aria-label]="'analyzeAccount.selectAll' | translate"
+              />
+            </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+              <mat-checkbox
+                [checked]="isSelected(item.id)"
+                (change)="toggleOne(item.id)"
+                [attr.aria-label]="item.description"
+                [attr.data-testid]="'select-recurring-' + item.id"
+              />
+            </mat-cell>
+          </ng-container>
+
+          <!-- Description column -->
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnDescription' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.description }}</mat-cell>
+          </ng-container>
+
+          <!-- Count column -->
+          <ng-container matColumnDef="transactionCount">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnCount' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.transactionCount }}</mat-cell>
+          </ng-container>
+
+          <!-- Average amount column -->
+          <ng-container matColumnDef="averageAmount">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnAverageAmount' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.averageAmount | number: '1.2-2' }}</mat-cell>
+          </ng-container>
+
+          <!-- Period column -->
+          <ng-container matColumnDef="periodInDays">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnPeriod' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.periodInDays | number: '1.0-1' }}</mat-cell>
+          </ng-container>
+
+          <!-- First occurrence date column -->
+          <ng-container matColumnDef="firstOccurrenceDate">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnFirstOccurrence' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.firstOccurrenceDate }}</mat-cell>
+          </ng-container>
+
+          <!-- Last occurrence date column -->
+          <ng-container matColumnDef="lastOccurrenceDate">
+            <mat-header-cell *matHeaderCellDef>{{ 'analyzeAccount.columnLastOccurrence' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.lastOccurrenceDate }}</mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="columns" />
+          <mat-row *matRowDef="let row; columns: columns;" />
+        </mat-table>
+      } @else if (!isAnalyzing()) {
+        <p class="analyze-account__empty">{{ 'analyzeAccount.empty' | translate }}</p>
+      }
+    </div>
+  </app-page-body>
+</app-page>

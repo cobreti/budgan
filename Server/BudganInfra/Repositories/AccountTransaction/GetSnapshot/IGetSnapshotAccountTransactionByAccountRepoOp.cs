@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountTransaction.GetSnapshot;
+
+public interface IGetSnapshotAccountTransactionByAccountRepoOp : IRepositoryOperationWithResultValue<DaoGetSnapshotAccountTransaction>
+{
+}

@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountTransaction.GetCountByAccount;
+
+public interface IGetCountAccountTransactionByAccountRepoOp : IRepositoryOperationWithResultValue<DaoGetCountAccountTransaction>
+{
+}

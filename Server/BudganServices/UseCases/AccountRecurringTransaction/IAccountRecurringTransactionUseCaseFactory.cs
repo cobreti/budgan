@@ -1,0 +1,8 @@
+using BudganServices.UseCases.AccountRecurringTransaction.ReplaceForAccount;
+
+namespace BudganServices.UseCases.AccountRecurringTransaction;
+
+public interface IAccountRecurringTransactionUseCaseFactory
+{
+    IReplaceAccountRecurringTransactionsForAccountUseCase ReplaceForAccountUseCase(BOReplaceAccountRecurringTransactionsForAccount model);
+}

@@ -1,0 +1,36 @@
+.account-snapshot {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+
+  .title {
+    padding: 0.5em;
+  }
+
+  .v-spacer {
+    height: 1em;
+    display: block;
+  }
+
+  &__empty {
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+  }
+
+  .save-btn {
+    max-width: 30%;
+    margin-left: auto;
+  }
+}

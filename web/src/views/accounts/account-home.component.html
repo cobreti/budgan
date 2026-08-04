@@ -1,0 +1,66 @@
+<app-page [title]="'account.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      page-menu-back
+      icon="arrow_back"
+      [label]="'account.back' | translate"
+      (clicked)="onBack()"
+      data-testid="account-home-back"
+    />
+    <app-page-menu-button
+      icon="save"
+      [label]="'account.save' | translate"
+      (clicked)="onSave()"
+      data-testid="account-home-save"
+    />
+    <app-page-menu-button
+      icon="upload_file"
+      [label]="'account.importFile' | translate"
+      (clicked)="onImportFile()"
+      data-testid="account-home-import"
+    />
+    <app-page-menu-button
+      icon="manage_search"
+      [label]="'account.analyze' | translate"
+      (clicked)="onAnalyze()"
+      data-testid="account-home-analyze"
+    />
+    <span class="account-home__menu-spacer"></span>
+    <app-page-menu-button
+      icon="delete"
+      variant="danger"
+      [label]="'account.delete' | translate"
+      (clicked)="onDelete()"
+      data-testid="account-home-delete"
+    />
+  </app-page-menu>
+  <app-page-body page-body>
+    <div class="account-home">
+      @if (account(); as a) {
+        <h1 class="account-home__title">{{ a.name }}</h1>
+        <mat-tab-group class="account-home__tabs">
+          <mat-tab
+            [label]="'accountHome.tabs.details' | translate"
+            data-testid="account-home-tab-details"
+          >
+            <app-account-details [account]="a"/>
+          </mat-tab>
+          <mat-tab
+            [label]="'accountHome.tabs.transactions' | translate"
+            data-testid="account-home-tab-transactions"
+          >
+            <app-account-transactions [accountId]="a.id"/>
+          </mat-tab>
+          <mat-tab
+            [label]="'accountHome.tabs.graphs' | translate"
+            data-testid="account-home-tab-graphs"
+          >
+            <app-account-graphs [accountId]="a.id"/>
+          </mat-tab>
+        </mat-tab-group>
+      } @else {
+        <h1 class="account-home__title">{{ 'account.loading' | translate }}</h1>
+      }
+    </div>
+  </app-page-body>
+</app-page>

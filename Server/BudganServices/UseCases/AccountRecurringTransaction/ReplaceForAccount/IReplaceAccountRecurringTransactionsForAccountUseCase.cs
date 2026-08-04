@@ -1,0 +1,5 @@
+namespace BudganServices.UseCases.AccountRecurringTransaction.ReplaceForAccount;
+
+public interface IReplaceAccountRecurringTransactionsForAccountUseCase : IBaseUseCase
+{
+}

@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  height: 20em;
+}
+
+.balance-trend-graph {
+  // Chart.js measures this container's box to size the canvas, so it needs a
+  // definite height (via the :host height above) rather than an auto/content
+  // one — otherwise the negative-balance portion of the line can render past
+  // the panel's bounds and get clipped.
+  &__chart-container {
+    position: relative;
+    height: 100%;
+  }
+
+  &__empty {
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+}

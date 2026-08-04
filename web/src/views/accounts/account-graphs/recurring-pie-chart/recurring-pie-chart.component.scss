@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  height: 23em;
+}
+
+.recurring-pie-chart {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5em;
+
+  &__view-type-field {
+    flex: 0 0 auto;
+    display: block;
+    max-width: 240px;
+  }
+
+  // Chart.js measures this container's box to size the canvas, so it needs a
+  // definite height (via the flex chain above) rather than an auto/content one —
+  // otherwise a pie chart's 1:1 aspect ratio makes it grow past the card's bounds.
+  &__chart-container {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  &__total {
+    flex: 0 0 auto;
+    margin: 0;
+    text-align: center;
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+
+  &__total-complete {
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+
+  &__empty {
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+}

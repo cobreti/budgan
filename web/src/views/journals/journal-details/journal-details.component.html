@@ -1,0 +1,16 @@
+<div class="journal">
+  <h2 class="journal__page-title">{{ 'journal.title' | translate }}</h2>
+  <app-page-menu>
+    <span class="journal__menu-spacer"></span>
+    <app-page-menu-button
+      icon="delete"
+      variant="danger"
+      [label]="'journal.delete' | translate"
+      (clicked)="onDelete()" />
+  </app-page-menu>
+  @if (journal(); as j) {
+    <h1 class="journal__title">{{ j.name }}</h1>
+  } @else {
+    <h1 class="journal__title">{{ 'journal.loading' | translate }}</h1>
+  }
+</div>

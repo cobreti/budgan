@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountTransaction.GetPageByAccount;
+
+public interface IGetPageAccountTransactionByAccountRepoOp : IRepositoryOperationWithResultValue<DaoGetPageAccountTransaction>
+{
+}

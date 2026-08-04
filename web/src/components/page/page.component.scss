@@ -1,0 +1,17 @@
+.page-container {
+  margin: 1em;
+}
+
+.page-title {
+  text-align: center;
+}
+
+.top-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  .menu-container {
+    flex-grow: 1;
+  }
+}

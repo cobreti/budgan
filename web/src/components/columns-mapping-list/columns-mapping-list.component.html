@@ -1,0 +1,15 @@
+<ul class="columns-mapping-list">
+  @for (mapping of mappings(); track mapping.id) {
+    <li class="columns-mapping-list__item">
+      <button
+        class="columns-mapping-list__item-btn"
+        type="button"
+        data-testid="columns-mapping-item"
+        (click)="open(mapping.id!)">
+        {{ mapping.name }}
+      </button>
+    </li>
+  } @empty {
+    <li class="columns-mapping-list__empty">{{ 'columnsMappingList.empty' | translate }}</li>
+  }
+</ul>

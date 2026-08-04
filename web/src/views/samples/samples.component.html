@@ -1,0 +1,34 @@
+<app-page [title]="'samples.title' | translate">
+
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'samples.back' | translate"
+      (clicked)="onBack()"
+    />
+  </app-page-menu>
+
+  <!--  <div class="menu-page-divider"></div>-->
+
+  <app-page-body page-body>
+    <div class="samples__body">
+
+      <mat-card class="samples__card">
+        <mat-card-title>{{ 'samples.sampleAccount.title' | translate }}</mat-card-title>
+        <mat-card-content>
+          <p>{{ 'samples.sampleAccount.description' | translate }}</p>
+          @if (errorKey()) {
+            <p class="samples__error">{{ errorKey()! | translate }}</p>
+          }
+          <button
+            mat-flat-button
+            data-testid="load-sample-account"
+            (click)="onLoadSample()"
+          >
+            {{ 'samples.sampleAccount.load' | translate }}
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </app-page-body>
+</app-page>

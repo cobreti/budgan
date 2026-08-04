@@ -1,0 +1,51 @@
+<mat-toolbar class="header">
+  <button mat-icon-button class="menu-icon" (click)="onMenuBtnClick()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button type="button" class="brand" (click)="onHome()" data-testid="header-brand">
+    <img class="brand-icon" ngSrc="/icons/Budgan48.png" width="48" height="48" alt="" priority />
+    <span class="title">{{ 'app.title' | translate }}</span>
+  </button>
+  <span
+    class="client-mode-badge"
+    [matTooltip]="('header.clientMode.' + buildType) | translate"
+    aria-hidden="true">
+    <mat-icon class="client-mode-icon">{{ buildType === 'pwa' ? 'install_desktop' : 'cloud' }}</mat-icon>
+  </span>
+
+  <span class="spacer"></span>
+
+  <app-header-page-title></app-header-page-title>
+
+  <span class="spacer"></span>
+
+  <button
+    mat-icon-button
+    class="theme-toggle"
+    (click)="toggleTheme()"
+    [attr.aria-label]="(isDark() ? 'header.switchToLight' : 'header.switchToDark') | translate"
+    data-testid="theme-toggle-btn">
+    <mat-icon>{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+
+  <button mat-icon-button [matMenuTriggerFor]="localeMenu" class="locale-trigger">
+    <mat-icon>language</mat-icon>
+  </button>
+
+  <mat-menu #localeMenu="matMenu">
+    <button
+      mat-menu-item
+      (click)="switchLocale('en')"
+      [attr.aria-current]="currentLocale() === 'en' ? 'true' : null">
+      <mat-icon class="locale-check" [class.locale-check--hidden]="currentLocale() !== 'en'">check</mat-icon>
+      <span>English</span>
+    </button>
+    <button
+      mat-menu-item
+      (click)="switchLocale('fr')"
+      [attr.aria-current]="currentLocale() === 'fr' ? 'true' : null">
+      <mat-icon class="locale-check" [class.locale-check--hidden]="currentLocale() !== 'fr'">check</mat-icon>
+      <span>Français</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

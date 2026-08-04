@@ -1,0 +1,33 @@
+.account-details {
+  display: block;
+  margin-top: 1em;
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 1em;
+    align-items: start;
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .account-details__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account-type-card {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+
+  .title {
+    padding: 0.5em;
+  }
+
+  &__value {
+    margin: 0;
+  }
+}

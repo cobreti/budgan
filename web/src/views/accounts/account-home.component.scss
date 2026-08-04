@@ -1,0 +1,23 @@
+.account-home {
+  width: 100%;
+  padding: 1em;
+
+  &__page-title {
+    text-align: center;
+  }
+
+  &__menu-spacer {
+    flex: 1;
+  }
+
+  &__title {
+    margin: 1.5em 0 0;
+    font-size: 1.5em;
+    color: var(--mat-sys-on-background, inherit);
+    text-align: left;
+  }
+
+  &__tabs {
+    margin-top: 1em;
+  }
+}

@@ -1,0 +1,5 @@
+namespace BudganServices.UseCases.AccountTransaction.GetSnapshot;
+
+public interface IGetSnapshotAccountTransactionUseCase : IBaseUseCaseWithResultValue<BOGetAccountTransactionSnapshot>
+{
+}

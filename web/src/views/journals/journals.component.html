@@ -1,0 +1,20 @@
+<div class="workspace">
+  <app-page-menu>
+    <app-page-menu-button
+      icon="library_add"
+      [label]="'menu.newJournal' | translate"
+      (clicked)="onNewJournal()" />
+  </app-page-menu>
+
+  <mat-card class="workspace__content">
+    <div class="flex-row">
+      <div class="column-50">
+        <span>Journals</span>
+        <app-journal-list class="journal-list"/>
+      </div>
+      <div class="column-50">
+        <app-journal-list class="journal-list"/>
+      </div>
+    </div>
+  </mat-card>
+</div>

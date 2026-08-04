@@ -1,0 +1,73 @@
+<app-page [title]="'importFile.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'importFile.back' | translate"
+      (clicked)="onCancel()"/>
+  </app-page-menu>
+
+  <app-page-body page-body>
+    <div class="import-file">
+      <div class="import-file__body">
+
+        <div class="import-file__picker">
+          <button mat-stroked-button type="button"
+                  [disabled]="isImporting()"
+                  (click)="fileInput.click()">
+            {{ 'importFile.chooseFiles' | translate }}
+          </button>
+          <input #fileInput type="file" accept=".csv" multiple hidden
+                 (change)="onFileSelected($event)"/>
+        </div>
+
+        @if (importStatuses().length === 0) {
+          <span class="import-file__no-file">
+            {{ 'importFile.noFilesChosen' | translate }}
+          </span>
+        } @else {
+          <ul class="import-file__file-list" aria-label="Selected files">
+            @for (item of importStatuses(); track item.file.name) {
+              <li class="import-file__file-item">
+                <span class="import-file__filename">{{ item.file.name }}</span>
+                @if (item.status === 'success') {
+                  <mat-icon class="import-file__status-success" aria-label="Imported successfully">check_circle</mat-icon>
+                } @else if (item.status === 'warning') {
+                  <div class="import-file__warning-group">
+                    <div class="import-file__warning-header">
+                      <mat-icon class="import-file__status-warning">warning</mat-icon>
+                      <span>{{ 'importFile.duplicatesSkipped' | translate: { count: item.duplicates!.length } }}</span>
+                    </div>
+                    <ul class="import-file__duplicates-list">
+                      @for (dup of item.duplicates!; track $index) {
+                        <li class="import-file__duplicate-item">
+                          <span class="import-file__dup-date">{{ dup.dateInscriptionAsString }}</span>
+                          <span class="import-file__dup-amount">{{ dup.amount }}</span>
+                          <span class="import-file__dup-description">{{ dup.description }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                } @else if (item.status === 'error') {
+                  <span class="import-file__status-error" role="alert">{{ item.error | translate }}</span>
+                } @else if (item.status === 'importing') {
+                  <span class="import-file__status-pending" aria-live="polite">…</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+
+        @if (!importCompleted()) {
+          <div class="import-file__actions">
+            <button mat-raised-button color="primary"
+                    [disabled]="!hasSelectedFiles() || isImporting()"
+                    (click)="onImport()">
+              {{ 'importFile.import' | translate }}
+            </button>
+          </div>
+        }
+
+      </div>
+    </div>
+  </app-page-body>
+</app-page>

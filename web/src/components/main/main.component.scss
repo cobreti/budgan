@@ -1,0 +1,10 @@
+.main {
+  max-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
+  width: 100%;
+  overflow: auto;
+
+  .content {
+    overflow: auto;
+  }
+}

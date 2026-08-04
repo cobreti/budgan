@@ -1,0 +1,22 @@
+.samples {
+  &__page-title {
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  &__card {
+    max-width: 400px;
+  }
+
+  &__error {
+    color: var(--mat-sys-error, inherit);
+    font-size: 0.9em;
+  }
+}

@@ -1,0 +1,15 @@
+<ul class="account-list">
+  @for (account of accounts(); track account.id) {
+    <li class="account-list__item">
+      <button
+        class="account-list__item-btn"
+        type="button"
+        data-testid="account-item"
+        (click)="open(account.id)">
+        {{ account.name }}
+      </button>
+    </li>
+  } @empty {
+    <li class="account-list__empty">{{ 'accountList.empty' | translate }}</li>
+  }
+</ul>

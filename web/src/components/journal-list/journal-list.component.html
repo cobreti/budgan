@@ -1,0 +1,15 @@
+<ul class="journal-list">
+  @for (journal of journals(); track journal.id) {
+    <li class="journal-list__item">
+      <button
+        class="journal-list__item-btn"
+        type="button"
+        data-testid="journal-item"
+        (click)="open(journal.id)">
+        {{ journal.name }}
+      </button>
+    </li>
+  } @empty {
+    <li class="journal-list__empty">{{ 'journalList.empty' | translate }}</li>
+  }
+</ul>

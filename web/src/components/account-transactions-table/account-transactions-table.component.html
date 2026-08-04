@@ -1,0 +1,99 @@
+<div class="transaction-table">
+  <table mat-table
+         matSort
+         [matSortActive]="sortField()"
+         [matSortDirection]="sortDirection()"
+         matSortDisableClear
+         (matSortChange)="onSortChange($event)"
+         [dataSource]="transactions()"
+         class="transaction-table__table">
+
+    <ng-container matColumnDef="cardNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-testid="sort-header-cardNumber">
+        {{ 'transactionTable.cardNumber' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row.cardNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateInscription">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-testid="sort-header-dateInscription">
+        {{ 'transactionTable.dateInscription' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row.dateInscriptionAsString }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-testid="sort-header-description">
+        {{ 'transactionTable.description' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header data-testid="sort-header-amount">
+        {{ 'transactionTable.amount' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let row"
+          class="transaction-table__amount"
+          [class.transaction-table__amount--positive]="isPositiveAmount(row)"
+          [class.transaction-table__amount--negative]="isNegativeAmount(row)">
+        {{ formatAmount(row.amount) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'transactionTable.balance' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let row" class="transaction-table__balance">
+        {{ formatBalance(row.balance) }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-mdc-no-data-row" *matNoDataRow>
+      <td class="transaction-table__empty" [attr.colspan]="displayedColumns.length">
+        {{ 'transactionTable.empty' | translate }}
+      </td>
+    </tr>
+  </table>
+
+  @if (totalPages() > 0) {
+    <div class="transaction-table__pagination" role="navigation" aria-label="Pagination">
+      <button mat-icon-button
+              [attr.aria-label]="'transactionTable.previousPage' | translate"
+              [disabled]="isFirstPage()"
+              data-testid="previous-page-button"
+              (click)="onPreviousPage()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <span class="transaction-table__page-info">
+        {{ 'transactionTable.page' | translate }} {{ displayPage() }} {{ 'transactionTable.of' | translate }} {{ totalPages() }}
+      </span>
+
+      <button mat-icon-button
+              [attr.aria-label]="'transactionTable.nextPage' | translate"
+              [disabled]="isLastPage()"
+              data-testid="next-page-button"
+              (click)="onNextPage()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <label class="transaction-table__go-to-label" for="go-to-page">
+        {{ 'transactionTable.goToPage' | translate }}
+      </label>
+      <input
+        id="go-to-page"
+        class="transaction-table__page-input"
+        type="number"
+        [value]="displayPage()"
+        min="1"
+        [max]="totalPages()"
+        data-testid="go-to-page-input"
+        (change)="onGoToPage($event)" />
+    </div>
+  }
+</div>

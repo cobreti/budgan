@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountRecurringTransaction.ReplaceForAccount;
+
+public interface IReplaceAccountRecurringTransactionsForAccountRepoOp : IRepositoryOperation
+{
+}

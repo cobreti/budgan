@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.account-graphs__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.account-graphs__month-field {
+  flex: 0 0 auto;
+  display: block;
+  max-width: 240px;
+}
+
+.account-graphs__accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.graph {
+  max-height: 60vh;
+  border-bottom: 1px solid var(--mat-sys-outline, inherit);
+}

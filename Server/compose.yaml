@@ -1,0 +1,45 @@
+services:
+  budgansvr:
+    profiles: [debug]
+    image: budgansvr:debug
+    build:
+      context: .
+      dockerfile: BudganSvr/Dockerfile
+      target: debug
+    ports:
+      - "5222:5222"
+    environment:
+      ASPNETCORE_URLS: "http://+:5222"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      WAIT_FOR_DEBUGGER: "true"
+    volumes:
+      - ./BudganSvr:/src/BudganSvr:cached
+      - rider-debugger:/jetbrains-debugger
+      - wwwroot:/app/wwwroot
+    depends_on:
+      - shell
+
+  budgansvr-release:
+    profiles: [release]
+    image: budgansvr:release
+    build:
+      context: .
+      dockerfile: BudganSvr/Dockerfile
+      target: final
+    ports:
+      - "5222:5222"
+    environment:
+      ASPNETCORE_URLS: "http://+:5222"
+      ASPNETCORE_ENVIRONMENT: "Production"
+
+  shell:
+    image: alpine:latest
+    command: sleep infinity
+    stdin_open: true
+    tty: true
+    volumes:
+      - wwwroot:/BudganSvr/wwwroot
+
+volumes:
+  rider-debugger:
+  wwwroot:

@@ -1,0 +1,37 @@
+.load {
+  width: 100%;
+  padding: 1em;
+
+  &__page-title {
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  &__picker {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__file-name {
+    color: var(--mat-sys-on-surface-variant, inherit);
+    font-size: 0.9em;
+  }
+
+  &__error {
+    color: var(--mat-sys-error, inherit);
+    font-size: 0.9em;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
