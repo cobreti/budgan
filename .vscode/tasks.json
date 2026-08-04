@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/Server/BudganSvr/BudganSvr.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "compose-up",
+      "type": "shell",
+      "command": "docker compose up --build -d && docker compose logs -f budgansvr | grep -m 1 'Waiting for debugger'",
+      "options": {
+        "cwd": "${workspaceFolder}/Server"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "compose-down",
+      "type": "shell",
+      "command": "docker compose down",
+      "options": {
+        "cwd": "${workspaceFolder}/Server"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
