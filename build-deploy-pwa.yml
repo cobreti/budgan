@@ -20,6 +20,7 @@ steps:
       cd web
       npm install
       npm run build:pwa
+      cp staticwebapp.config.json dist/budgan/browser
     displayName: "Install and build"
 
   - task: AzureStaticWebApp@0
