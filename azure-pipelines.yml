@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
   - checkout: self
@@ -12,18 +12,18 @@ steps:
 
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Install Node.js'
+      versionSpec: "20.x"
+    displayName: "Install Node.js"
 
   - script: |
       cd web
       npm install
       npm run build:pwa
-    displayName: 'Install and build'
+    displayName: "Install and build"
 
   - task: AzureStaticWebApp@0
     inputs:
-      app_location: '/web'          # source code folder, e.g. '/' or '/src'
-      api_location: ''           # leave empty if no API/Azure Functions
-      output_location: '/web/dist/budgan'    # build output folder, e.g. 'dist', 'build', 'out'
+      app_location: "/web" # source code folder, e.g. '/' or '/src'
+      api_location: "" # leave empty if no API/Azure Functions
+      output_location: "/dist/budgan/browser" # build output folder, e.g. 'dist', 'build', 'out'
       azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
