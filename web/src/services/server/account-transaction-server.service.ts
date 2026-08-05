@@ -1,8 +1,14 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountTransactionModel, AccountTransactionRecordType } from '@models/accountTransactionModel';
+import {
+  AccountTransactionModel,
+  AccountTransactionRecordType,
+} from '@models/accountTransactionModel';
 import { Result } from '@app-types/result';
-import { ApiResult, BdgHttpClient } from '@services/server/bdg-http-client.service';
+import {
+  ApiResult,
+  BdgHttpClient,
+} from '@services/server/bdg-http-client.service';
 import {
   AccountTransactionService,
   RecurringTransactionsSpan,
@@ -67,7 +73,9 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     );
 
     if (!result.succeeded) {
-      throw new Error(`failed to get transaction count for account ${accountId} with error : ${result.errorValue}`);
+      throw new Error(
+        `failed to get transaction count for account ${accountId} with error : ${result.errorValue}`,
+      );
     }
 
     return result.successValue;
@@ -85,7 +93,9 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     );
 
     if (!result.succeeded) {
-      throw new Error(`failed to get transaction page for account ${accountId} with error : ${result.errorValue}`);
+      throw new Error(
+        `failed to get transaction page for account ${accountId} with error : ${result.errorValue}`,
+      );
     }
 
     return {
@@ -103,14 +113,17 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     amount: number,
     description: string,
   ): Promise<Result<string>> {
-    const result = await this.httpClient.post<ApiResult<string>>('/api/AccountTransaction', {
-      accountId,
-      fileId,
-      cardNumber,
-      dateInscriptionAsString,
-      amount,
-      description,
-    });
+    const result = await this.httpClient.post<ApiResult<string>>(
+      '/api/AccountTransaction',
+      {
+        accountId,
+        fileId,
+        cardNumber,
+        dateInscriptionAsString,
+        amount,
+        description,
+      },
+    );
 
     if (!result.succeeded) {
       return { success: false, error: 'duplicate-transaction' };
@@ -125,7 +138,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     dateAsString: string,
     amount: number,
   ): Promise<Result<string>> {
-    const result = await this.httpClient.post<ApiResult<string>>(
+    const result = await this.httpClient.put<ApiResult<string>>(
       `/api/AccountTransaction/Account/${accountId}/Snapshot`,
       { dateAsString, amount },
     );
@@ -138,10 +151,12 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     return { success: true, value: result.successValue };
   }
 
-  async getSnapshot(accountId: string): Promise<AccountTransactionModel | undefined> {
-    const result = await this.httpClient.get<ApiResult<AccountTransactionDto | null>>(
-      `/api/AccountTransaction/Account/${accountId}/Snapshot`,
-    );
+  async getSnapshot(
+    accountId: string,
+  ): Promise<AccountTransactionModel | undefined> {
+    const result = await this.httpClient.get<
+      ApiResult<AccountTransactionDto | null>
+    >(`/api/AccountTransaction/Account/${accountId}/Snapshot`);
 
     if (!result.succeeded || !result.successValue) {
       return undefined;
@@ -157,13 +172,17 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     this._transactionsVersion.update((v) => v + 1);
   }
 
-  async getListByAccount(accountId: string): Promise<AccountTransactionModel[]> {
-    const result = await this.httpClient.get<ApiResult<AccountTransactionDto[]>>(
-      `/api/AccountTransaction/Account/${accountId}/List`,
-    );
+  async getListByAccount(
+    accountId: string,
+  ): Promise<AccountTransactionModel[]> {
+    const result = await this.httpClient.get<
+      ApiResult<AccountTransactionDto[]>
+    >(`/api/AccountTransaction/Account/${accountId}/List`);
 
     if (!result.succeeded) {
-      throw new Error(`failed to list transactions for account ${accountId} with error : ${result.errorValue}`);
+      throw new Error(
+        `failed to list transactions for account ${accountId} with error : ${result.errorValue}`,
+      );
     }
 
     return result.successValue.map((dto) => this._toModel(dto));
@@ -185,9 +204,9 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
 
   async getById(id: string): Promise<AccountTransactionModel> {
     try {
-      const result = await this.httpClient.get<ApiResult<AccountTransactionDto>>(
-        `/api/AccountTransaction/${id}`,
-      );
+      const result = await this.httpClient.get<
+        ApiResult<AccountTransactionDto>
+      >(`/api/AccountTransaction/${id}`);
 
       if (!result.succeeded) {
         throw new Error('Account transaction not found');
@@ -204,7 +223,9 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
 
   async delete(id: string): Promise<void> {
     try {
-      await this.httpClient.delete<ApiResult<string>>(`/api/AccountTransaction/${id}`);
+      await this.httpClient.delete<ApiResult<string>>(
+        `/api/AccountTransaction/${id}`,
+      );
     } catch (e) {
       if (e instanceof HttpErrorResponse && e.status === 404) {
         return;

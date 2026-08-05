@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class BdgHttpClient {
   constructor(private httpClient: HttpClient) {}
 
@@ -9,7 +9,8 @@ export class BdgHttpClient {
     return new Promise((resolve, reject) => {
       this.httpClient.get<TYPE>(url).subscribe({
         next: (res) => resolve(res),
-        error: (err: HttpErrorResponse) => this._handleError(err, resolve, reject),
+        error: (err: HttpErrorResponse) =>
+          this._handleError(err, resolve, reject),
       });
     });
   }
@@ -18,7 +19,18 @@ export class BdgHttpClient {
     return new Promise((resolve, reject) => {
       this.httpClient.post<TYPE>(url, body).subscribe({
         next: (res) => resolve(res),
-        error: (err: HttpErrorResponse) => this._handleError(err, resolve, reject),
+        error: (err: HttpErrorResponse) =>
+          this._handleError(err, resolve, reject),
+      });
+    });
+  }
+
+  public put<TYPE>(url: string, body: any): Promise<TYPE> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.put<TYPE>(url, body).subscribe({
+        next: (res) => resolve(res),
+        error: (err: HttpErrorResponse) =>
+          this._handleError(err, resolve, reject),
       });
     });
   }
@@ -27,7 +39,8 @@ export class BdgHttpClient {
     return new Promise((resolve, reject) => {
       this.httpClient.delete<TYPE>(url).subscribe({
         next: (res) => resolve(res),
-        error: (err: HttpErrorResponse) => this._handleError(err, resolve, reject),
+        error: (err: HttpErrorResponse) =>
+          this._handleError(err, resolve, reject),
       });
     });
   }
@@ -37,14 +50,17 @@ export class BdgHttpClient {
     resolve: (value: TYPE) => void,
     reject: (reason: HttpErrorResponse) => void,
   ): void {
-    if (err.error && typeof err.error === 'object' && 'succeeded' in err.error) {
+    if (
+      err.error &&
+      typeof err.error === "object" &&
+      "succeeded" in err.error
+    ) {
       resolve(err.error as TYPE);
     } else {
       reject(err);
     }
   }
 }
-
 
 export interface ApiResult<T> {
   succeeded: boolean;

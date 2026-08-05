@@ -227,7 +227,7 @@ public class AccountTransactionController : ControllerBase
         return this.Ok(new ApiSuccessResult<GetAccountTransactionSnapshot?>(model));
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("Account/{accountId}/Snapshot")]
     public async Task<IActionResult> SetSnapshot(Guid accountId, SetAccountTransactionSnapshot model)
     {
