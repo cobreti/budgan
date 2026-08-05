@@ -1,11 +1,27 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
@@ -92,24 +108,26 @@ export class AccountSnapshotComponent {
     );
     if (result.success) {
       this.hasSnapshot.set(true);
+      this.form.markAsPristine();
     }
   }
 
   async onDelete(): Promise<void> {
     if (!this.hasSnapshot()) return;
 
-    const ref = this._dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(
+    const ref = this._dialog.open<
       ConfirmDialogComponent,
-      {
-        data: {
-          title: 'accountSnapshot.confirmDeleteTitle',
-          message: 'accountSnapshot.confirmDeleteMessage',
-          confirmLabel: 'accountSnapshot.confirmDeleteAccept',
-          cancelLabel: 'accountSnapshot.confirmDeleteCancel',
-          danger: true,
-        },
+      ConfirmDialogData,
+      boolean
+    >(ConfirmDialogComponent, {
+      data: {
+        title: 'accountSnapshot.confirmDeleteTitle',
+        message: 'accountSnapshot.confirmDeleteMessage',
+        confirmLabel: 'accountSnapshot.confirmDeleteAccept',
+        cancelLabel: 'accountSnapshot.confirmDeleteCancel',
+        danger: true,
       },
-    );
+    });
 
     const confirmed = await ref.afterClosed().toPromise();
     if (!confirmed) return;
