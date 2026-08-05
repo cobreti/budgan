@@ -11,7 +11,6 @@ import {
 } from '@services/server/bdg-http-client.service';
 import {
   AccountTransactionService,
-  RecurringTransactionsSpan,
   TransactionPage,
   TransactionSort,
 } from '@services/account-transaction.service';
@@ -186,20 +185,6 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     }
 
     return result.successValue.map((dto) => this._toModel(dto));
-  }
-
-  async getRecurringTransactionsByAccount(
-    _accountId: string,
-    _startDate: Date,
-    _endDate: Date,
-  ): Promise<AccountTransactionModel[]> {
-    return [];
-  }
-
-  async getRecurringTransactionsSpan(
-    _accountId: string,
-  ): Promise<RecurringTransactionsSpan | undefined> {
-    return undefined;
   }
 
   async getById(id: string): Promise<AccountTransactionModel> {

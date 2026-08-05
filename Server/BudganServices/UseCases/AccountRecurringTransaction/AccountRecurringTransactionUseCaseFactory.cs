@@ -1,4 +1,8 @@
 using BudganInfra.Repositories.AccountRecurringTransaction;
+using BudganServices.UseCases.AccountRecurringTransaction.DeleteByAccount;
+using BudganServices.UseCases.AccountRecurringTransaction.GetListByAccount;
+using BudganServices.UseCases.AccountRecurringTransaction.GetSpan;
+using BudganServices.UseCases.AccountRecurringTransaction.GetTransactionsByAccount;
 using BudganServices.UseCases.AccountRecurringTransaction.ReplaceForAccount;
 
 namespace BudganServices.UseCases.AccountRecurringTransaction;
@@ -15,5 +19,28 @@ internal class AccountRecurringTransactionUseCaseFactory : IAccountRecurringTran
     public IReplaceAccountRecurringTransactionsForAccountUseCase ReplaceForAccountUseCase(BOReplaceAccountRecurringTransactionsForAccount model)
     {
         return new ReplaceAccountRecurringTransactionsForAccountUseCase(this._accountRecurringTransactionRepository, model);
+    }
+
+    public IGetRecurringTransactionsByAccountUseCase GetTransactionsByAccountUseCase(
+        Guid accountId,
+        DateOnly startDate,
+        DateOnly endDate)
+    {
+        return new GetRecurringTransactionsByAccountUseCase(this._accountRecurringTransactionRepository, accountId, startDate, endDate);
+    }
+
+    public IGetSpanRecurringTransactionsUseCase GetSpanUseCase(Guid accountId)
+    {
+        return new GetSpanRecurringTransactionsUseCase(this._accountRecurringTransactionRepository, accountId);
+    }
+
+    public IListAccountRecurringTransactionByAccountUseCase ListByAccountUseCase(Guid accountId)
+    {
+        return new ListAccountRecurringTransactionByAccountUseCase(this._accountRecurringTransactionRepository, accountId);
+    }
+
+    public IDeleteAccountRecurringTransactionByAccountUseCase DeleteByAccountUseCase(Guid accountId)
+    {
+        return new DeleteAccountRecurringTransactionByAccountUseCase(this._accountRecurringTransactionRepository, accountId);
     }
 }

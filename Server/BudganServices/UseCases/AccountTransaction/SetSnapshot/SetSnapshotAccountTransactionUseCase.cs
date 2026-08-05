@@ -1,7 +1,6 @@
 using System.Globalization;
 using BudganGlobal.Errors;
 using BudganGlobal.Errors.Exceptions;
-using BudganInfra.DBContext.Tables;
 using BudganInfra.Repositories.AccountTransaction;
 using BudganInfra.Repositories.AccountTransaction.Save;
 using BudganServices.UseCases.AccountTransaction.RecalculateBalances;
@@ -42,7 +41,7 @@ internal class SetSnapshotAccountTransactionUseCase : BaseUseCaseWithResultValue
             Balance = this._model.Amount,
             BalanceDateOffset = 0,
             Description = string.Empty,
-            RecordType = AccountTransactionRecordType.Snapshot,
+            RecordType = AccountTransactionRecordTypeConverter.ToDao(AccountTransactionRecordType.Snapshot),
         };
 
         var saveOp = this._accountTransactionRepository.SaveAccountTransactionRepoOperation(dao);

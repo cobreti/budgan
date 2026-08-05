@@ -34,7 +34,7 @@ internal class ListAccountTransactionByAccountUseCase : BaseUseCaseWithResultVal
                 Description = x.Description,
                 UniqueKey = x.UniqueKey,
                 RecurringId = x.RecurringId,
-                RecordType = x.RecordType,
+                RecordType = AccountTransactionRecordTypeConverter.FromDao(x.RecordType),
             })
             .ToList();
 

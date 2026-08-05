@@ -1,5 +1,3 @@
-using BudganInfra.DBContext.Tables;
-
 namespace BudganServices.UseCases.AccountTransaction.GetSnapshot;
 
 public class BOGetAccountTransactionSnapshot

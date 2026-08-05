@@ -1,0 +1,5 @@
+namespace BudganInfra.Repositories.AccountRecurringTransaction.GetSpan;
+
+public interface IGetSpanRecurringTransactionsRepoOp : IRepositoryOperationWithResultValue<DaoRecurringTransactionsSpan>
+{
+}

@@ -1,0 +1,7 @@
+using BudganServices.UseCases.AccountRecurringTransaction.ReplaceForAccount;
+
+namespace BudganServices.UseCases.AccountRecurringTransaction.GetListByAccount;
+
+public interface IListAccountRecurringTransactionByAccountUseCase : IBaseUseCaseWithResultValue<List<BOAccountRecurringTransactionItem>>
+{
+}

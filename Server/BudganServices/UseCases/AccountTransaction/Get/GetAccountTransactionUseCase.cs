@@ -38,7 +38,7 @@ internal class GetAccountTransactionUseCase : BaseUseCaseWithResultValue<BOGetAc
                 Description = r.Description,
                 UniqueKey = r.UniqueKey,
                 RecurringId = r.RecurringId,
-                RecordType = r.RecordType,
+                RecordType = AccountTransactionRecordTypeConverter.FromDao(r.RecordType),
             });
         }
         else

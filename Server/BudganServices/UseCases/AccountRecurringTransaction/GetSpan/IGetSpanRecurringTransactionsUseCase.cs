@@ -1,0 +1,5 @@
+namespace BudganServices.UseCases.AccountRecurringTransaction.GetSpan;
+
+public interface IGetSpanRecurringTransactionsUseCase : IBaseUseCaseWithResultValue<BOGetRecurringTransactionsSpan>
+{
+}

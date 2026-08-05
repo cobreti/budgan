@@ -1,6 +1,8 @@
-namespace BudganServices.UseCases.AccountTransaction.GetPageByAccount;
+using BudganServices.UseCases.AccountTransaction;
 
-public class BOAccountTransactionPageItem
+namespace BudganServices.UseCases.AccountRecurringTransaction.GetTransactionsByAccount;
+
+public class BOAccountRecurringTransaction
 {
     public required string Id { get; set; }
     public required Guid AccountId { get; set; }

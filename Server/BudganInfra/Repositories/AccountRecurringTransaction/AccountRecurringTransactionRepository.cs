@@ -2,6 +2,8 @@ using BudganInfra.DBContext;
 using BudganInfra.Repositories.AccountRecurringTransaction.DeleteByAccount;
 using BudganInfra.Repositories.AccountRecurringTransaction.GetList;
 using BudganInfra.Repositories.AccountRecurringTransaction.GetListByAccount;
+using BudganInfra.Repositories.AccountRecurringTransaction.GetSpan;
+using BudganInfra.Repositories.AccountRecurringTransaction.GetTransactionsByAccount;
 using BudganInfra.Repositories.AccountRecurringTransaction.Insert;
 using BudganInfra.Repositories.AccountRecurringTransaction.ReplaceForAccount;
 using Microsoft.Extensions.Logging;
@@ -45,5 +47,18 @@ internal class AccountRecurringTransactionRepository : IAccountRecurringTransact
         List<DaoInsertAccountRecurringTransaction> items)
     {
         return new ReplaceAccountRecurringTransactionsForAccountRepoOp(this._dataContext, accountId, items);
+    }
+
+    public IGetTransactionsByAccountRecurringRepoOp GetTransactionsByAccountRecurringRepoOperation(
+        Guid accountId,
+        DateOnly startDate,
+        DateOnly endDate)
+    {
+        return new GetTransactionsByAccountRecurringRepoOp(this._dataContext, accountId, startDate, endDate);
+    }
+
+    public IGetSpanRecurringTransactionsRepoOp GetSpanRecurringTransactionsRepoOperation(Guid accountId)
+    {
+        return new GetSpanRecurringTransactionsRepoOp(this._dataContext, accountId);
     }
 }

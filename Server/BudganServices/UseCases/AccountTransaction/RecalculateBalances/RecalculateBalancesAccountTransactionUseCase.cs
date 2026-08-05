@@ -1,4 +1,3 @@
-using BudganInfra.DBContext.Tables;
 using BudganInfra.Repositories.AccountTransaction;
 using BudganInfra.Repositories.AccountTransaction.GetListByAccount;
 using BudganInfra.Repositories.AccountTransaction.UpdateBalances;
@@ -24,9 +23,9 @@ internal class RecalculateBalancesAccountTransactionUseCase : BaseUseCase, IReca
 
         var all = listOp.ResultValue;
 
-        var snapshot = all.FirstOrDefault(x => x.RecordType == AccountTransactionRecordType.Snapshot);
+        var snapshot = all.FirstOrDefault(x => x.RecordType == AccountTransactionRecordTypeConverter.ToDao(AccountTransactionRecordType.Snapshot));
         var normal = all
-            .Where(x => x.RecordType == AccountTransactionRecordType.Normal)
+            .Where(x => x.RecordType == AccountTransactionRecordTypeConverter.ToDao(AccountTransactionRecordType.Normal))
             .OrderBy(x => x.DateInscription)
             .ThenBy(x => x.UniqueKey, StringComparer.Ordinal)
             .ToList();

@@ -18,6 +18,10 @@ import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@services/account-transaction.service';
+import {
+  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
+  AccountRecurringTransactionService,
+} from '@services/account-recurring-transaction.service';
 import { monthBounds, ViewType } from '@/utils/recurring-month';
 
 type RecurringSlice = { description: string; amount: number };
@@ -40,6 +44,9 @@ type RecurringSlice = { description: string; amount: number };
 export class RecurringPieChartComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
     ACCOUNT_TRANSACTION_SERVICE,
+  );
+  private readonly _recurringTransactionService = inject<AccountRecurringTransactionService>(
+    ACCOUNT_RECURRING_TRANSACTION_SERVICE,
   );
   private readonly _cdr = inject(ChangeDetectorRef);
 
@@ -160,7 +167,7 @@ export class RecurringPieChartComponent {
 
     const start = monthBounds(startMonth).start;
     const end = monthBounds(endMonth).end;
-    const txs = await this._transactionService.getRecurringTransactionsByAccount(
+    const txs = await this._recurringTransactionService.getRecurringTransactionsByAccount(
       accountId,
       start,
       end,

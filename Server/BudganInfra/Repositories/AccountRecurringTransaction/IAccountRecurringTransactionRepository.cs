@@ -1,6 +1,8 @@
 using BudganInfra.Repositories.AccountRecurringTransaction.DeleteByAccount;
 using BudganInfra.Repositories.AccountRecurringTransaction.GetList;
 using BudganInfra.Repositories.AccountRecurringTransaction.GetListByAccount;
+using BudganInfra.Repositories.AccountRecurringTransaction.GetSpan;
+using BudganInfra.Repositories.AccountRecurringTransaction.GetTransactionsByAccount;
 using BudganInfra.Repositories.AccountRecurringTransaction.Insert;
 using BudganInfra.Repositories.AccountRecurringTransaction.ReplaceForAccount;
 
@@ -20,4 +22,11 @@ public interface IAccountRecurringTransactionRepository
     IReplaceAccountRecurringTransactionsForAccountRepoOp ReplaceAccountRecurringTransactionsForAccountRepoOperation(
         Guid accountId,
         List<DaoInsertAccountRecurringTransaction> items);
+
+    IGetTransactionsByAccountRecurringRepoOp GetTransactionsByAccountRecurringRepoOperation(
+        Guid accountId,
+        DateOnly startDate,
+        DateOnly endDate);
+
+    IGetSpanRecurringTransactionsRepoOp GetSpanRecurringTransactionsRepoOperation(Guid accountId);
 }

@@ -8,11 +8,6 @@ export type TransactionPage = {
   page: number;
 };
 
-export type RecurringTransactionsSpan = {
-  start: Date;
-  end: Date;
-};
-
 export type TransactionSortField = 'cardNumber' | 'dateInscription' | 'description' | 'amount';
 
 export type TransactionSort = {
@@ -42,12 +37,6 @@ export interface AccountTransactionService {
   getSnapshot(accountId: string): Promise<AccountTransactionModel | undefined>;
   deleteSnapshot(accountId: string): Promise<void>;
   getListByAccount(accountId: string): Promise<AccountTransactionModel[]>;
-  getRecurringTransactionsByAccount(
-    accountId: string,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<AccountTransactionModel[]>;
-  getRecurringTransactionsSpan(accountId: string): Promise<RecurringTransactionsSpan | undefined>;
   getById(id: string): Promise<AccountTransactionModel>;
   delete(id: string): Promise<void>;
   recalculateBalances(accountId: string): Promise<void>;

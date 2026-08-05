@@ -1,6 +1,6 @@
-namespace BudganServices.UseCases.AccountTransaction.GetPageByAccount;
+namespace BudganSvr.Api.Controllers.AccountRecurringTransaction.Models;
 
-public class BOAccountTransactionPageItem
+public class AccountRecurringTransactionTransactionItem
 {
     public required string Id { get; set; }
     public required Guid AccountId { get; set; }
@@ -13,5 +13,5 @@ public class BOAccountTransactionPageItem
     public required string Description { get; set; }
     public required string UniqueKey { get; set; }
     public required string RecurringId { get; set; }
-    public required AccountTransactionRecordType RecordType { get; set; }
+    public required string RecordType { get; set; }
 }

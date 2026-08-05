@@ -1,6 +1,5 @@
 using BudganGlobal.Errors;
 using BudganGlobal.Errors.Exceptions;
-using BudganInfra.DBContext.Tables;
 using BudganInfra.Repositories.AccountTransaction.GetPageByAccount;
 using BudganServices.UseCases.AccountTransaction;
 using BudganServices.UseCases.AccountTransaction.Create;

@@ -1,7 +1,6 @@
 using System.Globalization;
 using BudganGlobal.Errors;
 using BudganGlobal.Errors.Exceptions;
-using BudganInfra.DBContext.Tables;
 using BudganInfra.Repositories.AccountTransaction;
 using BudganInfra.Repositories.AccountTransaction.Save;
 using BudganServices.UseCases.AccountTransaction.RecalculateBalances;
@@ -42,7 +41,7 @@ internal class CreateAccountTransactionUseCase : BaseUseCaseWithResultValue<Guid
             Balance = null,
             BalanceDateOffset = null,
             Description = this._model.Description,
-            RecordType = AccountTransactionRecordType.Normal,
+            RecordType = AccountTransactionRecordTypeConverter.ToDao(AccountTransactionRecordType.Normal),
         };
 
         var repoOp = this._accountTransactionRepository.SaveAccountTransactionRepoOperation(dao);

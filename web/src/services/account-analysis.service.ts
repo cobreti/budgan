@@ -1,6 +1,5 @@
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import moment from 'moment';
-import { IndexdbService } from './indexdb.service';
 import { ACCOUNT_TRANSACTION_SERVICE, AccountTransactionService } from './account-transaction.service';
 import { AccountTransactionRecordType } from '@models/accountTransactionModel';
 import { AccountRecurringTransactionModel } from '@models/accountRecurringTransactionModel';
@@ -26,7 +25,6 @@ export const ACCOUNT_ANALYSIS_SERVICE = new InjectionToken<AccountAnalysisServic
 
 @Injectable({ providedIn: 'root' })
 export class AccountAnalysisServiceImpl implements AccountAnalysisService {
-  private readonly _indexDb = inject(IndexdbService);
   private readonly _transactionService = inject<AccountTransactionService>(ACCOUNT_TRANSACTION_SERVICE);
   private readonly _recurringTransactionService = inject<AccountRecurringTransactionService>(
     ACCOUNT_RECURRING_TRANSACTION_SERVICE,
@@ -103,25 +101,19 @@ export class AccountAnalysisServiceImpl implements AccountAnalysisService {
   }
 
   getRecurringTransactions(accountId: string): Promise<AccountRecurringTransactionModel[]> {
-    return this._indexDb.recurringTransactionsTable
-      .where('accountId')
-      .equals(accountId)
-      .toArray();
+    return this._recurringTransactionService.getListByAccount(accountId);
   }
 
   getAll(): Promise<AccountRecurringTransactionModel[]> {
-    return this._indexDb.recurringTransactionsTable.toArray();
+    return this._recurringTransactionService.getAll();
   }
 
   async deleteByAccount(accountId: string): Promise<void> {
-    await this._indexDb.recurringTransactionsTable
-      .where('accountId')
-      .equals(accountId)
-      .delete();
+    await this._recurringTransactionService.deleteByAccount(accountId);
   }
 
   async delete(ids: string[]): Promise<void> {
-    await this._indexDb.recurringTransactionsTable.bulkDelete(ids);
+    await this._recurringTransactionService.delete(ids);
   }
 }
 
