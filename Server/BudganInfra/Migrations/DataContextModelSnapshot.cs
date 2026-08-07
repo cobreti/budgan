@@ -218,6 +218,38 @@ namespace BudganInfra.Migrations
                     b.ToTable("ColumnsMapping");
                 });
 
+            modelBuilder.Entity("BudganInfra.DBContext.Tables.TransactionsFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("InsertionDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("TransactionsFiles");
+                });
+
             modelBuilder.Entity("BudganInfra.DBContext.Tables.UserAccount", b =>
                 {
                     b.Property<Guid>("Id")
@@ -260,6 +292,17 @@ namespace BudganInfra.Migrations
                 });
 
             modelBuilder.Entity("BudganInfra.DBContext.Tables.AccountTransaction", b =>
+                {
+                    b.HasOne("BudganInfra.DBContext.Tables.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("BudganInfra.DBContext.Tables.TransactionsFile", b =>
                 {
                     b.HasOne("BudganInfra.DBContext.Tables.Account", "Account")
                         .WithMany()

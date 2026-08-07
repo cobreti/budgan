@@ -10,6 +10,7 @@ public class DataContext(DbContextOptions<DataContext> options) : Microsoft.Enti
     public DbSet<AccountTransaction> AccountTransactions => Set<AccountTransaction>();
     public DbSet<AccountRecurringTransaction> AccountRecurringTransactions => Set<AccountRecurringTransaction>();
     public DbSet<UserAccount> UserAccounts => Set<UserAccount>();
+    public DbSet<TransactionsFile> TransactionsFiles => Set<TransactionsFile>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -61,6 +62,24 @@ public class DataContext(DbContextOptions<DataContext> options) : Microsoft.Enti
 
             entity.HasIndex(e => e.RecurringId)
                 .IsUnique();
+        });
+
+        modelBuilder.Entity<TransactionsFile>(entity =>
+        {           
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Timestamp)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            entity.HasIndex(e => e.AccountId);
+
+            entity.Property(e => e.Content)
+                .IsRequired();
+
+            entity.Property(e => e.Filename)
+                .IsRequired();
+
+            entity.Property(e => e.InsertionDate)
+                .IsRequired();
         });
 
         base.OnModelCreating(modelBuilder);

@@ -121,6 +121,28 @@ namespace BudganInfra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TransactionsFiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InsertionDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionsFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransactionsFiles_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Account_ColumnsMappingId",
                 table: "Account",
@@ -147,6 +169,11 @@ namespace BudganInfra.Migrations
                 name: "IX_AccountTransactions_FileId",
                 table: "AccountTransactions",
                 column: "FileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionsFiles_AccountId",
+                table: "TransactionsFiles",
+                column: "AccountId");
         }
 
         /// <inheritdoc />
@@ -157,6 +184,9 @@ namespace BudganInfra.Migrations
 
             migrationBuilder.DropTable(
                 name: "AccountTransactions");
+
+            migrationBuilder.DropTable(
+                name: "TransactionsFiles");
 
             migrationBuilder.DropTable(
                 name: "UserAccounts");
