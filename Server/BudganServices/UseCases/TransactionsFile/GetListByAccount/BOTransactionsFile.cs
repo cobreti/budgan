@@ -1,0 +1,9 @@
+namespace BudganServices.UseCases.TransactionsFile.GetListByAccount;
+
+public class BOTransactionsFile
+{
+    public required Guid Id { get; set; }
+    public required Guid AccountId { get; set; }
+    public required string Filename { get; set; }
+    public required DateOnly InsertionDate { get; set; }
+}

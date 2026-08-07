@@ -1,8 +1,8 @@
 namespace BudganInfra.Repositories.TransactionsFile.Save
 {
-    public interface ISaveTransactionsFileRepoOp : IRepositoryOperation
+    public interface ISaveTransactionsFileRepoOp : IRepositoryOperationWithResultValue<Guid>
     {
-        
+
     }
 
 }

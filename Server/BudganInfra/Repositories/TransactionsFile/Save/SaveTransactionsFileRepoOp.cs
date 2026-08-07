@@ -2,7 +2,7 @@ using BudganInfra.DBContext;
 
 namespace BudganInfra.Repositories.TransactionsFile.Save
 {
-    public class SaveTransactionsFileRepoOp : BaseRepositoryOperation, ISaveTransactionsFileRepoOp
+    internal class SaveTransactionsFileRepoOp : BaseRepositoryOperationWithResultValue<Guid>, ISaveTransactionsFileRepoOp
     {
         private readonly DataContext _dataContext;
         private readonly DaoSaveTransactionsFile _daoSaveTransactionsFile;
@@ -26,6 +26,8 @@ namespace BudganInfra.Repositories.TransactionsFile.Save
 
             await _dataContext.AddAsync(transactionsFileEntity);
             await _dataContext.SaveChangesAsync();
+
+            this.SetSucceeded(transactionsFileEntity.Id);
         }
     }
 }

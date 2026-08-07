@@ -1,4 +1,5 @@
 using BudganInfra.DBContext;
+using BudganInfra.Repositories.TransactionsFile.GetListByAccount;
 using BudganInfra.Repositories.TransactionsFile.Save;
 
 namespace BudganInfra.Repositories.TransactionsFile
@@ -15,6 +16,11 @@ namespace BudganInfra.Repositories.TransactionsFile
         public ISaveTransactionsFileRepoOp SaveTransactionsFileRepoOperation(DaoSaveTransactionsFile daoSaveTransactionsFile)
         {
             return new SaveTransactionsFileRepoOp(this._dataContext, daoSaveTransactionsFile);
+        }
+
+        public IGetListByAccountTransactionsFileRepoOp GetListByAccountTransactionsFileRepoOperation(Guid accountId)
+        {
+            return new GetListByAccountTransactionsFileRepoOp(this._dataContext, accountId);
         }
     }
 }
