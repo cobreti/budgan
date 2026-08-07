@@ -233,7 +233,7 @@ namespace BudganInfra.Migrations
 
                     b.Property<string>("Filename")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("InsertionDate")
                         .HasColumnType("date");
@@ -246,6 +246,9 @@ namespace BudganInfra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("AccountId", "Filename")
+                        .IsUnique();
 
                     b.ToTable("TransactionsFiles");
                 });

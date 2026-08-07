@@ -72,6 +72,9 @@ public class DataContext(DbContextOptions<DataContext> options) : Microsoft.Enti
 
             entity.HasIndex(e => e.AccountId);
 
+            entity.HasIndex(e => new { e.AccountId, e.Filename })
+                .IsUnique();
+
             entity.Property(e => e.Content)
                 .IsRequired();
 

@@ -1,3 +1,5 @@
+using BudganGlobal.Errors;
+using BudganGlobal.Errors.Exceptions;
 using BudganInfra.Repositories.TransactionsFile;
 using BudganInfra.Repositories.TransactionsFile.Save;
 
@@ -27,6 +29,13 @@ internal class SaveTransactionsFileUseCase : BaseUseCaseWithResultValue<Guid>, I
         var repoOp = this._transactionsFileRepository.SaveTransactionsFileRepoOperation(daoSave);
 
         await repoOp.ExecuteAsync();
+
+        if (!repoOp.Succeeded)
+        {
+            // SaveTransactionsFileRepoOp's only non-throwing failure path is a duplicate
+            // (AccountId, Filename) violation; other failure conditions throw directly from the repo op.
+            throw new BudganException(BudganErrorValue.DuplicateTransactionsFile);
+        }
 
         this.SetSucceeded(repoOp.ResultValue);
     }

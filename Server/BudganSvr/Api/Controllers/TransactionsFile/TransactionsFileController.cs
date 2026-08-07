@@ -1,3 +1,5 @@
+using BudganGlobal.Errors;
+using BudganGlobal.Errors.Exceptions;
 using BudganServices.UseCases.TransactionsFile;
 using BudganSvr.Api.Controllers.TransactionsFile.Models;
 using BudganSvr.Api.Types;
@@ -20,21 +22,33 @@ public class TransactionsFileController : ControllerBase
     [Route("Save")]
     public async Task<IActionResult> Save(SaveTransactionsFile model)
     {
-        var boModel = new BOSaveTransactionsFile
+        try
         {
-            AccountId = model.AccountId,
-            Content = model.Content,
-            Filename = model.Filename,
-            InsertionDate = model.InsertionDate,
-        };
+            var boModel = new BOSaveTransactionsFile
+            {
+                AccountId = model.AccountId,
+                Content = model.Content,
+                Filename = model.Filename,
+                InsertionDate = model.InsertionDate,
+            };
 
-        var useCase = this._transactionsFileUseCaseFactory.SaveUseCase(boModel);
+            var useCase = this._transactionsFileUseCaseFactory.SaveUseCase(boModel);
 
-        await useCase.ExecuteAsync();
+            await useCase.ExecuteAsync();
 
-        var result = new ApiSuccessResult<Guid>(useCase.ResultValue);
+            var result = new ApiSuccessResult<Guid>(useCase.ResultValue);
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (BudganException ex)
+        {
+            if (ex.BudganError == BudganErrorValue.DuplicateTransactionsFile)
+            {
+                return this.Conflict(new ApiErrorResult<string>(ex.BudganError.ErrorMessage));
+            }
+
+            throw;
+        }
     }
 
     [HttpGet]
@@ -50,6 +64,7 @@ public class TransactionsFileController : ControllerBase
                 {
                     Id = x.Id,
                     AccountId = x.AccountId,
+                    Content = x.Content,
                     Filename = x.Filename,
                     InsertionDate = x.InsertionDate,
                 }

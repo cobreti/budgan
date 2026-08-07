@@ -22,6 +22,7 @@ internal class GetListByAccountTransactionsFileRepoOp : BaseRepositoryOperationW
             {
                 Id = x.Id,
                 AccountId = x.AccountId,
+                Content = x.Content,
                 Filename = x.Filename,
                 InsertionDate = x.InsertionDate,
             })

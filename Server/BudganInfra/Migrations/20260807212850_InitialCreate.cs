@@ -128,7 +128,7 @@ namespace BudganInfra.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Filename = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     InsertionDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
@@ -174,6 +174,12 @@ namespace BudganInfra.Migrations
                 name: "IX_TransactionsFiles_AccountId",
                 table: "TransactionsFiles",
                 column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionsFiles_AccountId_Filename",
+                table: "TransactionsFiles",
+                columns: new[] { "AccountId", "Filename" },
+                unique: true);
         }
 
         /// <inheritdoc />

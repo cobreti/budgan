@@ -13,7 +13,7 @@ import { LOCALE_SERVICE, LocaleServiceImpl } from '@services/locale.service';
 import { JOURNAL_SERVICE, JournalServiceImpl } from '@services/journal.service';
 import { CSV_CONTENT_EXTRACTOR_SERVICE, CsvContentExtractorServiceImpl } from '@services/csv-content-extractor.service';
 import { THEME_SERVICE, ThemeServiceImpl } from '@services/theme.service';
-import { FILE_SERVICE, FileServiceImpl } from '@services/file.service';
+import { FileServiceProvider } from '@services/providers/file.service.provider';
 import { BUDGAN_EXPORT_SERVICE, BudganExportServiceImpl } from '@services/budgan-export.service';
 import { ACCOUNT_ANALYSIS_SERVICE, AccountAnalysisServiceImpl } from '@services/account-analysis.service';
 import { API_MODE_SERVICE, ApiModeServiceImpl } from '@services/api-mode.service';
@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
     AccountServiceProvider,
     { provide: CSV_CONTENT_EXTRACTOR_SERVICE, useClass: CsvContentExtractorServiceImpl },
     { provide: THEME_SERVICE, useClass: ThemeServiceImpl },
-    { provide: FILE_SERVICE, useClass: FileServiceImpl },
+    FileServiceProvider,
     AccountTransactionServiceProvider,
     AccountRecurringTransactionServiceProvider,
     { provide: BUDGAN_EXPORT_SERVICE, useClass: BudganExportServiceImpl },

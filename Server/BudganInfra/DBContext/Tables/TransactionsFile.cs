@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudganInfra.DBContext.Tables
@@ -10,6 +11,8 @@ namespace BudganInfra.DBContext.Tables
 
         public required string Content { get; set; }
 
+
+        [MaxLength(450)]
         public required string Filename { get; set; }
 
         public required DateOnly InsertionDate { get; set; }

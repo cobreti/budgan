@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudganInfra.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260807010239_InitialCreate")]
+    [Migration("20260807212850_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -236,7 +236,7 @@ namespace BudganInfra.Migrations
 
                     b.Property<string>("Filename")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("InsertionDate")
                         .HasColumnType("date");
@@ -249,6 +249,9 @@ namespace BudganInfra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("AccountId", "Filename")
+                        .IsUnique();
 
                     b.ToTable("TransactionsFiles");
                 });

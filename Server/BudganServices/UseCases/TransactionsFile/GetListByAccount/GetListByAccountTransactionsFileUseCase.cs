@@ -24,6 +24,7 @@ internal class GetListByAccountTransactionsFileUseCase : BaseUseCaseWithResultVa
             {
                 Id = x.Id,
                 AccountId = x.AccountId,
+                Content = x.Content,
                 Filename = x.Filename,
                 InsertionDate = x.InsertionDate,
             })

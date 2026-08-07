@@ -1,9 +1,14 @@
+using BudganGlobal.Errors;
 using BudganInfra.DBContext;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace BudganInfra.Repositories.TransactionsFile.Save
 {
     internal class SaveTransactionsFileRepoOp : BaseRepositoryOperationWithResultValue<Guid>, ISaveTransactionsFileRepoOp
     {
+        private static readonly int[] UniqueConstraintViolationErrorNumbers = { 2601, 2627 };
+
         private readonly DataContext _dataContext;
         private readonly DaoSaveTransactionsFile _daoSaveTransactionsFile;
 
@@ -25,9 +30,33 @@ namespace BudganInfra.Repositories.TransactionsFile.Save
             };
 
             await _dataContext.AddAsync(transactionsFileEntity);
-            await _dataContext.SaveChangesAsync();
+
+            if (!await this.TrySaveChanges())
+            {
+                return;
+            }
 
             this.SetSucceeded(transactionsFileEntity.Id);
+        }
+
+        private async Task<bool> TrySaveChanges()
+        {
+            try
+            {
+                await this._dataContext.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+            {
+                this.SetFailed(BudganErrorValue.DuplicateTransactionsFile);
+                return false;
+            }
+        }
+
+        private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+        {
+            return ex.InnerException is SqlException sqlException
+                   && sqlException.Errors.Cast<SqlError>().Any(e => UniqueConstraintViolationErrorNumbers.Contains(e.Number));
         }
     }
 }

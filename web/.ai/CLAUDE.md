@@ -102,7 +102,7 @@ export class MyFeatureServiceImpl implements MyFeatureService {
 | `JOURNAL_SERVICE` | `JournalServiceImpl` |
 | `COLUMNS_MAPPING_SERVICE` | `ColumnsMappingServicePwaImpl` |
 | `ACCOUNT_SERVICE` | `AccountServicePwaImpl` |
-| `FILE_SERVICE` | `FileServiceImpl` |
+| `FILE_SERVICE` | `FileServicePwaImpl` / `FileServiceServerImpl` |
 | `ACCOUNT_TRANSACTION_SERVICE` | `AccountTransactionServiceImpl` |
 | `CSV_CONTENT_EXTRACTOR_SERVICE` | `CsvContentExtractorServiceImpl` |
 | `BUDGAN_EXPORT_SERVICE` | `BudganExportServiceImpl` |
