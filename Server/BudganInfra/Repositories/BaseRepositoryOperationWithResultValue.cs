@@ -14,7 +14,7 @@ public class BaseRepositoryOperationWithResultValue<RETTYPE> : BaseRepositoryOpe
                 throw new Exception("Invalid operation");
             }
 
-            return field;
+            return field!;
         }
 
         protected set;

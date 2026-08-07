@@ -10,7 +10,7 @@ public class Account : BaseEntity
     public required string Name { get; set; }
     
     public required Guid ColumnsMappingId { get; set; }
-    public ColumnsMapping ColumnsMapping { get; set; }
+    public ColumnsMapping ColumnsMapping { get; set; } = null!;
 
     [MaxLength(50)]
     public required string AccountType { get; set; }

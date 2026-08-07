@@ -10,7 +10,7 @@ public class AccountRecurringTransaction : BaseEntity
     public required string RecurringId { get; set; }
 
     public required Guid AccountId { get; set; }
-    public Account Account { get; set; }
+    public Account Account { get; set; } = null!;
 
     public required double PeriodInDays { get; set; }
     public required int TransactionCount { get; set; }

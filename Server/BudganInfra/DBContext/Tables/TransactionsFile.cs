@@ -6,7 +6,7 @@ namespace BudganInfra.DBContext.Tables
     public class TransactionsFile : BaseEntity
     {
         public required Guid AccountId { get; set; }
-        public Account Account { get; set; }
+        public Account Account { get; set; } = null!;
 
         public required string Content { get; set; }
 

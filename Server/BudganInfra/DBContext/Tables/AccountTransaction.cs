@@ -21,7 +21,7 @@ public class AccountTransaction : BaseEntity
     public Guid? FileId { get; set; }
 
     public required Guid AccountId { get; set; }
-    public Account Account { get; set; }
+    public Account Account { get; set; } = null!;
 
     [MaxLength(50)]
     public required string CardNumber { get; set; }
