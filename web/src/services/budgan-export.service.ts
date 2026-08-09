@@ -146,7 +146,7 @@ export class BudganExportServiceImpl implements BudganExportService {
     ]);
     return {
       version: 1,
-      accounts: [account],
+      accounts: [stripTimestamp(account)],
       columnsMappings: [columnsMapping],
       files,
       transactions,
@@ -170,12 +170,17 @@ export class BudganExportServiceImpl implements BudganExportService {
     return {
       version: 1,
       columnsMappings,
-      accounts,
+      accounts: accounts.map(stripTimestamp),
       files,
       transactions,
       recurringTransactions,
     };
   }
+}
+
+function stripTimestamp(account: AccountModel): AccountModel {
+  const { timestamp, ...rest } = account;
+  return rest;
 }
 
 function isAllDataExportPayload(value: unknown): value is AllDataExportPayload {
