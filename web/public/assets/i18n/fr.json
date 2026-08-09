@@ -32,8 +32,10 @@
     "invalidFormat": "Le fichier n'est pas une sauvegarde Budgan valide.",
     "confirmTitle": "Remplacer toutes les données ?",
     "confirmMessage": "Cette action supprimera définitivement les données actuelles et les remplacera par le contenu du fichier sélectionné. Cette action est irréversible.",
+    "confirmMessageServer": "Ceci importera le contenu du fichier sélectionné. Les éléments déjà existants seront ignorés, et non remplacés.",
     "confirmAccept": "Charger et remplacer",
-    "confirmCancel": "Annuler"
+    "confirmCancel": "Annuler",
+    "completedWithIssues": "Chargement terminé avec {{skipped}} élément(s) ignoré(s) (déjà existants) et {{errors}} erreur(s)."
   },
   "clearAll": {
     "title": "Effacer toutes les données ?",

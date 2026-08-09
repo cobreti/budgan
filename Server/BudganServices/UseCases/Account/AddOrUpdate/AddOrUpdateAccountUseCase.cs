@@ -1,3 +1,5 @@
+using BudganGlobal.Errors;
+using BudganGlobal.Errors.Exceptions;
 using BudganInfra.Repositories.Account;
 using BudganInfra.Repositories.Account.Save;
 
@@ -28,6 +30,11 @@ internal class AddOrUpdateAccountUseCase : BaseUseCaseWithResultValue<Guid>, IAd
         var repoOp = this._accountRepository.SaveAccountRepoOperation(daoSave);
 
         await repoOp.ExecuteAsync();
+
+        if (!repoOp.Succeeded)
+        {
+            throw new BudganException(BudganErrorValue.DuplicateAccount);
+        }
 
         this.SetSucceeded(repoOp.ResultValue);
     }

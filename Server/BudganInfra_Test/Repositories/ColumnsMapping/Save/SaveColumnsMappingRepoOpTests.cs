@@ -1,5 +1,3 @@
-using BudganGlobal.Errors;
-using BudganGlobal.Errors.Exceptions;
 using BudganInfra.DBContext;
 using BudganInfra.Repositories.ColumnsMapping.Save;
 using Microsoft.EntityFrameworkCore;
@@ -94,66 +92,41 @@ public class SaveColumnsMappingRepoOpTests
     }
 
     [Fact]
-    public async Task Execute_WhenIdMatchesAndTimestampMatches_UpdatesExistingRowAndSetsSaveResultValue()
+    public async Task Execute_WhenIdIsGivenAndDoesNotExist_InsertsRowWithGivenId()
     {
         await using var context = CreateContext();
-        var timestamp = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        var seeded = await SeedColumnsMapping(context, timestamp);
-
-        var dao = CreateDao(id: seeded.Id.ToString(), timestamp: timestamp);
+        var givenId = Guid.NewGuid();
+        var dao = CreateDao(id: givenId.ToString());
         var op = new SaveColumnsMappingRepoOp(context, dao);
 
         await op.ExecuteAsync();
 
-        Assert.Equal(seeded.Id, op.ResultValue);
+        Assert.True(op.Succeeded);
+        Assert.Equal(givenId, op.ResultValue);
         Assert.Single(context.ColumnsMappings);
 
-        var persisted = await context.ColumnsMappings.SingleAsync(x => x.Id == seeded.Id);
+        var persisted = await context.ColumnsMappings.SingleAsync(x => x.Id == givenId);
         Assert.Equal(dao.Name, persisted.Name);
-        Assert.Equal(dao.CardNumberColumnIndex, persisted.CardNumberColumnIndex);
-        Assert.Equal(dao.AmountColumnIndex, persisted.AmountColumnIndex);
-        Assert.Equal(dao.DateInscriptionColumnIndex, persisted.DateInscriptionColumnIndex);
-        Assert.Equal(dao.DescriptionColumnIndex, persisted.DescriptionColumnIndex);
     }
 
     [Fact]
-    public async Task Execute_WhenIdDoesNotExist_ThrowsBudganExceptionWithResourceNotFound()
+    public async Task Execute_WhenIdAlreadyExists_ThrowsUnderInMemoryProviderInsteadOfSettingFailed()
     {
-        await using var context = CreateContext();
-        var dao = CreateDao(id: Guid.NewGuid().ToString(), timestamp: DateTime.UtcNow);
-        var op = new SaveColumnsMappingRepoOp(context, dao);
-
-        var ex = await Assert.ThrowsAsync<BudganException>(() => op.ExecuteAsync());
-
-        Assert.Equal(BudganErrorValue.ResourceNotFound, ex.BudganError);
-    }
-
-    [Fact]
-    public async Task Execute_WhenUpdateTimestampIsNull_ThrowsException()
-    {
+        // Characterization test, not a spec: because Id is the primary key, EF Core's
+        // identity map rejects tracking a second entity with the same key inside the same
+        // DbContext, raising InvalidOperationException from AddAsync() itself — before
+        // SaveChangesAsync() is ever reached. The graceful SetFailed(DuplicateColumnsMapping)
+        // path — triggered by catching a DbUpdateException wrapping a real SQL Server
+        // primary-key violation (error 2601/2627) on a fresh, per-request DbContext — can
+        // only be exercised against a real SQL Server database, not this test suite (mirrors
+        // SaveTransactionsFileRepoOpTests' equivalent characterization test).
         await using var context = CreateContext();
         var seeded = await SeedColumnsMapping(context, DateTime.UtcNow);
 
-        var dao = CreateDao(id: seeded.Id.ToString(), timestamp: null);
+        var dao = CreateDao(id: seeded.Id.ToString());
         var op = new SaveColumnsMappingRepoOp(context, dao);
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => op.ExecuteAsync());
-
-        Assert.Equal("timestamp value required for update operation", ex.Message);
-    }
-
-    [Fact]
-    public async Task Execute_WhenUpdateTimestampDoesNotMatch_ThrowsException()
-    {
-        await using var context = CreateContext();
-        var seeded = await SeedColumnsMapping(context, new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-
-        var dao = CreateDao(id: seeded.Id.ToString(), timestamp: new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc));
-        var op = new SaveColumnsMappingRepoOp(context, dao);
-
-        var ex = await Assert.ThrowsAsync<Exception>(() => op.ExecuteAsync());
-
-        Assert.Equal("indicated resource has been modified", ex.Message);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => op.ExecuteAsync());
     }
 
     [Theory]
@@ -171,8 +144,8 @@ public class SaveColumnsMappingRepoOpTests
     [Fact]
     public async Task ErrorValue_Get_AlwaysThrowsInvalidOperationException()
     {
-        // Characterization test: Succeeded is hardcoded true in the current implementation
-        // and never flipped to false, so ErrorValue is unreachable after any successful Execute().
+        // ErrorValue is only populated on a duplicate-id failure; a plain insert (no id given)
+        // always succeeds, so ErrorValue stays unreachable here.
         await using var context = CreateContext();
         var dao = CreateDao();
         var op = new SaveColumnsMappingRepoOp(context, dao);

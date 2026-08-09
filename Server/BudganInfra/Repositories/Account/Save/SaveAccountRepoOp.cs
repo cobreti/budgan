@@ -1,11 +1,14 @@
+using BudganGlobal.Errors;
 using BudganInfra.DBContext;
-using BudganInfra.DBContext.Tables;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudganInfra.Repositories.Account.Save;
 
 public class SaveAccountRepoOp : BaseRepositoryOperationWithResultValue<Guid>, ISaveAccountRepoOp
 {
+    private static readonly int[] UniqueConstraintViolationErrorNumbers = { 2601, 2627 };
+
     private readonly DataContext _context;
     private readonly DaoSaveAccount _daoSaveAccount;
 
@@ -14,22 +17,10 @@ public class SaveAccountRepoOp : BaseRepositoryOperationWithResultValue<Guid>, I
         this._context = context;
         this._daoSaveAccount = daoSaveAccount;
     }
-    
+
     public async Task ExecuteAsync()
     {
-        if (this._daoSaveAccount.Id == null)
-        {
-            await this.Add();
-        }
-        else
-        {
-            await this.Update();
-        }
-    }
-
-    private async Task Add()
-    {
-        var id = Guid.CreateVersion7();
+        var id = this._daoSaveAccount.Id != null ? Guid.Parse(this._daoSaveAccount.Id) : Guid.CreateVersion7();
         var accountEntity = new DBContext.Tables.Account
         {
             Id = id,
@@ -39,27 +30,32 @@ public class SaveAccountRepoOp : BaseRepositoryOperationWithResultValue<Guid>, I
         };
 
         await _context.AddAsync(accountEntity);
-        await _context.SaveChangesAsync();
+
+        if (!await this.TrySaveChanges())
+        {
+            return;
+        }
 
         this.SetSucceeded(id);
     }
 
-    private async Task Update()
+    private async Task<bool> TrySaveChanges()
     {
-        ArgumentNullException.ThrowIfNull(this._daoSaveAccount.Id);
+        try
+        {
+            await this._context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            this.SetFailed(BudganErrorValue.DuplicateAccount);
+            return false;
+        }
+    }
 
-        var id = Guid.Parse(this._daoSaveAccount.Id);
-        var entity = await this._context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
-
-        ValidateCanPerformUpdate(entity, this._daoSaveAccount);
-
-        entity.Name = this._daoSaveAccount.Name;
-        entity.AccountType = this._daoSaveAccount.AccountType;
-        entity.ColumnsMappingId = this._daoSaveAccount.ColumnsMappingId;
-
-        this._context.Update(entity);
-        await _context.SaveChangesAsync();
-
-        this.SetSucceeded(id);
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is SqlException sqlException
+               && sqlException.Errors.Cast<SqlError>().Any(e => UniqueConstraintViolationErrorNumbers.Contains(e.Number));
     }
 }

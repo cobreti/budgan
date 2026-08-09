@@ -48,6 +48,11 @@ public class AccountController : ControllerBase
                 return this.NotFound();
             }
 
+            if (ex.BudganError == BudganErrorValue.DuplicateAccount)
+            {
+                return this.Conflict(new ApiErrorResult<string>(ex.BudganError.ErrorMessage));
+            }
+
             throw;
         }
     }

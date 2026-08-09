@@ -53,6 +53,11 @@ public class ColumnsMappingController : ControllerBase
                 return this.NotFound();
             }
 
+            if (ex.BudganError == BudganErrorValue.DuplicateColumnsMapping)
+            {
+                return this.Conflict(new ApiErrorResult<string>(ex.BudganError.ErrorMessage));
+            }
+
             throw;
         }
     }

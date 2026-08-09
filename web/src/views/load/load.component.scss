@@ -30,6 +30,11 @@
     font-size: 0.9em;
   }
 
+  &__summary {
+    color: var(--mat-sys-on-surface-variant, inherit);
+    font-size: 0.9em;
+  }
+
   &__actions {
     display: flex;
     gap: 0.5rem;

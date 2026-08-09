@@ -9,7 +9,8 @@ import {
   BUDGAN_EXPORT_SERVICE,
   BudganExportService,
 } from '@services/budgan-export.service';
-import { IndexdbService } from '@services/indexdb.service';
+import { API_MODE_SERVICE, ApiModeService } from '@services/api-mode.service';
+import { IMPORT_SERVICE, ImportService } from '@services/import.service';
 import { PageMenuComponent } from '@components/page-menu/page-menu.component';
 import { PageMenuButtonComponent } from '@components/page-menu/page-menu-button/page-menu-button.component';
 import {
@@ -30,11 +31,14 @@ export class LoadComponent {
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _exportService = inject<BudganExportService>(BUDGAN_EXPORT_SERVICE);
-  private readonly _indexdb = inject(IndexdbService);
+  private readonly _apiMode = inject<ApiModeService>(API_MODE_SERVICE);
+  private readonly _importService = inject<ImportService>(IMPORT_SERVICE);
   private readonly _dialog = inject(MatDialog);
 
   readonly selectedFileName = signal<string>('');
   readonly errorKey = signal<string | null>(null);
+  readonly summaryKey = signal<string | null>(null);
+  readonly summaryParams = signal<Record<string, number>>({});
 
   private _fileHandle: FileSystemFileHandle | null = null;
 
@@ -58,12 +62,14 @@ export class LoadComponent {
   }
 
   async onLoad(payload: AllDataExportPayload): Promise<void> {
+    const isServerMode = this._apiMode.apiMode === 'server';
+
     const ref = this._dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(
       ConfirmDialogComponent,
       {
         data: {
           title: 'load.confirmTitle',
-          message: 'load.confirmMessage',
+          message: isServerMode ? 'load.confirmMessageServer' : 'load.confirmMessage',
           confirmLabel: 'load.confirmAccept',
           cancelLabel: 'load.confirmCancel',
           danger: true,
@@ -74,8 +80,16 @@ export class LoadComponent {
     const confirmed = await ref.afterClosed().toPromise();
     if (!confirmed) return;
 
-    await this._indexdb.replaceAll(payload);
-    await this._router.navigate([this._locale.currentLocale()]);
+    this.summaryKey.set(null);
+    const summary = await this._importService.importAllData(payload);
+
+    if (summary.skipped === 0 && summary.errors === 0) {
+      await this._router.navigate([this._locale.currentLocale()]);
+      return;
+    }
+
+    this.summaryParams.set({ skipped: summary.skipped, errors: summary.errors });
+    this.summaryKey.set('load.completedWithIssues');
   }
 
   onCancel(): void {

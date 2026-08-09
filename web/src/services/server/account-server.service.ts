@@ -24,15 +24,18 @@ export class AccountServiceServerImpl implements AccountService {
     name: string,
     columnsMappingId: string,
     accountType: AccountType,
+    id?: string,
   ): Promise<Result<string>> {
 
     var result = await this.httpClient.post<ApiResult<string>>('/api/Account/AddOrUpdate', {
+      id,
       name,
       columnsMappingId,
       accountType: accountType,
     });
 
     if (!result.succeeded) {
+      if (id) return { success: false, error: 'id-exists' };
       throw new Error(`failed to create account ${name} with error : ${result.errorValue}`);
     }
 

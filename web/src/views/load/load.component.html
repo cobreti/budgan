@@ -25,6 +25,10 @@
         @if (errorKey(); as key) {
           <span class="load__error" role="alert">{{ key | translate }}</span>
         }
+
+        @if (summaryKey(); as key) {
+          <span class="load__summary" role="status">{{ key | translate: summaryParams() }}</span>
+        }
       </div>
     </div>
   </app-page-body>

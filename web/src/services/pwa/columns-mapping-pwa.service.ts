@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import Dexie from 'dexie';
 import { ColumnsMappingService } from '@services/columns-mapping.service';
 import { IndexdbService } from '@services/indexdb.service';
 import { ID_GENERATOR_SERVICE, IdGeneratorService } from '@services/id-generator.service';
@@ -22,8 +23,13 @@ export class ColumnsMappingServicePwaImpl implements ColumnsMappingService {
         .filter((r) => r.id !== mapping.id)
         .count();
       if (conflict > 0) return { success: false, error: 'name-exists' };
-      await this._indexDb.columnsMappingTable.put(mapping);
-      return { success: true, value: mapping };
+      try {
+        await this._indexDb.columnsMappingTable.add(mapping);
+        return { success: true, value: mapping };
+      } catch (e) {
+        if (e instanceof Dexie.ConstraintError) return { success: false, error: 'id-exists' };
+        throw e;
+      }
     } else {
       const existing = await this._indexDb.columnsMappingTable
         .where('name')

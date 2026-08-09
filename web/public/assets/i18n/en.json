@@ -32,8 +32,10 @@
     "invalidFormat": "The file is not a valid Budgan backup.",
     "confirmTitle": "Replace all data?",
     "confirmMessage": "This will permanently delete the current data and replace it with the contents of the selected file. This action cannot be undone.",
+    "confirmMessageServer": "This will import the contents of the selected file. Items that already exist will be skipped, not overwritten.",
     "confirmAccept": "Load and Replace",
-    "confirmCancel": "Cancel"
+    "confirmCancel": "Cancel",
+    "completedWithIssues": "Load finished with {{skipped}} item(s) skipped (already existed) and {{errors}} error(s)."
   },
   "clearAll": {
     "title": "Clear all data?",

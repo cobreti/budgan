@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import Dexie from 'dexie';
 import { AccountService } from '@services/account.service';
 import { ID_GENERATOR_SERVICE, IdGeneratorService } from '@services/id-generator.service';
 import { IndexdbService } from '@services/indexdb.service';
@@ -19,13 +20,20 @@ export class AccountServicePwaImpl implements AccountService {
     name: string,
     columnsMappingId: string,
     accountType: AccountType,
+    id?: string,
   ): Promise<Result<string>> {
-    const existing = await this._indexDb.accountsTable.where('name').equals(name).count();
-    if (existing > 0) return { success: false, error: 'name-exists' };
+    const query = this._indexDb.accountsTable.where('name').equals(name);
+    const nameConflict = id ? await query.filter((a) => a.id !== id).count() : await query.count();
+    if (nameConflict > 0) return { success: false, error: 'name-exists' };
 
-    const id = this._idGenerator.generateId();
-    await this._indexDb.accountsTable.add({ id, name, columnsMappingId, accountType });
-    return { success: true, value: id };
+    const finalId = id ?? this._idGenerator.generateId();
+    try {
+      await this._indexDb.accountsTable.add({ id: finalId, name, columnsMappingId, accountType });
+      return { success: true, value: finalId };
+    } catch (e) {
+      if (id && e instanceof Dexie.ConstraintError) return { success: false, error: 'id-exists' };
+      throw e;
+    }
   }
 
   async getById(id: string): Promise<AccountModel> {

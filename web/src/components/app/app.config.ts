@@ -23,6 +23,7 @@ import { ColumnsMappingServiceProvider } from '@services/providers/columns-mappi
 import { AccountServiceProvider } from '@services/providers/account.service.provider';
 import { AccountTransactionServiceProvider } from '@services/providers/account-transaction.service.provider';
 import { AccountRecurringTransactionServiceProvider } from '@services/providers/account-recurring-transaction.service.provider';
+import { ImportServiceProvider } from '@services/providers/import.service.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,6 +49,7 @@ export const appConfig: ApplicationConfig = {
     FileServiceProvider,
     AccountTransactionServiceProvider,
     AccountRecurringTransactionServiceProvider,
+    ImportServiceProvider,
     { provide: BUDGAN_EXPORT_SERVICE, useClass: BudganExportServiceImpl },
     { provide: ACCOUNT_ANALYSIS_SERVICE, useClass: AccountAnalysisServiceImpl },
     { provide: API_MODE_SERVICE, useClass: ApiModeServiceImpl },

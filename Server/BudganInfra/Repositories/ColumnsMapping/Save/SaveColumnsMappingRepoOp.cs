@@ -1,15 +1,19 @@
+using BudganGlobal.Errors;
 using BudganInfra.DBContext;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudganInfra.Repositories.ColumnsMapping.Save;
 
 internal class SaveColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue<Guid>, ISaveColumnsMappingRepoOp
 {
+    private static readonly int[] UniqueConstraintViolationErrorNumbers = { 2601, 2627 };
+
     private readonly DataContext _dataContext;
     private readonly DaoSaveColumnsMapping _daoSaveColumnsMapping;
 
     public DaoSaveColumnsMapping DaoSaveColumnsMapping => this._daoSaveColumnsMapping;
-    
+
 
     public SaveColumnsMappingRepoOp(DataContext dataContext, DaoSaveColumnsMapping daoSaveColumnsMapping)
     {
@@ -19,19 +23,7 @@ internal class SaveColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue
 
     public async Task ExecuteAsync()
     {
-        if (this._daoSaveColumnsMapping.Id == null)
-        {
-            await this.Add();
-        }
-        else
-        {
-            await this.Update();
-        }
-    }
-
-    private async Task Add()
-    {
-        var id = Guid.CreateVersion7();
+        var id = this._daoSaveColumnsMapping.Id != null ? Guid.Parse(this._daoSaveColumnsMapping.Id) : Guid.CreateVersion7();
         var columnsMapping = new DBContext.Tables.ColumnsMapping()
         {
             Id = id,
@@ -47,34 +39,32 @@ internal class SaveColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue
         };
 
         await this._dataContext.ColumnsMappings.AddAsync(columnsMapping);
-        await this._dataContext.SaveChangesAsync();
+
+        if (!await this.TrySaveChanges())
+        {
+            return;
+        }
 
         this.SetSucceeded(columnsMapping.Id);
     }
 
-    private async Task Update()
+    private async Task<bool> TrySaveChanges()
     {
-        ArgumentNullException.ThrowIfNull(this._daoSaveColumnsMapping.Id);
+        try
+        {
+            await this._dataContext.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            this.SetFailed(BudganErrorValue.DuplicateColumnsMapping);
+            return false;
+        }
+    }
 
-        var id = Guid.Parse(this._daoSaveColumnsMapping.Id);
-        var columnsMapping = await this._dataContext.ColumnsMappings
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-        ValidateCanPerformUpdate(columnsMapping, this._daoSaveColumnsMapping);
-
-        columnsMapping.Name = this._daoSaveColumnsMapping.Name;
-        columnsMapping.CardNumberColumnIndex = this._daoSaveColumnsMapping.CardNumberColumnIndex;
-        columnsMapping.CardNumberColumnText = this._daoSaveColumnsMapping.CardNumberColumnText;
-        columnsMapping.AmountColumnIndex = this._daoSaveColumnsMapping.AmountColumnIndex;
-        columnsMapping.AmountColumnText = this._daoSaveColumnsMapping.AmountColumnText;
-        columnsMapping.DateInscriptionColumnIndex = this._daoSaveColumnsMapping.DateInscriptionColumnIndex;
-        columnsMapping.DateInscriptionColumnText = this._daoSaveColumnsMapping.DateInscriptionColumnText;
-        columnsMapping.DescriptionColumnIndex = this._daoSaveColumnsMapping.DescriptionColumnIndex;
-        columnsMapping.DescriptionColumnText = this._daoSaveColumnsMapping.DescriptionColumnText;
-
-        this._dataContext.ColumnsMappings.Update(columnsMapping);
-        await this._dataContext.SaveChangesAsync();
-
-        this.SetSucceeded(id);
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is SqlException sqlException
+               && sqlException.Errors.Cast<SqlError>().Any(e => UniqueConstraintViolationErrorNumbers.Contains(e.Number));
     }
 }

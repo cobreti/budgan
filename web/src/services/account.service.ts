@@ -4,7 +4,7 @@ import { Result } from '@app-types/result';
 
 export interface AccountService {
   getList(): Promise<AccountModel[]>;
-  create(name: string, columnsMappingId: string, accountType: AccountType): Promise<Result<string>>;
+  create(name: string, columnsMappingId: string, accountType: AccountType, id?: string): Promise<Result<string>>;
   getById(id: string): Promise<AccountModel>;
   delete(id: string): Promise<void>;
 }

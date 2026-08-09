@@ -1,3 +1,5 @@
+using BudganGlobal.Errors;
+using BudganGlobal.Errors.Exceptions;
 using BudganInfra.Repositories.ColumnsMapping;
 using BudganInfra.Repositories.ColumnsMapping.Save;
 
@@ -33,6 +35,11 @@ internal class AddOrUpdateColumnsMappingUseCase : BaseUseCaseWithResultValue<Gui
         var repoOp = this._columnsMappingRepository.SaveColumnsMappingRepoOperation(daoSave);
 
         await repoOp.ExecuteAsync();
+
+        if (!repoOp.Succeeded)
+        {
+            throw new BudganException(BudganErrorValue.DuplicateColumnsMapping);
+        }
 
         this.SetSucceeded(repoOp.ResultValue);
     }
