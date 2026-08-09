@@ -62,14 +62,17 @@ export class LoadComponent {
   }
 
   async onLoad(payload: AllDataExportPayload): Promise<void> {
-    const isServerMode = this._apiMode.apiMode === 'server';
+    if (this._apiMode.apiMode === 'server') {
+      await this._runImport(payload);
+      return;
+    }
 
     const ref = this._dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(
       ConfirmDialogComponent,
       {
         data: {
           title: 'load.confirmTitle',
-          message: isServerMode ? 'load.confirmMessageServer' : 'load.confirmMessage',
+          message: 'load.confirmMessage',
           confirmLabel: 'load.confirmAccept',
           cancelLabel: 'load.confirmCancel',
           danger: true,
@@ -80,6 +83,10 @@ export class LoadComponent {
     const confirmed = await ref.afterClosed().toPromise();
     if (!confirmed) return;
 
+    await this._runImport(payload);
+  }
+
+  private async _runImport(payload: AllDataExportPayload): Promise<void> {
     this.summaryKey.set(null);
     const summary = await this._importService.importAllData(payload);
 
