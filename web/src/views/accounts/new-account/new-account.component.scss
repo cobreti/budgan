@@ -23,6 +23,7 @@
   &__actions {
     display: flex;
     gap: 0.5rem;
+    align-self: flex-end;
   }
 
   .form-control {

@@ -36,9 +36,13 @@
   }
 
   &__columns {
+    margin-left: 2rem;
+    margin-top: 2rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
+    min-width: 25rem;
+    max-width: 75%;
     gap: 1rem;
   }
 
