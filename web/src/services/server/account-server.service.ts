@@ -36,6 +36,7 @@ export class AccountServiceServerImpl implements AccountService {
 
     if (!result.succeeded) {
       if (id) return { success: false, error: 'id-exists' };
+      if (result.errorValue === 'DuplicateAccountName') return { success: false, error: 'name-exists' };
       throw new Error(`failed to create account ${name} with error : ${result.errorValue}`);
     }
 

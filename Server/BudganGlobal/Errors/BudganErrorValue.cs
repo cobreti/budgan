@@ -10,6 +10,7 @@ public class BudganErrorValue
     public static BudganErrorValue DuplicateAccountRecurringTransaction = new BudganErrorValue("DuplicateAccountRecurringTransaction", "A recurring transaction pattern with this id already exists");
     public static BudganErrorValue DuplicateTransactionsFile = new BudganErrorValue("DuplicateTransactionsFile", "A file with this name has already been imported for this account");
     public static BudganErrorValue DuplicateAccount = new BudganErrorValue("DuplicateAccount", "An account with this id already exists");
+    public static BudganErrorValue DuplicateAccountName = new BudganErrorValue("DuplicateAccountName", "An account with this name already exists");
     public static BudganErrorValue DuplicateColumnsMapping = new BudganErrorValue("DuplicateColumnsMapping", "A columns mapping with this id already exists");
 
     public string ErrorCode { get; }

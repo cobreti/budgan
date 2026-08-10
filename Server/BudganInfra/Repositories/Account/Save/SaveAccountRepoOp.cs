@@ -46,16 +46,31 @@ public class SaveAccountRepoOp : BaseRepositoryOperationWithResultValue<Guid>, I
             await this._context.SaveChangesAsync();
             return true;
         }
-        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex, out var violatedIndexName))
         {
-            this.SetFailed(BudganErrorValue.DuplicateAccount);
+            this.SetFailed(violatedIndexName == "IX_Account_Name" ? BudganErrorValue.DuplicateAccountName : BudganErrorValue.DuplicateAccount);
             return false;
         }
     }
 
-    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex, out string? violatedIndexName)
     {
-        return ex.InnerException is SqlException sqlException
-               && sqlException.Errors.Cast<SqlError>().Any(e => UniqueConstraintViolationErrorNumbers.Contains(e.Number));
+        violatedIndexName = null;
+
+        if (ex.InnerException is not SqlException sqlException)
+        {
+            return false;
+        }
+
+        var violation = sqlException.Errors.Cast<SqlError>()
+            .FirstOrDefault(e => UniqueConstraintViolationErrorNumbers.Contains(e.Number));
+
+        if (violation == null)
+        {
+            return false;
+        }
+
+        violatedIndexName = violation.Message.Contains("IX_Account_Name") ? "IX_Account_Name" : null;
+        return true;
     }
 }

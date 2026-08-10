@@ -26,6 +26,9 @@ public class DataContext(DbContextOptions<DataContext> options) : Microsoft.Enti
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Timestamp)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+            entity.HasIndex(e => e.Name)
+                .IsUnique();
         });
 
         modelBuilder.Entity<AccountTransaction>(entity =>

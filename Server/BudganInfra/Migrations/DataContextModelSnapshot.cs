@@ -50,6 +50,9 @@ namespace BudganInfra.Migrations
 
                     b.HasIndex("ColumnsMappingId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Account");
                 });
 
@@ -233,6 +236,7 @@ namespace BudganInfra.Migrations
 
                     b.Property<string>("Filename")
                         .IsRequired()
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("InsertionDate")

@@ -33,7 +33,7 @@ internal class AddOrUpdateAccountUseCase : BaseUseCaseWithResultValue<Guid>, IAd
 
         if (!repoOp.Succeeded)
         {
-            throw new BudganException(BudganErrorValue.DuplicateAccount);
+            throw new BudganException(repoOp.BudganErrorValue);
         }
 
         this.SetSucceeded(repoOp.ResultValue);
