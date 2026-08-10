@@ -11,7 +11,7 @@ import { MainMenuService } from '@services/main-menu.service';
 import { LOCALE_SERVICE } from '@services/locale.service';
 import { THEME_SERVICE } from '@services/theme.service';
 import { HeaderPageTitleComponent } from '@components/header/header-page-title/header-page-title.component';
-import { environment } from '../../environments/environment';
+import { getCurrentBuildType } from '@/utils/build-type';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +26,7 @@ export class HeaderComponent {
   private readonly _router = inject(Router);
   private readonly _themeService = inject(THEME_SERVICE);
   protected readonly isDark = this._themeService.isDark;
-  protected readonly buildType = environment.buildType;
+  protected readonly buildType = getCurrentBuildType();
   protected readonly currentLocale = this._localeService.currentLocale;
 
   onMenuBtnClick(): void {

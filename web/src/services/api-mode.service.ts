@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { environment } from '@/environments/environment';
+import { isPWABuild } from '@/utils/build-type';
 
 export type ApiMode = 'local' | 'server';
 
@@ -11,6 +11,6 @@ export const API_MODE_SERVICE = new InjectionToken<ApiModeService>('ApiModeServi
 
 @Injectable({ providedIn: 'root' })
 export class ApiModeServiceImpl implements ApiModeService {
-  readonly apiMode: ApiMode = environment.buildType === 'pwa' ? 'local' : 'server';
+  readonly apiMode: ApiMode = isPWABuild() ? 'local' : 'server';
 }
 
