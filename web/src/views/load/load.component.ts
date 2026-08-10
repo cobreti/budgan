@@ -9,7 +9,7 @@ import {
   BUDGAN_EXPORT_SERVICE,
   BudganExportService,
 } from '@services/budgan-export.service';
-import { API_MODE_SERVICE, ApiModeService } from '@services/api-mode.service';
+import { isServerBuild } from '@/utils/build-type';
 import { IMPORT_SERVICE, ImportService } from '@services/import.service';
 import { PageMenuComponent } from '@components/page-menu/page-menu.component';
 import { PageMenuButtonComponent } from '@components/page-menu/page-menu-button/page-menu-button.component';
@@ -31,7 +31,6 @@ export class LoadComponent {
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _exportService = inject<BudganExportService>(BUDGAN_EXPORT_SERVICE);
-  private readonly _apiMode = inject<ApiModeService>(API_MODE_SERVICE);
   private readonly _importService = inject<ImportService>(IMPORT_SERVICE);
   private readonly _dialog = inject(MatDialog);
 
@@ -62,7 +61,7 @@ export class LoadComponent {
   }
 
   async onLoad(payload: AllDataExportPayload): Promise<void> {
-    if (this._apiMode.apiMode === 'server') {
+    if (isServerBuild()) {
       await this._runImport(payload);
       return;
     }
