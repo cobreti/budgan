@@ -99,7 +99,7 @@ public class InsertAccountRecurringTransactionRepoOpTests
         await using var context = CreateContext();
         var accountId = Guid.NewGuid();
 
-        context.AccountRecurringTransactions.Add(new BudganInfra.DBContext.Tables.AccountRecurringTransaction
+        context.AccountRecurringTransactions.Add(new BudganInfra.DBContext.Entities.AccountRecurringTransaction
         {
             Id = Guid.CreateVersion7(),
             Timestamp = DateTime.UtcNow,

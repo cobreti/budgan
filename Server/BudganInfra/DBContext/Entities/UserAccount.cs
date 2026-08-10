@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BudganInfra.DBContext.Tables;
+namespace BudganInfra.DBContext.Entities;
 
 public class UserAccount
 {

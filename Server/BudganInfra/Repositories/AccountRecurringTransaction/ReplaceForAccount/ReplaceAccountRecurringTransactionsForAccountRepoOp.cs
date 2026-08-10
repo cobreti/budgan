@@ -37,7 +37,7 @@ public class ReplaceAccountRecurringTransactionsForAccountRepoOp : BaseRepositor
 
         if (this._items.Count > 0)
         {
-            var entities = this._items.Select(x => new DBContext.Tables.AccountRecurringTransaction
+            var entities = this._items.Select(x => new DBContext.Entities.AccountRecurringTransaction
             {
                 Id = Guid.CreateVersion7(),
                 AccountId = x.AccountId,

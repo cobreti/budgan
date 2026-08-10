@@ -1,4 +1,4 @@
-using InfraRecordType = BudganInfra.DBContext.Tables.AccountTransactionRecordType;
+using InfraRecordType = BudganInfra.DBContext.Entities.AccountTransactionRecordType;
 
 namespace BudganServices.UseCases.AccountTransaction;
 

@@ -22,7 +22,7 @@ namespace BudganInfra.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.Account", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace BudganInfra.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.AccountRecurringTransaction", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.AccountRecurringTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,7 +103,7 @@ namespace BudganInfra.Migrations
                     b.ToTable("AccountRecurringTransactions");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.AccountTransaction", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.AccountTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace BudganInfra.Migrations
                     b.ToTable("AccountTransactions");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.ColumnsMapping", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.ColumnsMapping", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -218,7 +218,7 @@ namespace BudganInfra.Migrations
                     b.ToTable("ColumnsMapping");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.TransactionsFile", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.TransactionsFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,7 +253,7 @@ namespace BudganInfra.Migrations
                     b.ToTable("TransactionsFiles");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.UserAccount", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.UserAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -272,9 +272,9 @@ namespace BudganInfra.Migrations
                     b.ToTable("UserAccounts");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.Account", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.Account", b =>
                 {
-                    b.HasOne("BudganInfra.DBContext.Tables.ColumnsMapping", "ColumnsMapping")
+                    b.HasOne("BudganInfra.DBContext.Entities.ColumnsMapping", "ColumnsMapping")
                         .WithMany()
                         .HasForeignKey("ColumnsMappingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -283,9 +283,9 @@ namespace BudganInfra.Migrations
                     b.Navigation("ColumnsMapping");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.AccountRecurringTransaction", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.AccountRecurringTransaction", b =>
                 {
-                    b.HasOne("BudganInfra.DBContext.Tables.Account", "Account")
+                    b.HasOne("BudganInfra.DBContext.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -294,9 +294,9 @@ namespace BudganInfra.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.AccountTransaction", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.AccountTransaction", b =>
                 {
-                    b.HasOne("BudganInfra.DBContext.Tables.Account", "Account")
+                    b.HasOne("BudganInfra.DBContext.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -305,9 +305,9 @@ namespace BudganInfra.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("BudganInfra.DBContext.Tables.TransactionsFile", b =>
+            modelBuilder.Entity("BudganInfra.DBContext.Entities.TransactionsFile", b =>
                 {
-                    b.HasOne("BudganInfra.DBContext.Tables.Account", "Account")
+                    b.HasOne("BudganInfra.DBContext.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,4 +1,4 @@
-using BudganInfra.DBContext.Tables;
+using BudganInfra.DBContext.Entities;
 using BudganInfra.Repositories.Models;
 
 namespace BudganInfra.Repositories.AccountTransaction.Save;

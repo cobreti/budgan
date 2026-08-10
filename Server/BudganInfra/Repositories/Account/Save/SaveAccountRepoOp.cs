@@ -21,7 +21,7 @@ public class SaveAccountRepoOp : BaseRepositoryOperationWithResultValue<Guid>, I
     public async Task ExecuteAsync()
     {
         var id = this._daoSaveAccount.Id != null ? Guid.Parse(this._daoSaveAccount.Id) : Guid.CreateVersion7();
-        var accountEntity = new DBContext.Tables.Account
+        var accountEntity = new DBContext.Entities.Account
         {
             Id = id,
             Name = this._daoSaveAccount.Name,

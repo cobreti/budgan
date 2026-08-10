@@ -1,4 +1,4 @@
-using BudganInfra.DBContext.Tables;
+using BudganInfra.DBContext.Entities;
 
 namespace BudganInfra.Repositories.AccountTransaction.GetList;
 

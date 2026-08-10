@@ -33,9 +33,9 @@ public class SaveColumnsMappingRepoOpTests
         };
     }
 
-    private static async Task<BudganInfra.DBContext.Tables.ColumnsMapping> SeedColumnsMapping(DataContext context, DateTime timestamp)
+    private static async Task<BudganInfra.DBContext.Entities.ColumnsMapping> SeedColumnsMapping(DataContext context, DateTime timestamp)
     {
-        var entity = new BudganInfra.DBContext.Tables.ColumnsMapping
+        var entity = new BudganInfra.DBContext.Entities.ColumnsMapping
         {
             Id = Guid.CreateVersion7(),
             Timestamp = timestamp,

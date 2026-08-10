@@ -68,7 +68,7 @@ public class SaveTransactionsFileRepoOpTests
         await using var context = CreateContext();
         var accountId = Guid.NewGuid();
 
-        context.TransactionsFiles.Add(new BudganInfra.DBContext.Tables.TransactionsFile
+        context.TransactionsFiles.Add(new BudganInfra.DBContext.Entities.TransactionsFile
         {
             Id = Guid.CreateVersion7(),
             AccountId = accountId,

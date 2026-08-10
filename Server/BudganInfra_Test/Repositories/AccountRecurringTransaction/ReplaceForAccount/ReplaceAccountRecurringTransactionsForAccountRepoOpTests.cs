@@ -16,12 +16,12 @@ public class ReplaceAccountRecurringTransactionsForAccountRepoOpTests
         return new DataContext(options);
     }
 
-    private static async Task<BudganInfra.DBContext.Tables.AccountRecurringTransaction> SeedRow(
+    private static async Task<BudganInfra.DBContext.Entities.AccountRecurringTransaction> SeedRow(
         DataContext context,
         Guid accountId,
         string recurringId)
     {
-        var entity = new BudganInfra.DBContext.Tables.AccountRecurringTransaction
+        var entity = new BudganInfra.DBContext.Entities.AccountRecurringTransaction
         {
             Id = Guid.CreateVersion7(),
             Timestamp = DateTime.UtcNow,

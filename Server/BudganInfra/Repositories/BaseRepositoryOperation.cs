@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using BudganGlobal.Errors;
 using BudganGlobal.Errors.Exceptions;
-using BudganInfra.DBContext.Tables;
+using BudganInfra.DBContext.Entities;
 using BudganInfra.Repositories.Models;
 
 namespace BudganInfra.Repositories;

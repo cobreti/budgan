@@ -1,5 +1,5 @@
 using BudganInfra.DBContext;
-using BudganInfra.DBContext.Tables;
+using BudganInfra.DBContext.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudganInfra.Repositories.AccountRecurringTransaction.GetTransactionsByAccount;

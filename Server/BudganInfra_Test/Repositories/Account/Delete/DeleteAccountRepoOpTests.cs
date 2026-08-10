@@ -15,12 +15,12 @@ public class DeleteAccountRepoOpTests
         return new DataContext(options);
     }
 
-    private static async Task<BudganInfra.DBContext.Tables.Account> SeedAccount(
+    private static async Task<BudganInfra.DBContext.Entities.Account> SeedAccount(
         DataContext context,
         string name,
         string accountType)
     {
-        var entity = new BudganInfra.DBContext.Tables.Account
+        var entity = new BudganInfra.DBContext.Entities.Account
         {
             Id = Guid.CreateVersion7(),
             Timestamp = DateTime.UtcNow,

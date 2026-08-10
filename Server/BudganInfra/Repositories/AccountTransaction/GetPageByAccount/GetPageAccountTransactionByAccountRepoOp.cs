@@ -63,8 +63,8 @@ public class GetPageAccountTransactionByAccountRepoOp
         });
     }
 
-    private IOrderedQueryable<DBContext.Tables.AccountTransaction> ApplySort(
-        IQueryable<DBContext.Tables.AccountTransaction> query)
+    private IOrderedQueryable<DBContext.Entities.AccountTransaction> ApplySort(
+        IQueryable<DBContext.Entities.AccountTransaction> query)
     {
         var ordered = (this._sortField, this._sortDirection) switch
         {

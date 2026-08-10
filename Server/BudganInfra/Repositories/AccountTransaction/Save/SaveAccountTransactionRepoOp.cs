@@ -33,7 +33,7 @@ public class SaveAccountTransactionRepoOp : BaseRepositoryOperationWithResultVal
     private async Task Add()
     {
         var id = Guid.CreateVersion7();
-        var entity = new DBContext.Tables.AccountTransaction
+        var entity = new DBContext.Entities.AccountTransaction
         {
             Id = id,
             AccountId = this._daoSaveAccountTransaction.AccountId,

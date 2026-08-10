@@ -26,7 +26,7 @@ public class InsertAccountRecurringTransactionRepoOp : BaseRepositoryOperation, 
             return;
         }
 
-        var entities = this._items.Select(x => new DBContext.Tables.AccountRecurringTransaction
+        var entities = this._items.Select(x => new DBContext.Entities.AccountRecurringTransaction
         {
             Id = Guid.CreateVersion7(),
             AccountId = x.AccountId,

@@ -20,7 +20,7 @@ namespace BudganInfra.Repositories.TransactionsFile.Save
 
         public async Task ExecuteAsync()
         {
-            var transactionsFileEntity = new DBContext.Tables.TransactionsFile
+            var transactionsFileEntity = new DBContext.Entities.TransactionsFile
             {
                 Id = Guid.CreateVersion7(),
                 AccountId = this._daoSaveTransactionsFile.AccountId,

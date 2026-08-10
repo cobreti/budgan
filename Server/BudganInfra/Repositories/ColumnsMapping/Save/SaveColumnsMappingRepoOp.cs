@@ -24,7 +24,7 @@ internal class SaveColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue
     public async Task ExecuteAsync()
     {
         var id = this._daoSaveColumnsMapping.Id != null ? Guid.Parse(this._daoSaveColumnsMapping.Id) : Guid.CreateVersion7();
-        var columnsMapping = new DBContext.Tables.ColumnsMapping()
+        var columnsMapping = new DBContext.Entities.ColumnsMapping()
         {
             Id = id,
             Name = this._daoSaveColumnsMapping.Name,

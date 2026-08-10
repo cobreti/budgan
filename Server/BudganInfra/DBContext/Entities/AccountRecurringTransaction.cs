@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BudganInfra.DBContext.Tables;
+namespace BudganInfra.DBContext.Entities;
 
 [Table("AccountRecurringTransactions")]
 public class AccountRecurringTransaction : BaseEntity
