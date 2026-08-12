@@ -4,6 +4,7 @@ using BudganServices.UseCases.AccountTransaction.Delete;
 using BudganServices.UseCases.AccountTransaction.DeleteSnapshot;
 using BudganServices.UseCases.AccountTransaction.Get;
 using BudganServices.UseCases.AccountTransaction.GetCountByAccount;
+using BudganServices.UseCases.AccountTransaction.GetList;
 using BudganServices.UseCases.AccountTransaction.GetListByAccount;
 using BudganServices.UseCases.AccountTransaction.GetPageByAccount;
 using BudganServices.UseCases.AccountTransaction.GetSnapshot;
@@ -18,6 +19,7 @@ public interface IAccountTransactionUseCaseFactory
     IGetAccountTransactionUseCase GetUseCase(Guid id);
     IDeleteAccountTransactionUseCase DeleteUseCase(Guid id);
     IListAccountTransactionByAccountUseCase ListByAccountUseCase(Guid accountId);
+    IListAccountTransactionUseCase ListUseCase();
     IGetCountAccountTransactionByAccountUseCase GetCountByAccountUseCase(Guid accountId);
 
     IGetPageAccountTransactionByAccountUseCase GetPageByAccountUseCase(

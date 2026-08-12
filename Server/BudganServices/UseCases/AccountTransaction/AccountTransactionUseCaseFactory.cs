@@ -5,6 +5,7 @@ using BudganServices.UseCases.AccountTransaction.Delete;
 using BudganServices.UseCases.AccountTransaction.DeleteSnapshot;
 using BudganServices.UseCases.AccountTransaction.Get;
 using BudganServices.UseCases.AccountTransaction.GetCountByAccount;
+using BudganServices.UseCases.AccountTransaction.GetList;
 using BudganServices.UseCases.AccountTransaction.GetListByAccount;
 using BudganServices.UseCases.AccountTransaction.GetPageByAccount;
 using BudganServices.UseCases.AccountTransaction.GetSnapshot;
@@ -40,6 +41,11 @@ internal class AccountTransactionUseCaseFactory : IAccountTransactionUseCaseFact
     public IListAccountTransactionByAccountUseCase ListByAccountUseCase(Guid accountId)
     {
         return new ListAccountTransactionByAccountUseCase(this._accountTransactionRepository, accountId);
+    }
+
+    public IListAccountTransactionUseCase ListUseCase()
+    {
+        return new ListAccountTransactionUseCase(this._accountTransactionRepository);
     }
 
     public IGetCountAccountTransactionByAccountUseCase GetCountByAccountUseCase(Guid accountId)

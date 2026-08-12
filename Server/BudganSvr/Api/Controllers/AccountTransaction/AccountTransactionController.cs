@@ -138,6 +138,35 @@ public class AccountTransactionController : ControllerBase
     }
 
     [HttpGet]
+    [Route("List")]
+    public async Task<IActionResult> List()
+    {
+        var useCase = this._accountTransactionUseCaseFactory.ListUseCase();
+
+        await useCase.ExecuteAsync();
+
+        var model = useCase.ResultValue
+            .Select(x => new AccountTransactionListItem
+            {
+                Id = x.Id,
+                AccountId = x.AccountId,
+                FileId = x.FileId,
+                CardNumber = x.CardNumber,
+                DateInscriptionAsString = x.DateInscriptionAsString,
+                Amount = x.Amount,
+                Balance = x.Balance,
+                BalanceDateOffset = x.BalanceDateOffset,
+                Description = x.Description,
+                UniqueKey = x.UniqueKey,
+                RecurringId = x.RecurringId,
+                RecordType = ToRecordTypeString(x.RecordType),
+            })
+            .ToList();
+
+        return this.Ok(new ApiSuccessResult<List<AccountTransactionListItem>>(model));
+    }
+
+    [HttpGet]
     [Route("Account/{accountId}/Count")]
     public async Task<IActionResult> GetCountByAccount(Guid accountId)
     {

@@ -63,7 +63,15 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
   }
 
   async getList(): Promise<AccountTransactionModel[]> {
-    throw new Error('getList is not supported in server mode');
+    const result = await this.httpClient.get<ApiResult<AccountTransactionDto[]>>(
+      '/api/AccountTransaction/List',
+    );
+
+    if (!result.succeeded) {
+      throw new Error(`failed to list transactions with error : ${result.errorValue}`);
+    }
+
+    return result.successValue.map((dto) => this._toModel(dto));
   }
 
   async getCountByAccount(accountId: string): Promise<number> {
