@@ -41,6 +41,10 @@ interface AccountRecurringTransactionItemDto {
   lastOccurrenceDate: string;
 }
 
+interface AccountRecurringTransactionListItemDto extends AccountRecurringTransactionItemDto {
+  accountId: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AccountRecurringTransactionServiceServerImpl implements AccountRecurringTransactionService {
   private readonly _httpClient = inject(BdgHttpClient);
@@ -138,7 +142,26 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
   }
 
   async getAll(): Promise<AccountRecurringTransactionModel[]> {
-    throw new Error('getAll is not supported in server mode');
+    const result = await this._httpClient.get<ApiResult<AccountRecurringTransactionListItemDto[]>>(
+      '/api/AccountRecurringTransaction/List',
+    );
+
+    if (!result.succeeded) {
+      throw new Error(
+        `failed to list all recurring transactions with error : ${result.errorValue}`,
+      );
+    }
+
+    return result.successValue.map((dto) => ({
+      id: dto.id,
+      accountId: dto.accountId,
+      periodInDays: dto.periodInDays,
+      transactionCount: dto.transactionCount,
+      description: dto.description,
+      averageAmount: dto.averageAmount,
+      firstOccurrenceDate: dto.firstOccurrenceDate,
+      lastOccurrenceDate: dto.lastOccurrenceDate,
+    }));
   }
 
   async deleteByAccount(accountId: string): Promise<void> {

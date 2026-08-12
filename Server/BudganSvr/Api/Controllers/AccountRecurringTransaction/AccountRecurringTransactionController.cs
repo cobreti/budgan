@@ -148,6 +148,31 @@ public class AccountRecurringTransactionController : ControllerBase
         return this.Ok(new ApiSuccessResult<List<AccountRecurringTransactionItem>>(model));
     }
 
+    [HttpGet]
+    [Route("List")]
+    public async Task<IActionResult> List()
+    {
+        var useCase = this._accountRecurringTransactionUseCaseFactory.ListUseCase();
+
+        await useCase.ExecuteAsync();
+
+        var model = useCase.ResultValue
+            .Select(x => new AccountRecurringTransactionListItem
+            {
+                Id = x.RecurringId,
+                AccountId = x.AccountId,
+                PeriodInDays = x.PeriodInDays,
+                TransactionCount = x.TransactionCount,
+                Description = x.Description,
+                AverageAmount = x.AverageAmount,
+                FirstOccurrenceDate = x.FirstOccurrenceDateAsString,
+                LastOccurrenceDate = x.LastOccurrenceDateAsString,
+            })
+            .ToList();
+
+        return this.Ok(new ApiSuccessResult<List<AccountRecurringTransactionListItem>>(model));
+    }
+
     [HttpDelete]
     [Route("Account/{accountId}")]
     public async Task<IActionResult> DeleteByAccount(Guid accountId)

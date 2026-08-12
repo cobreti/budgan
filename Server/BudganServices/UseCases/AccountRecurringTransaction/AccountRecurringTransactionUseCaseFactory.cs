@@ -1,5 +1,6 @@
 using BudganInfra.Repositories.AccountRecurringTransaction;
 using BudganServices.UseCases.AccountRecurringTransaction.DeleteByAccount;
+using BudganServices.UseCases.AccountRecurringTransaction.GetList;
 using BudganServices.UseCases.AccountRecurringTransaction.GetListByAccount;
 using BudganServices.UseCases.AccountRecurringTransaction.GetSpan;
 using BudganServices.UseCases.AccountRecurringTransaction.GetTransactionsByAccount;
@@ -37,6 +38,11 @@ internal class AccountRecurringTransactionUseCaseFactory : IAccountRecurringTran
     public IListAccountRecurringTransactionByAccountUseCase ListByAccountUseCase(Guid accountId)
     {
         return new ListAccountRecurringTransactionByAccountUseCase(this._accountRecurringTransactionRepository, accountId);
+    }
+
+    public IListAccountRecurringTransactionUseCase ListUseCase()
+    {
+        return new ListAccountRecurringTransactionUseCase(this._accountRecurringTransactionRepository);
     }
 
     public IDeleteAccountRecurringTransactionByAccountUseCase DeleteByAccountUseCase(Guid accountId)

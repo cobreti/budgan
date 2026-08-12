@@ -1,4 +1,5 @@
 using BudganServices.UseCases.AccountRecurringTransaction.DeleteByAccount;
+using BudganServices.UseCases.AccountRecurringTransaction.GetList;
 using BudganServices.UseCases.AccountRecurringTransaction.GetListByAccount;
 using BudganServices.UseCases.AccountRecurringTransaction.GetSpan;
 using BudganServices.UseCases.AccountRecurringTransaction.GetTransactionsByAccount;
@@ -18,6 +19,8 @@ public interface IAccountRecurringTransactionUseCaseFactory
     IGetSpanRecurringTransactionsUseCase GetSpanUseCase(Guid accountId);
 
     IListAccountRecurringTransactionByAccountUseCase ListByAccountUseCase(Guid accountId);
+
+    IListAccountRecurringTransactionUseCase ListUseCase();
 
     IDeleteAccountRecurringTransactionByAccountUseCase DeleteByAccountUseCase(Guid accountId);
 }
