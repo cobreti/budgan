@@ -28,7 +28,9 @@ export class FileServiceServerImpl implements FileService {
   }
 
   async getList(): Promise<fileModel[]> {
-    throw new Error('getList is not supported in server mode');
+    const result = await this.httpClient.get<FileDto[]>('/api/TransactionsFile/List');
+
+    return result.map((dto) => this._toModel(dto));
   }
 
   async create(accountId: string, filename: string, content: string, insertionDate: Date): Promise<Result<string>> {

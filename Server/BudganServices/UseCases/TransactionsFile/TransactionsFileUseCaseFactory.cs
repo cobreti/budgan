@@ -1,4 +1,5 @@
 using BudganInfra.Repositories.TransactionsFile;
+using BudganServices.UseCases.TransactionsFile.GetList;
 using BudganServices.UseCases.TransactionsFile.GetListByAccount;
 using BudganServices.UseCases.TransactionsFile.Save;
 
@@ -21,5 +22,10 @@ internal class TransactionsFileUseCaseFactory : ITransactionsFileUseCaseFactory
     public IGetListByAccountTransactionsFileUseCase GetListByAccountUseCase(Guid accountId)
     {
         return new GetListByAccountTransactionsFileUseCase(this._transactionsFileRepository, accountId);
+    }
+
+    public IGetListTransactionsFileUseCase GetListUseCase()
+    {
+        return new GetListTransactionsFileUseCase(this._transactionsFileRepository);
     }
 }

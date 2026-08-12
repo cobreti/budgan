@@ -1,3 +1,4 @@
+using BudganServices.UseCases.TransactionsFile.GetList;
 using BudganServices.UseCases.TransactionsFile.GetListByAccount;
 using BudganServices.UseCases.TransactionsFile.Save;
 
@@ -7,4 +8,5 @@ public interface ITransactionsFileUseCaseFactory
 {
     ISaveTransactionsFileUseCase SaveUseCase(BOSaveTransactionsFile model);
     IGetListByAccountTransactionsFileUseCase GetListByAccountUseCase(Guid accountId);
+    IGetListTransactionsFileUseCase GetListUseCase();
 }

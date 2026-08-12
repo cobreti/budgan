@@ -73,4 +73,27 @@ public class TransactionsFileController : ControllerBase
 
         return this.Ok(model);
     }
+
+    [HttpGet]
+    [Route("List")]
+    public async Task<IActionResult> List()
+    {
+        var useCase = this._transactionsFileUseCaseFactory.GetListUseCase();
+
+        await useCase.ExecuteAsync();
+
+        var model = useCase.ResultValue
+            .Select(x => new Models.TransactionsFile
+                {
+                    Id = x.Id,
+                    AccountId = x.AccountId,
+                    Content = x.Content,
+                    Filename = x.Filename,
+                    InsertionDate = x.InsertionDate,
+                }
+            )
+            .ToList();
+
+        return this.Ok(model);
+    }
 }

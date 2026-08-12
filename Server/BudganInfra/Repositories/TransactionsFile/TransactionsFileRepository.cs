@@ -1,4 +1,5 @@
 using BudganInfra.DBContext;
+using BudganInfra.Repositories.TransactionsFile.GetList;
 using BudganInfra.Repositories.TransactionsFile.GetListByAccount;
 using BudganInfra.Repositories.TransactionsFile.Save;
 
@@ -21,6 +22,11 @@ namespace BudganInfra.Repositories.TransactionsFile
         public IGetListByAccountTransactionsFileRepoOp GetListByAccountTransactionsFileRepoOperation(Guid accountId)
         {
             return new GetListByAccountTransactionsFileRepoOp(this._dataContext, accountId);
+        }
+
+        public IGetListTransactionsFileRepoOp GetListTransactionsFileRepoOperation()
+        {
+            return new GetListTransactionsFileRepoOp(this._dataContext);
         }
     }
 }
