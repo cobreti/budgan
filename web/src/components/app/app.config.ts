@@ -23,6 +23,7 @@ import { AccountServiceProvider } from '@services/providers/account.service.prov
 import { AccountTransactionServiceProvider } from '@services/providers/account-transaction.service.provider';
 import { AccountRecurringTransactionServiceProvider } from '@services/providers/account-recurring-transaction.service.provider';
 import { ImportServiceProvider } from '@services/providers/import.service.provider';
+import { IMPORT_CSV_TRANSACTIONS_SERVICE, ImportCsvTransactionsServiceImpl } from '@services/import-csv-transactions.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -49,6 +50,7 @@ export const appConfig: ApplicationConfig = {
     AccountTransactionServiceProvider,
     AccountRecurringTransactionServiceProvider,
     ImportServiceProvider,
+    { provide: IMPORT_CSV_TRANSACTIONS_SERVICE, useClass: ImportCsvTransactionsServiceImpl },
     { provide: BUDGAN_EXPORT_SERVICE, useClass: BudganExportServiceImpl },
     { provide: ACCOUNT_ANALYSIS_SERVICE, useClass: AccountAnalysisServiceImpl },
     provideCharts(withDefaultRegisterables()),
