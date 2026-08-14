@@ -37,6 +37,7 @@ public class ColumnsMappingController : ControllerBase
                 AmountColumnText = model.AmountColumnText,
                 DescriptionColumnIndex = model.DescriptionColumnIndex,
                 DescriptionColumnText = model.DescriptionColumnText,
+                DateFormat = model.DateFormat,
             };
             var addOrUpdateUseCase = this._columnsMappingUseCaseFactory.AddOrUpdateUseCase(boModel);
 
@@ -83,6 +84,7 @@ public class ColumnsMappingController : ControllerBase
                     AmountColumnText = x.AmountColumnText,
                     DescriptionColumnIndex = x.DescriptionColumnIndex,
                     DescriptionColumnText = x.DescriptionColumnText,
+                    DateFormat = x.DateFormat,
                 }
             )
             .ToList();
@@ -115,7 +117,8 @@ public class ColumnsMappingController : ControllerBase
             AmountColumnIndex = r.AmountColumnIndex,
             AmountColumnText = r.AmountColumnText,
             DescriptionColumnIndex = r.DescriptionColumnIndex,
-            DescriptionColumnText = r.DescriptionColumnText
+            DescriptionColumnText = r.DescriptionColumnText,
+            DateFormat = r.DateFormat
         };
         
         return this.Ok(model);

@@ -32,7 +32,8 @@ public class GetColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue<Da
                 AmountColumnIndex = entity.AmountColumnIndex,
                 AmountColumnText = entity.AmountColumnText,
                 DescriptionColumnIndex = entity.DescriptionColumnIndex,
-                DescriptionColumnText = entity.DescriptionColumnText
+                DescriptionColumnText = entity.DescriptionColumnText,
+                DateFormat = entity.DateFormat
             });
         }
         else

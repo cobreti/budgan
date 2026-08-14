@@ -25,11 +25,28 @@
             <dd>{{ m.cardNumberColumnText }} <span class="columns-mapping-details__index">({{ m.cardNumberColumnIndex+1 }}
               )</span></dd>
           </div>
-          <div class="columns-mapping-details__field">
-            <dt>{{ 'columnsMapping.dateInscriptionColumn' | translate }}</dt>
-            <dd>{{ m.dateInscriptionColumnText }} <span
-              class="columns-mapping-details__index">({{ m.dateInscriptionColumnIndex+1 }})</span></dd>
-          </div>
+
+          <fieldset class="columns-mapping-details__date-group">
+            <legend>{{ 'columnsMapping.dateGroupLabel' | translate }}</legend>
+            <div class="columns-mapping-details__date-row">
+              <div class="columns-mapping-details__field">
+                <dt>{{ 'columnsMapping.dateInscriptionColumn' | translate }}</dt>
+                <dd>{{ m.dateInscriptionColumnText }} <span
+                  class="columns-mapping-details__index">({{ m.dateInscriptionColumnIndex+1 }})</span></dd>
+              </div>
+              <div class="columns-mapping-details__field">
+                <dt>{{ 'columnsMapping.dateFormat' | translate }}</dt>
+                <dd>
+                  @if (presetLabelFor(m.dateFormat); as label) {
+                    {{ label }} <span class="columns-mapping-details__index">(<code>{{ m.dateFormat }}</code>)</span>
+                  } @else {
+                    <code>{{ m.dateFormat }}</code>
+                  }
+                </dd>
+              </div>
+            </div>
+          </fieldset>
+
           <div class="columns-mapping-details__field">
             <dt>{{ 'columnsMapping.amountColumn' | translate }}</dt>
             <dd>{{ m.amountColumnText }} <span class="columns-mapping-details__index">({{ m.amountColumnIndex+1 }})</span>

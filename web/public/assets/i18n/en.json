@@ -76,6 +76,8 @@
     "dateInscriptionColumn": "Date Inscription Column",
     "amountColumn": "Amount Column",
     "descriptionColumn": "Description Column",
+    "dateGroupLabel": "Date",
+    "dateFormat": "Date Format",
     "back": "Back"
   },
   "header": {
@@ -215,6 +217,14 @@
     "dateInscriptionColumn": "Date inscription column",
     "amountColumn": "Amount column",
     "descriptionColumn": "Description column",
+    "dateGroupLabel": "Date",
+    "dateFormatPresetLabel": "Common format",
+    "dateFormatRequired": "A date format is required.",
+    "dateFormatPreviewLabel": "Preview",
+    "dateFormatPreviewError": {
+      "no-match": "The pattern does not match the sample value from the selected date column.",
+      "invalid-date": "The pattern matched, but produced an invalid date."
+    },
     "create": "Create",
     "cancel": "Cancel",
     "back": "Back",

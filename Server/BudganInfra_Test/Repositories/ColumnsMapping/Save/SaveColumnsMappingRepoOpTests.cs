@@ -30,6 +30,7 @@ public class SaveColumnsMappingRepoOpTests
             DateInscriptionColumnText = "Date",
             DescriptionColumnIndex = 3,
             DescriptionColumnText = "Description",
+            DateFormat = @"(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})",
         };
     }
 
@@ -48,6 +49,7 @@ public class SaveColumnsMappingRepoOpTests
             DateInscriptionColumnText = "Original Date",
             DescriptionColumnIndex = 13,
             DescriptionColumnText = "Original Description",
+            DateFormat = @"(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})",
         };
 
         context.ColumnsMappings.Add(entity);
@@ -89,6 +91,7 @@ public class SaveColumnsMappingRepoOpTests
         Assert.Equal(dao.DateInscriptionColumnText, persisted.DateInscriptionColumnText);
         Assert.Equal(dao.DescriptionColumnIndex, persisted.DescriptionColumnIndex);
         Assert.Equal(dao.DescriptionColumnText, persisted.DescriptionColumnText);
+        Assert.Equal(dao.DateFormat, persisted.DateFormat);
     }
 
     [Fact]

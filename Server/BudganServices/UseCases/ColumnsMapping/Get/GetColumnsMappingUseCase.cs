@@ -35,6 +35,7 @@ public class GetColumnsMappingUseCase : BaseUseCaseWithResultValue<BOGetColumnsM
                 AmountColumnText = r.AmountColumnText,
                 DescriptionColumnIndex = r.DescriptionColumnIndex,
                 DescriptionColumnText = r.DescriptionColumnText,
+                DateFormat = r.DateFormat,
             };
             
             this.SetSucceeded(result);

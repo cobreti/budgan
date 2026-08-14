@@ -9,4 +9,5 @@ export interface ColumnsMapping {
   amountColumnText?: string;
   descriptionColumnIndex: number;
   descriptionColumnText?: string;
+  dateFormat: string;
 }

@@ -17,4 +17,6 @@ public class DaoSaveColumnsMapping : DaoBaseUpdateModel
     
     public required int DescriptionColumnIndex { get; set; }
     public string? DescriptionColumnText { get; set; }
+
+    public required string DateFormat { get; set; }
 }

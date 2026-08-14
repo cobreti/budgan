@@ -1,5 +1,5 @@
 import { inject, Injectable, InjectionToken } from '@angular/core';
-import { formatIsoDate, parseYYYYMMDD } from '@/utils/date';
+import { formatIsoDate, parseDateWithFormat } from '@/utils/date';
 import { ACCOUNT_SERVICE, AccountService } from '@services/account.service';
 import { COLUMNS_MAPPING_SERVICE, ColumnsMappingService } from '@services/columns-mapping.service';
 import { FILE_SERVICE, FileService } from '@services/file.service';
@@ -85,8 +85,13 @@ export class ImportCsvTransactionsServiceImpl implements ImportCsvTransactionsSe
 
       for (const row of rows) {
         const cardNumber = row[header[mapping.cardNumberColumnIndex]] ?? '';
-        const dateInscription = parseYYYYMMDD(row[header[mapping.dateInscriptionColumnIndex]]);
-        const dateInscriptionAsString = formatIsoDate(dateInscription);
+        const rawDateValue = row[header[mapping.dateInscriptionColumnIndex]];
+        const parsedDate = parseDateWithFormat(rawDateValue, mapping.dateFormat);
+        if (!parsedDate) {
+          anyError = true;
+          continue;
+        }
+        const dateInscriptionAsString = formatIsoDate(parsedDate);
         const amountStr = (row[header[mapping.amountColumnIndex]] ?? '').replace(',', '.');
         const parsedAmount = parseFloat(amountStr);
         if (isNaN(parsedAmount)) continue;
