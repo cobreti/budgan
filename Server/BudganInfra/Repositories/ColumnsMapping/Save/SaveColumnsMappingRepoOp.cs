@@ -36,6 +36,7 @@ internal class SaveColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue
             DateInscriptionColumnText = this._daoSaveColumnsMapping.DateInscriptionColumnText,
             DescriptionColumnIndex = this._daoSaveColumnsMapping.DescriptionColumnIndex,
             DescriptionColumnText = this._daoSaveColumnsMapping.DescriptionColumnText,
+            DateFormat = this._daoSaveColumnsMapping.DateFormat,
         };
 
         await this._dataContext.ColumnsMappings.AddAsync(columnsMapping);

@@ -28,7 +28,8 @@ internal class ListColumnsMappingRepoOp : BaseRepositoryOperationWithResultValue
                 AmountColumnIndex = x.AmountColumnIndex,
                 AmountColumnText = x.AmountColumnText,
                 DescriptionColumnIndex = x.DescriptionColumnIndex,
-                DescriptionColumnText = x.DescriptionColumnText
+                DescriptionColumnText = x.DescriptionColumnText,
+                DateFormat = x.DateFormat
             })
             .ToListAsync();
         

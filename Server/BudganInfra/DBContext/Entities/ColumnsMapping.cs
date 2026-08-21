@@ -25,7 +25,10 @@ public class ColumnsMapping : BaseEntity
     public required string? AmountColumnText { get; set; }
 
     public required int DescriptionColumnIndex { get; set; }
-    
+
     [MaxLength(100)]
     public required string? DescriptionColumnText { get; set; }
+
+    [MaxLength(200)]
+    public required string DateFormat { get; set; }
 }

@@ -31,6 +31,7 @@ internal class ListColumnsMappingUseCase : BaseUseCaseWithResultValue<List<BOLis
                 AmountColumnText = x.AmountColumnText,
                 DescriptionColumnIndex = x.DescriptionColumnIndex,
                 DescriptionColumnText = x.DescriptionColumnText,
+                DateFormat = x.DateFormat,
             })
             .ToList();
 

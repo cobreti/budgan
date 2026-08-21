@@ -52,4 +52,44 @@
     width: 100%;
     gap: 0.5rem;
   }
+
+  &__date-group {
+    border: 1px solid var(--mat-sys-outline-variant, inherit);
+    border-radius: 4px;
+    margin: 0;
+    padding: 0.75rem 1rem 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    legend {
+      padding: 0 0.5rem;
+      font-size: 0.85em;
+      color: var(--mat-sys-on-surface-variant, inherit);
+    }
+  }
+
+  &__date-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+
+    mat-form-field {
+      min-width: 16rem;
+    }
+  }
+
+  &__date-preview {
+    margin-top: -0.5rem;
+    font-size: 0.85em;
+  }
+
+  &__date-preview-ok {
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__date-preview-error {
+    color: var(--mat-sys-error);
+  }
 }

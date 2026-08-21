@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ColumnsMapping } from '@models/columnsMappingModel';
+import { findDateFormatPreset } from '@/utils/date';
 import {
   COLUMNS_MAPPING_SERVICE,
   ColumnsMappingService,
@@ -26,6 +27,10 @@ export class ColumnsMappingDetailsComponent implements OnInit {
   private readonly _service = inject<ColumnsMappingService>(COLUMNS_MAPPING_SERVICE);
 
   readonly mapping = signal<ColumnsMapping | undefined>(undefined);
+
+  presetLabelFor(pattern: string): string | undefined {
+    return findDateFormatPreset(pattern)?.label;
+  }
 
   onBack(): void {
     this._router.navigate([this._locale.currentLocale()]);

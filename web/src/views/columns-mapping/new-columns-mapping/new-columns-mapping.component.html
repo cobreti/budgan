@@ -57,16 +57,48 @@
               }
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
-            <mat-label>{{
-              'newColumnsMapping.dateInscriptionColumn' | translate
-            }}</mat-label>
-            <mat-select formControlName="dateInscriptionColumnIndex">
-              @for (header of csvHeaders(); track $index) {
-                <mat-option [value]="$index">{{ header }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+          <fieldset class="new-columns-mapping__date-group">
+            <legend>{{ 'newColumnsMapping.dateGroupLabel' | translate }}</legend>
+            <div class="new-columns-mapping__date-row">
+              <mat-form-field>
+                <mat-label>{{
+                  'newColumnsMapping.dateInscriptionColumn' | translate
+                }}</mat-label>
+                <mat-select formControlName="dateInscriptionColumnIndex">
+                  @for (header of csvHeaders(); track $index) {
+                    <mat-option [value]="$index">{{ header }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{
+                  'newColumnsMapping.dateFormatPresetLabel' | translate
+                }}</mat-label>
+                <mat-select formControlName="dateFormat">
+                  @for (preset of dateFormatPresets; track preset.pattern) {
+                    <mat-option [value]="preset.pattern">{{ preset.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (form.controls.dateFormat.hasError('required')) {
+                  <mat-error>{{ 'newColumnsMapping.dateFormatRequired' | translate }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            @if (dateFormatPreview(); as preview) {
+              <div class="new-columns-mapping__date-preview">
+                @if (preview.success) {
+                  <span class="new-columns-mapping__date-preview-ok">
+                    {{ 'newColumnsMapping.dateFormatPreviewLabel' | translate }}:
+                    {{ formatPreviewDate(preview.date) }}
+                  </span>
+                } @else {
+                  <span class="new-columns-mapping__date-preview-error">
+                    {{ 'newColumnsMapping.dateFormatPreviewError.' + preview.error | translate }}
+                  </span>
+                }
+              </div>
+            }
+          </fieldset>
           <mat-form-field>
             <mat-label>{{
               'newColumnsMapping.amountColumn' | translate

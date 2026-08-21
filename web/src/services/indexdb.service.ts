@@ -94,6 +94,15 @@ export class IndexdbService extends Dexie {
       accountRecurringTransactions: null,
       recurringTransactions: '&id, accountId',
     });
+    this.version(12).stores({
+      workspaces: '&id, &name',
+      columnMappings: '&id, &name',
+      accounts: '&id, &name',
+      files: '&id, filename, accountId',
+      accountTransactions: '&id, accountId, fileId, &[accountId+uniqueKey]',
+      accountRecurringTransactions: null,
+      recurringTransactions: '&id, accountId',
+    });
 
     this.workspaceTable = this.table('workspaces');
     this.columnsMappingTable = this.table('columnMappings');

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudganInfra.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260810205805_InitialCreate")]
+    [Migration("20260813225020_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -194,6 +194,11 @@ namespace BudganInfra.Migrations
                     b.Property<string>("CardNumberColumnText")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DateFormat")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("DateInscriptionColumnIndex")
                         .HasColumnType("int");

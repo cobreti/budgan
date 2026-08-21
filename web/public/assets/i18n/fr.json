@@ -76,6 +76,8 @@
     "dateInscriptionColumn": "Colonne date d'inscription",
     "amountColumn": "Colonne montant",
     "descriptionColumn": "Colonne description",
+    "dateGroupLabel": "Date",
+    "dateFormat": "Format de date",
     "back": "Retour"
   },
   "header": {
@@ -215,6 +217,14 @@
     "dateInscriptionColumn": "Colonne date d'inscription",
     "amountColumn": "Colonne montant",
     "descriptionColumn": "Colonne description",
+    "dateGroupLabel": "Date",
+    "dateFormatPresetLabel": "Format courant",
+    "dateFormatRequired": "Un format de date est requis.",
+    "dateFormatPreviewLabel": "Aperçu",
+    "dateFormatPreviewError": {
+      "no-match": "Le motif ne correspond pas à la valeur d'exemple de la colonne de date sélectionnée.",
+      "invalid-date": "Le motif correspond, mais produit une date invalide."
+    },
     "create": "Créer",
     "cancel": "Annuler",
     "back": "Retour",

@@ -30,6 +30,7 @@ internal class AddOrUpdateColumnsMappingUseCase : BaseUseCaseWithResultValue<Gui
             AmountColumnText = this._boAddOrUpdateModel.AmountColumnText,
             DescriptionColumnIndex = this._boAddOrUpdateModel.DescriptionColumnIndex,
             DescriptionColumnText = this._boAddOrUpdateModel.DescriptionColumnText,
+            DateFormat = this._boAddOrUpdateModel.DateFormat,
         };
 
         var repoOp = this._columnsMappingRepository.SaveColumnsMappingRepoOperation(daoSave);

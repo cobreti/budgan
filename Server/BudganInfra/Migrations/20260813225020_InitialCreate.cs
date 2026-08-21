@@ -25,6 +25,7 @@ namespace BudganInfra.Migrations
                     AmountColumnText = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DescriptionColumnIndex = table.Column<int>(type: "int", nullable: false),
                     DescriptionColumnText = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    DateFormat = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
                 constraints: table =>

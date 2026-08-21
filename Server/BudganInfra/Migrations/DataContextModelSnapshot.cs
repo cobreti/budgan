@@ -192,6 +192,11 @@ namespace BudganInfra.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("DateFormat")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<int>("DateInscriptionColumnIndex")
                         .HasColumnType("int");
 

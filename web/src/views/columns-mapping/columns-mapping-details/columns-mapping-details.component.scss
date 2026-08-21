@@ -18,10 +18,36 @@
   }
 
   &__fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 1em;
     margin: 0;
+  }
+
+  &__date-group {
+    border: 1px solid var(--mat-sys-outline-variant, inherit);
+    border-radius: 8px;
+    margin: 0;
+    padding: 0.75em 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    legend {
+      padding: 0 0.5em;
+      font-size: 0.75em;
+      color: var(--mat-sys-on-surface-variant, inherit);
+    }
+  }
+
+  &__date-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+
+    .columns-mapping-details__field {
+      flex: 1 1 220px;
+    }
   }
 
   &__field {
