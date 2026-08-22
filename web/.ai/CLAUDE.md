@@ -289,7 +289,3 @@ After mutating transactions, call `AccountTransactionService.recalculateBalances
 
 - The Angular service worker is registered only in production builds (`provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode() })`). PWA assets live at `public/manifest.webmanifest` and `public/icons/Budgan{48,180,256,512}.png`.
 - The graphs tab uses `ng2-charts`; charts are registered globally via `provideCharts(withDefaultRegisterables())`.
-
-## Tools directory
-
-`Tools/StatementGenerator/` is a standalone Node.js utility (requires Node 20+) for generating mock CSV bank statements used in testing the import pipeline.
