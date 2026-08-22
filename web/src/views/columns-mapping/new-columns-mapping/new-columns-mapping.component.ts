@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -66,25 +74,38 @@ export class NewColumnsMappingComponent {
   readonly selectedFileSource = signal<'native' | 'demo' | null>(null);
   readonly csvParseError = signal<string>('');
   readonly dateFormatPreview = signal<DateFormatParseResult | null>(null);
+  readonly cardNumberSample = signal<string>('');
+  readonly dateInscriptionSample = signal<string>('');
+  readonly amountSample = signal<string>('');
+  readonly descriptionSample = signal<string>('');
   readonly dateFormatPresets = DATE_FORMAT_PRESETS;
 
   readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     cardNumberColumnIndex: new FormControl<number | null>(null, [Validators.required]),
     dateInscriptionColumnIndex: new FormControl<number | null>(null, [Validators.required]),
-    amountColumnIndex: new FormControl<number | null>(null, [Validators.required]),
+    amountColumnIndex: new FormControl<number | null>(null, [
+      Validators.required,
+      this.amountSampleIsNumericValidator(),
+    ]),
     descriptionColumnIndex: new FormControl<number | null>(null, [Validators.required]),
     dateFormat: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required, this.dateFormatMatchesSampleValidator()],
     }),
   });
 
   constructor() {
     this.form.controls.dateFormat.valueChanges.subscribe(() => this.updateDateFormatPreview());
-    this.form.controls.dateInscriptionColumnIndex.valueChanges.subscribe(() =>
-      this.updateDateFormatPreview(),
-    );
+    this.form.controls.dateInscriptionColumnIndex.valueChanges.subscribe(() => {
+      this.updateDateInscriptionSample();
+      this.autoDetectDateFormat();
+      this.form.controls.dateFormat.updateValueAndValidity();
+      this.updateDateFormatPreview();
+    });
+    this.form.controls.cardNumberColumnIndex.valueChanges.subscribe(() => this.updateCardNumberSample());
+    this.form.controls.amountColumnIndex.valueChanges.subscribe(() => this.updateAmountSample());
+    this.form.controls.descriptionColumnIndex.valueChanges.subscribe(() => this.updateDescriptionSample());
   }
 
   async onFileSelected(event: Event): Promise<void> {
@@ -133,7 +154,6 @@ export class NewColumnsMappingComponent {
   private updateDateFormatPreview(): void {
     const pattern = this.form.controls.dateFormat.value.trim();
     const colIndex = this.form.controls.dateInscriptionColumnIndex.value;
-    const headers = this.csvHeaders();
     const rows = this.csvRows();
 
     if (!pattern || colIndex === null || rows.length === 0) {
@@ -141,8 +161,67 @@ export class NewColumnsMappingComponent {
       return;
     }
 
-    const sampleValue = rows[0][headers[colIndex]] ?? '';
+    const sampleValue = this.sampleValueForColumn(colIndex);
     this.dateFormatPreview.set(parseDateWithFormatDetailed(sampleValue, pattern));
+  }
+
+  private sampleValueForColumn(colIndex: number | null): string {
+    if (colIndex === null) return '';
+    const headers = this.csvHeaders();
+    const rows = this.csvRows();
+    if (rows.length === 0) return '';
+    return rows[0][headers[colIndex]] ?? '';
+  }
+
+  private updateCardNumberSample(): void {
+    this.cardNumberSample.set(this.sampleValueForColumn(this.form.controls.cardNumberColumnIndex.value));
+  }
+
+  private updateDateInscriptionSample(): void {
+    this.dateInscriptionSample.set(
+      this.sampleValueForColumn(this.form.controls.dateInscriptionColumnIndex.value),
+    );
+  }
+
+  private updateAmountSample(): void {
+    this.amountSample.set(this.sampleValueForColumn(this.form.controls.amountColumnIndex.value));
+  }
+
+  private updateDescriptionSample(): void {
+    this.descriptionSample.set(this.sampleValueForColumn(this.form.controls.descriptionColumnIndex.value));
+  }
+
+  private autoDetectDateFormat(): void {
+    const colIndex = this.form.controls.dateInscriptionColumnIndex.value;
+    const sample = this.sampleValueForColumn(colIndex);
+    if (!sample) return;
+
+    const match = DATE_FORMAT_PRESETS.find(
+      (preset) => parseDateWithFormatDetailed(sample, preset.pattern).success,
+    );
+    if (match) {
+      this.form.controls.dateFormat.setValue(match.pattern);
+    }
+  }
+
+  private dateFormatMatchesSampleValidator(): ValidatorFn {
+    return (control: AbstractControl<string>): ValidationErrors | null => {
+      const pattern = control.value?.trim();
+      const sample = this.dateInscriptionSample();
+      if (!pattern || !sample) return null;
+      return parseDateWithFormatDetailed(sample, pattern).success
+        ? null
+        : { dateSampleMismatch: true };
+    };
+  }
+
+  private amountSampleIsNumericValidator(): ValidatorFn {
+    return (control: AbstractControl<number | null>): ValidationErrors | null => {
+      const sample = this.sampleValueForColumn(control.value);
+      if (!sample) return null;
+      const numericValue = parseFloat(sample.replace(',', '.'));
+      return Number.isNaN(numericValue) ? { amountSampleNotNumeric: true } : null;
+    };
   }
 
   formatPreviewDate(date: Date): string {
