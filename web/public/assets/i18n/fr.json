@@ -175,9 +175,23 @@
     "back": "Retour",
     "cancel": "Annuler"
   },
+  "demoStatementPicker": {
+    "title": "Charger un relevé d'exemple",
+    "folders": {
+      "creditCard": "Carte de crédit"
+    },
+    "backToFolders": "Retour aux dossiers",
+    "loading": "Chargement...",
+    "noFolders": "Aucun relevé d'exemple disponible.",
+    "cancel": "Annuler",
+    "confirm": "Charger",
+    "loadError": "Impossible de charger le(s) relevé(s) d'exemple sélectionné(s).",
+    "manifestLoadError": "Impossible de charger la liste des relevés d'exemple."
+  },
   "importFile": {
     "title": "Importer un fichier",
     "chooseFiles": "Choisir des fichiers CSV",
+    "loadDemo": "Charger un relevé d'exemple",
     "noFilesChosen": "Aucun fichier sélectionné",
     "import": "Importer",
     "back": "Retour",
@@ -230,6 +244,7 @@
     "back": "Retour",
     "nameExists": "Un mappage de colonnes avec ce nom existe déjà.",
     "chooseFile": "Choisir un fichier CSV",
+    "loadDemo": "Charger un relevé d'exemple",
     "noFileChosen": "Aucun fichier sélectionné",
     "csvParseError": "Impossible de lire le fichier CSV."
   }

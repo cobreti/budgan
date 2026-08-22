@@ -1,0 +1,96 @@
+<h2 mat-dialog-title class="demo-statement-picker__title">
+  {{ 'demoStatementPicker.title' | translate }}
+</h2>
+
+<mat-dialog-content class="demo-statement-picker__content">
+  @if (errorKey()) {
+    <p class="demo-statement-picker__error" data-testid="demo-statement-picker-error">
+      {{ errorKey() | translate }}
+    </p>
+  }
+
+  @if (!selectedFolder()) {
+    @if (loadingFolders()) {
+      <p class="demo-statement-picker__status">{{ 'demoStatementPicker.loading' | translate }}</p>
+    } @else if (folders().length === 0) {
+      <p class="demo-statement-picker__status">{{ 'demoStatementPicker.noFolders' | translate }}</p>
+    } @else {
+      <mat-nav-list>
+        @for (folder of folders(); track folder.id) {
+          <a
+            mat-list-item
+            data-testid="demo-statement-folder-item"
+            (click)="onSelectFolder(folder)"
+          >
+            <mat-icon matListItemIcon>folder</mat-icon>
+            <span matListItemTitle>{{ folder.labelKey | translate }}</span>
+          </a>
+        }
+      </mat-nav-list>
+    }
+  } @else {
+    <div class="demo-statement-picker__folder-header">
+      <button
+        mat-icon-button
+        type="button"
+        data-testid="demo-statement-picker-back"
+        [attr.aria-label]="'demoStatementPicker.backToFolders' | translate"
+        (click)="onBackToFolders()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span class="demo-statement-picker__folder-name">
+        {{ selectedFolder()!.labelKey | translate }}
+      </span>
+    </div>
+
+    <mat-list>
+      @for (file of selectedFolder()!.files; track file) {
+        <mat-list-item class="demo-statement-picker__file-item">
+          @if (data.multiple) {
+            <mat-checkbox
+              data-testid="demo-statement-file-checkbox"
+              [checked]="isSelected(file)"
+              (change)="onToggleFile(file)"
+            >
+              {{ file }}
+            </mat-checkbox>
+          } @else {
+            <button
+              type="button"
+              class="demo-statement-picker__file-row"
+              [class.demo-statement-picker__file-row--selected]="isSelected(file)"
+              data-testid="demo-statement-file-row"
+              (click)="onToggleFile(file)"
+            >
+              {{ file }}
+            </button>
+          }
+        </mat-list-item>
+      }
+    </mat-list>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    type="button"
+    data-testid="demo-statement-picker-cancel"
+    (click)="onCancel()"
+  >
+    {{ 'demoStatementPicker.cancel' | translate }}
+  </button>
+  @if (selectedFolder()) {
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      data-testid="demo-statement-picker-confirm"
+      [disabled]="selectedFilenames().size === 0 || confirming()"
+      (click)="onConfirm()"
+    >
+      {{ 'demoStatementPicker.confirm' | translate }}
+    </button>
+  }
+</mat-dialog-actions>

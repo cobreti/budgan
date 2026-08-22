@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "folders": [
+    {
+      "id": "credit-card",
+      "labelKey": "demoStatementPicker.folders.creditCard",
+      "files": [
+        "statement - Jan-31-2025.csv",
+        "statement - Feb-28-2025.csv",
+        "statement - Mar-31-2025.csv",
+        "statement - Apr-30-2025.csv",
+        "statement - May-31-2025.csv",
+        "statement - Jun-30-2025.csv",
+        "statement - Jul-31-2025.csv",
+        "statement - Aug-31-2025.csv",
+        "statement - Sep-30-2025.csv",
+        "statement - Oct-31-2025.csv",
+        "statement - Nov-30-2025.csv",
+        "statement - Dec-31-2025.csv"
+      ]
+    }
+  ]
+}
