@@ -175,9 +175,23 @@
     "back": "Back",
     "cancel": "Cancel"
   },
+  "demoStatementPicker": {
+    "title": "Load a demo statement",
+    "folders": {
+      "creditCard": "Credit card"
+    },
+    "backToFolders": "Back to folders",
+    "loading": "Loading...",
+    "noFolders": "No demo statements available.",
+    "cancel": "Cancel",
+    "confirm": "Load",
+    "loadError": "Could not load the selected demo statement(s).",
+    "manifestLoadError": "Could not load the list of demo statements."
+  },
   "importFile": {
     "title": "Import File",
     "chooseFiles": "Choose CSV files",
+    "loadDemo": "Load demo statement",
     "noFilesChosen": "No files chosen",
     "import": "Import",
     "back": "Back",
@@ -230,6 +244,7 @@
     "back": "Back",
     "nameExists": "A column mapping with this name already exists.",
     "chooseFile": "Choose CSV file",
+    "loadDemo": "Load demo statement",
     "noFileChosen": "No file chosen",
     "csvParseError": "Failed to parse the CSV file."
   }

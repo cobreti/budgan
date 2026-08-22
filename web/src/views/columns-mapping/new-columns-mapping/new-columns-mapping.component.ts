@@ -6,6 +6,7 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
 import { COLUMNS_MAPPING_SERVICE, ColumnsMappingService } from '@services/columns-mapping.service';
@@ -18,6 +19,10 @@ import { PageMenuComponent } from '@components/page-menu/page-menu.component';
 import { PageMenuButtonComponent } from '@components/page-menu/page-menu-button/page-menu-button.component';
 import { PageComponent } from '@components/page/page.component';
 import { PageBodyComponent } from '@components/page-body/page-body.component';
+import {
+  DemoStatementPickerComponent,
+  DemoStatementPickerData,
+} from '@components/demo-statement-picker/demo-statement-picker.component';
 import {
   DATE_FORMAT_PRESETS,
   DateFormatParseResult,
@@ -53,10 +58,12 @@ export class NewColumnsMappingComponent {
   );
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
+  private readonly _dialog = inject(MatDialog);
 
   readonly csvHeaders = signal<string[]>([]);
   readonly csvRows = signal<CsvJsonRecord[]>([]);
   readonly selectedFileName = signal<string>('');
+  readonly selectedFileSource = signal<'native' | 'demo' | null>(null);
   readonly csvParseError = signal<string>('');
   readonly dateFormatPreview = signal<DateFormatParseResult | null>(null);
   readonly dateFormatPresets = DATE_FORMAT_PRESETS;
@@ -84,7 +91,20 @@ export class NewColumnsMappingComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    await this.processFile(file, 'native');
+  }
 
+  async onLoadDemoStatement(): Promise<void> {
+    const ref = this._dialog.open<DemoStatementPickerComponent, DemoStatementPickerData, File[]>(
+      DemoStatementPickerComponent,
+      { data: { multiple: false } },
+    );
+    const files = await ref.afterClosed().toPromise();
+    if (!files || files.length === 0) return;
+    await this.processFile(files[0], 'demo');
+  }
+
+  private async processFile(file: File, source: 'native' | 'demo'): Promise<void> {
     const text = await file.text();
     const result = this._csvExtractor.extract(text);
 
@@ -93,12 +113,14 @@ export class NewColumnsMappingComponent {
       this.csvHeaders.set([]);
       this.csvRows.set([]);
       this.selectedFileName.set('');
+      this.selectedFileSource.set(null);
       return;
     }
 
     this.csvHeaders.set(result.value.header);
     this.csvRows.set(result.value.rows);
     this.selectedFileName.set(file.name);
+    this.selectedFileSource.set(source);
     this.csvParseError.set('');
     this.form.controls.cardNumberColumnIndex.reset();
     this.form.controls.dateInscriptionColumnIndex.reset();

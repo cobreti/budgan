@@ -23,27 +23,42 @@
         </mat-form-field>
 
         <div class="new-columns-mapping__file-picker">
-          <button mat-stroked-button type="button" (click)="fileInput.click()">
-            {{ 'newColumnsMapping.chooseFile' | translate }}
-          </button>
-          <span class="new-columns-mapping__file-name">
-            {{
-              selectedFileName() ||
-                ('newColumnsMapping.noFileChosen' | translate)
-            }}
-          </span>
-          <input
-            #fileInput
-            type="file"
-            accept=".csv"
-            hidden
-            (change)="onFileSelected($event)"
-          />
-          @if (csvParseError()) {
-            <span class="new-columns-mapping__file-error">{{
-              csvParseError()
-            }}</span>
-          }
+          <div class="new-columns-mapping__picker-column">
+            <button mat-stroked-button type="button" (click)="fileInput.click()">
+              {{ 'newColumnsMapping.chooseFile' | translate }}
+            </button>
+            <input
+              #fileInput
+              type="file"
+              accept=".csv"
+              hidden
+              (change)="onFileSelected($event)"
+            />
+            @if (selectedFileSource() === 'native') {
+              <span class="new-columns-mapping__file-name">{{ selectedFileName() }}</span>
+            } @else if (selectedFileSource() === null) {
+              <span class="new-columns-mapping__file-name">{{
+                'newColumnsMapping.noFileChosen' | translate
+              }}</span>
+            }
+            @if (csvParseError()) {
+              <span class="new-columns-mapping__file-error">{{ csvParseError() }}</span>
+            }
+          </div>
+
+          <div class="new-columns-mapping__picker-column">
+            <button
+              mat-stroked-button
+              type="button"
+              data-testid="new-columns-mapping-demo-btn"
+              (click)="onLoadDemoStatement()"
+            >
+              {{ 'newColumnsMapping.loadDemo' | translate }}
+            </button>
+            @if (selectedFileSource() === 'demo') {
+              <span class="new-columns-mapping__file-name">{{ selectedFileName() }}</span>
+            }
+          </div>
         </div>
 
         <div class="new-columns-mapping__columns">

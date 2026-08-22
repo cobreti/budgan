@@ -11,20 +11,37 @@
       <div class="import-file__body">
 
         <div class="import-file__picker">
-          <button mat-stroked-button type="button"
-                  [disabled]="isImporting()"
-                  (click)="fileInput.click()">
-            {{ 'importFile.chooseFiles' | translate }}
-          </button>
-          <input #fileInput type="file" accept=".csv" multiple hidden
-                 (change)="onFileSelected($event)"/>
+          <div class="import-file__picker-column">
+            <button mat-stroked-button type="button"
+                    [disabled]="isImporting()"
+                    (click)="fileInput.click()">
+              {{ 'importFile.chooseFiles' | translate }}
+            </button>
+            <input #fileInput type="file" accept=".csv" multiple hidden
+                   (change)="onFileSelected($event)"/>
+            @if (filesSource() === 'native') {
+              <ng-container [ngTemplateOutlet]="fileList" />
+            } @else if (filesSource() === null) {
+              <span class="import-file__no-file">
+                {{ 'importFile.noFilesChosen' | translate }}
+              </span>
+            }
+          </div>
+
+          <div class="import-file__picker-column">
+            <button mat-stroked-button type="button"
+                    data-testid="import-file-demo-btn"
+                    [disabled]="isImporting()"
+                    (click)="onLoadDemoStatements()">
+              {{ 'importFile.loadDemo' | translate }}
+            </button>
+            @if (filesSource() === 'demo') {
+              <ng-container [ngTemplateOutlet]="fileList" />
+            }
+          </div>
         </div>
 
-        @if (importStatuses().length === 0) {
-          <span class="import-file__no-file">
-            {{ 'importFile.noFilesChosen' | translate }}
-          </span>
-        } @else {
+        <ng-template #fileList>
           <ul class="import-file__file-list" aria-label="Selected files">
             @for (item of importStatuses(); track item.file.name) {
               <li class="import-file__file-item">
@@ -55,7 +72,7 @@
               </li>
             }
           </ul>
-        }
+        </ng-template>
 
         @if (!importCompleted()) {
           <div class="import-file__actions">

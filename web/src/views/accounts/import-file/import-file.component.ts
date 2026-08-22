@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
 import {
@@ -13,6 +15,10 @@ import { PageMenuComponent } from '@components/page-menu/page-menu.component';
 import { PageMenuButtonComponent } from '@components/page-menu/page-menu-button/page-menu-button.component';
 import { PageComponent } from '@components/page/page.component';
 import { PageBodyComponent } from '@components/page-body/page-body.component';
+import {
+  DemoStatementPickerComponent,
+  DemoStatementPickerData,
+} from '@components/demo-statement-picker/demo-statement-picker.component';
 
 interface FileImportStatus {
   file: File;
@@ -26,18 +32,20 @@ interface FileImportStatus {
   templateUrl: './import-file.component.html',
   styleUrl: './import-file.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatIcon, TranslatePipe, PageComponent, PageBodyComponent, PageMenuComponent, PageMenuButtonComponent],
+  imports: [MatButton, MatIcon, NgTemplateOutlet, TranslatePipe, PageComponent, PageBodyComponent, PageMenuComponent, PageMenuButtonComponent],
 })
 export class ImportFileComponent {
   private readonly _route = inject(ActivatedRoute);
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _importCsvTransactionsService = inject<ImportCsvTransactionsService>(IMPORT_CSV_TRANSACTIONS_SERVICE);
+  private readonly _dialog = inject(MatDialog);
 
   private readonly _accountId = this._route.snapshot.params['accountId'] as string;
 
   readonly selectedFiles = signal<File[]>([]);
   readonly importStatuses = signal<FileImportStatus[]>([]);
+  readonly filesSource = signal<'native' | 'demo' | null>(null);
   readonly isImporting = signal<boolean>(false);
   readonly importCompleted = signal<boolean>(false);
   readonly hasSelectedFiles = computed(() => this.selectedFiles().length > 0);
@@ -46,10 +54,25 @@ export class ImportFileComponent {
     const input = event.target as HTMLInputElement;
     const files = Array.from(input.files ?? []);
     if (files.length === 0) return;
+    this.setSelectedFiles(files, 'native');
+    input.value = '';
+  }
+
+  async onLoadDemoStatements(): Promise<void> {
+    const ref = this._dialog.open<DemoStatementPickerComponent, DemoStatementPickerData, File[]>(
+      DemoStatementPickerComponent,
+      { data: { multiple: true } },
+    );
+    const files = await ref.afterClosed().toPromise();
+    if (!files || files.length === 0) return;
+    this.setSelectedFiles(files, 'demo');
+  }
+
+  private setSelectedFiles(files: File[], source: 'native' | 'demo'): void {
     this.selectedFiles.set(files);
     this.importStatuses.set(files.map(file => ({ file, status: 'pending' })));
+    this.filesSource.set(source);
     this.importCompleted.set(false);
-    input.value = '';
   }
 
   async onImport(): Promise<void> {
