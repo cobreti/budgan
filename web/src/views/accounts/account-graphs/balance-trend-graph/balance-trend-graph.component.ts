@@ -17,6 +17,7 @@ import {
   AccountTransactionService,
 } from '@services/account-transaction.service';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
+import { THEME_SERVICE, ThemeService } from '@services/theme.service';
 import {
   AccountTransactionModel,
   AccountTransactionRecordType,
@@ -30,6 +31,12 @@ type DataPoint = {
   isSnapshot?: boolean;
   description?: string;
   amount?: number;
+};
+
+type PointColorPalette = {
+  red: string;
+  green: string;
+  blue: string;
 };
 
 @Component({
@@ -46,6 +53,21 @@ export class BalanceTrendGraphComponent {
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _translate = inject(TranslateService);
   private readonly _cdr = inject(ChangeDetectorRef);
+  private readonly _theme = inject<ThemeService>(THEME_SERVICE);
+
+  private readonly _amber = 'rgba(255, 152, 0, 1)';
+
+  private readonly _lightColors: PointColorPalette = {
+    red: 'rgba(211, 47, 47, 1)',
+    green: 'rgba(56, 142, 60, 1)',
+    blue: 'rgba(30, 136, 229, 1)',
+  };
+
+  private readonly _darkColors: PointColorPalette = {
+    red: 'rgba(239, 83, 80, 1)',
+    green: 'rgba(102, 187, 106, 1)',
+    blue: 'rgba(66, 165, 245, 1)',
+  };
 
   readonly accountId = input.required<string>();
   readonly startMonth = input.required<string | null>();
@@ -86,6 +108,7 @@ export class BalanceTrendGraphComponent {
 
   readonly chartData = computed<ChartData<'line'>>(() => {
     const pts = this._points();
+    const palette: PointColorPalette = this._theme.isDark() ? this._darkColors : this._lightColors;
     return {
       labels: pts.map((p) => p.date), // MM-DD
       datasets: [
@@ -97,10 +120,8 @@ export class BalanceTrendGraphComponent {
           // Scriptable functions are evaluated independently per point — unlike arrays,
           // they have no carry-forward behaviour for undefined values.
           pointRadius: (ctx) => (pts[ctx.dataIndex]?.isSnapshot ? 3 : 3),
-          pointBackgroundColor: (ctx) =>
-            pts[ctx.dataIndex]?.isSnapshot ? 'rgba(255, 152, 0, 1)' : 'rgba(100, 100, 200, 1)',
-          pointBorderColor: (ctx) =>
-            pts[ctx.dataIndex]?.isSnapshot ? 'rgba(255, 152, 0, 1)' : 'rgba(100, 100, 200, 1)',
+          pointBackgroundColor: (ctx) => this._pointColor(pts[ctx.dataIndex], palette),
+          pointBorderColor: (ctx) => this._pointColor(pts[ctx.dataIndex], palette),
           pointBorderWidth: (ctx) => (pts[ctx.dataIndex]?.isSnapshot ? 1 : 1),
         },
       ],
@@ -161,6 +182,13 @@ export class BalanceTrendGraphComponent {
       this._transactionService.transactionsVersion();
       this._loadPoints(id);
     });
+  }
+
+  private _pointColor(point: DataPoint | undefined, palette: PointColorPalette): string {
+    if (!point) return palette.blue;
+    if (point.isSnapshot) return this._amber;
+    if (point.amount === undefined || point.amount === 0) return palette.blue;
+    return point.amount < 0 ? palette.red : palette.green;
   }
 
   private _formatAmount(amount: number): string {
