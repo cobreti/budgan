@@ -96,7 +96,10 @@
     color: var(--mat-sys-on-surface-variant);
   }
 
-  &__date-preview-error {
-    color: var(--mat-sys-error);
+  &__sample-value {
+    display: block;
+    margin-top: -0.5rem;
+    color: var(--mat-sys-on-surface-variant, inherit);
+    font-size: 0.85em;
   }
 }

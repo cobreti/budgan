@@ -72,6 +72,11 @@
               }
             </mat-select>
           </mat-form-field>
+          @if (cardNumberSample()) {
+            <span class="new-columns-mapping__sample-value">
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ cardNumberSample() }}
+            </span>
+          }
           <fieldset class="new-columns-mapping__date-group">
             <legend>{{ 'newColumnsMapping.dateGroupLabel' | translate }}</legend>
             <div class="new-columns-mapping__date-row">
@@ -96,22 +101,25 @@
                 </mat-select>
                 @if (form.controls.dateFormat.hasError('required')) {
                   <mat-error>{{ 'newColumnsMapping.dateFormatRequired' | translate }}</mat-error>
+                } @else if (form.controls.dateFormat.hasError('dateSampleMismatch')) {
+                  <mat-error>{{ 'newColumnsMapping.dateFormatMismatch' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
+            @if (dateInscriptionSample()) {
+              <div class="new-columns-mapping__sample-value">
+                {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ dateInscriptionSample() }}
+              </div>
+            }
             @if (dateFormatPreview(); as preview) {
-              <div class="new-columns-mapping__date-preview">
-                @if (preview.success) {
+              @if (preview.success) {
+                <div class="new-columns-mapping__date-preview">
                   <span class="new-columns-mapping__date-preview-ok">
                     {{ 'newColumnsMapping.dateFormatPreviewLabel' | translate }}:
                     {{ formatPreviewDate(preview.date) }}
                   </span>
-                } @else {
-                  <span class="new-columns-mapping__date-preview-error">
-                    {{ 'newColumnsMapping.dateFormatPreviewError.' + preview.error | translate }}
-                  </span>
-                }
-              </div>
+                </div>
+              }
             }
           </fieldset>
           <mat-form-field>
@@ -123,7 +131,15 @@
                 <mat-option [value]="$index">{{ header }}</mat-option>
               }
             </mat-select>
+            @if (form.controls.amountColumnIndex.hasError('amountSampleNotNumeric')) {
+              <mat-error>{{ 'newColumnsMapping.amountColumnNotNumeric' | translate }}</mat-error>
+            }
           </mat-form-field>
+          @if (amountSample()) {
+            <span class="new-columns-mapping__sample-value">
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ amountSample() }}
+            </span>
+          }
           <mat-form-field>
             <mat-label>{{
               'newColumnsMapping.descriptionColumn' | translate
@@ -134,6 +150,11 @@
               }
             </mat-select>
           </mat-form-field>
+          @if (descriptionSample()) {
+            <span class="new-columns-mapping__sample-value">
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ descriptionSample() }}
+            </span>
+          }
 
           <div class="new-columns-mapping__actions">
             <button mat-button type="button" (click)="onCancel()">

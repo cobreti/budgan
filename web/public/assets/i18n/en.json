@@ -235,10 +235,9 @@
     "dateFormatPresetLabel": "Common format",
     "dateFormatRequired": "A date format is required.",
     "dateFormatPreviewLabel": "Preview",
-    "dateFormatPreviewError": {
-      "no-match": "The pattern does not match the sample value from the selected date column.",
-      "invalid-date": "The pattern matched, but produced an invalid date."
-    },
+    "dateFormatMismatch": "This format does not match the example value.",
+    "sampleValueLabel": "Example",
+    "amountColumnNotNumeric": "The example value for this column isn't numeric.",
     "create": "Create",
     "cancel": "Cancel",
     "back": "Back",

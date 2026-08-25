@@ -235,10 +235,9 @@
     "dateFormatPresetLabel": "Format courant",
     "dateFormatRequired": "Un format de date est requis.",
     "dateFormatPreviewLabel": "Aperçu",
-    "dateFormatPreviewError": {
-      "no-match": "Le motif ne correspond pas à la valeur d'exemple de la colonne de date sélectionnée.",
-      "invalid-date": "Le motif correspond, mais produit une date invalide."
-    },
+    "dateFormatMismatch": "Ce format ne correspond pas à la valeur d'exemple.",
+    "sampleValueLabel": "Exemple",
+    "amountColumnNotNumeric": "La valeur d'exemple de cette colonne n'est pas numérique.",
     "create": "Créer",
     "cancel": "Annuler",
     "back": "Retour",
