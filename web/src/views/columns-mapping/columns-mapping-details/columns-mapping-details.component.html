@@ -12,7 +12,8 @@
       icon="delete"
       variant="danger"
       [label]="'columnsMapping.delete' | translate"
-      (clicked)="onDelete()"/>
+      (clicked)="onDelete()"
+    />
   </app-page-menu>
 
   <app-page-body page-body>
@@ -22,23 +23,33 @@
         <dl class="columns-mapping-details__fields">
           <div class="columns-mapping-details__field">
             <dt>{{ 'columnsMapping.cardNumberColumn' | translate }}</dt>
-            <dd>{{ m.cardNumberColumnText }} <span class="columns-mapping-details__index">({{ m.cardNumberColumnIndex+1 }}
-              )</span></dd>
+            <dd>
+              {{ m.cardNumberColumnText }}
+              <span class="columns-mapping-details__index"
+                >({{ m.cardNumberColumnIndex + 1 }} )</span
+              >
+            </dd>
           </div>
 
           <fieldset class="columns-mapping-details__date-group">
             <legend>{{ 'columnsMapping.dateGroupLabel' | translate }}</legend>
             <div class="columns-mapping-details__date-row">
               <div class="columns-mapping-details__field">
-                <dt>{{ 'columnsMapping.dateInscriptionColumn' | translate }}</dt>
-                <dd>{{ m.dateInscriptionColumnText }} <span
-                  class="columns-mapping-details__index">({{ m.dateInscriptionColumnIndex+1 }})</span></dd>
+                <dt>
+                  {{ 'columnsMapping.dateInscriptionColumn' | translate }}
+                </dt>
+                <dd>
+                  {{ m.dateInscriptionColumnText }}
+                  <span class="columns-mapping-details__index"
+                    >({{ m.dateInscriptionColumnIndex + 1 }})</span
+                  >
+                </dd>
               </div>
               <div class="columns-mapping-details__field">
                 <dt>{{ 'columnsMapping.dateFormat' | translate }}</dt>
                 <dd>
                   @if (presetLabelFor(m.dateFormat); as label) {
-                    {{ label }} <span class="columns-mapping-details__index">(<code>{{ m.dateFormat }}</code>)</span>
+                    {{ label }}
                   } @else {
                     <code>{{ m.dateFormat }}</code>
                   }
@@ -49,17 +60,27 @@
 
           <div class="columns-mapping-details__field">
             <dt>{{ 'columnsMapping.amountColumn' | translate }}</dt>
-            <dd>{{ m.amountColumnText }} <span class="columns-mapping-details__index">({{ m.amountColumnIndex+1 }})</span>
+            <dd>
+              {{ m.amountColumnText }}
+              <span class="columns-mapping-details__index"
+                >({{ m.amountColumnIndex + 1 }})</span
+              >
             </dd>
           </div>
           <div class="columns-mapping-details__field">
             <dt>{{ 'columnsMapping.descriptionColumn' | translate }}</dt>
-            <dd>{{ m.descriptionColumnText }} <span
-              class="columns-mapping-details__index">({{ m.descriptionColumnIndex+1 }})</span></dd>
+            <dd>
+              {{ m.descriptionColumnText }}
+              <span class="columns-mapping-details__index"
+                >({{ m.descriptionColumnIndex + 1 }})</span
+              >
+            </dd>
           </div>
         </dl>
       } @else {
-        <h1 class="columns-mapping-details__title">{{ 'columnsMapping.loading' | translate }}</h1>
+        <h1 class="columns-mapping-details__title">
+          {{ 'columnsMapping.loading' | translate }}
+        </h1>
       }
     </div>
   </app-page-body>

@@ -81,6 +81,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     align-items: flex-start;
+    justify-content: space-between;
 
     mat-form-field {
       min-width: 16rem;
@@ -88,7 +89,6 @@
   }
 
   &__date-preview {
-    margin-top: -0.5rem;
     font-size: 0.85em;
   }
 
@@ -98,7 +98,6 @@
 
   &__sample-value {
     display: block;
-    margin-top: -0.5rem;
     color: var(--mat-sys-on-surface-variant, inherit);
     font-size: 0.85em;
   }

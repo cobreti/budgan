@@ -24,7 +24,11 @@
 
         <div class="new-columns-mapping__file-picker">
           <div class="new-columns-mapping__picker-column">
-            <button mat-stroked-button type="button" (click)="fileInput.click()">
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="fileInput.click()"
+            >
               {{ 'newColumnsMapping.chooseFile' | translate }}
             </button>
             <input
@@ -35,14 +39,18 @@
               (change)="onFileSelected($event)"
             />
             @if (selectedFileSource() === 'native') {
-              <span class="new-columns-mapping__file-name">{{ selectedFileName() }}</span>
+              <span class="new-columns-mapping__file-name">{{
+                selectedFileName()
+              }}</span>
             } @else if (selectedFileSource() === null) {
               <span class="new-columns-mapping__file-name">{{
                 'newColumnsMapping.noFileChosen' | translate
               }}</span>
             }
             @if (csvParseError()) {
-              <span class="new-columns-mapping__file-error">{{ csvParseError() }}</span>
+              <span class="new-columns-mapping__file-error">{{
+                csvParseError()
+              }}</span>
             }
           </div>
 
@@ -56,7 +64,9 @@
               {{ 'newColumnsMapping.loadDemo' | translate }}
             </button>
             @if (selectedFileSource() === 'demo') {
-              <span class="new-columns-mapping__file-name">{{ selectedFileName() }}</span>
+              <span class="new-columns-mapping__file-name">{{
+                selectedFileName()
+              }}</span>
             }
           </div>
         </div>
@@ -74,11 +84,14 @@
           </mat-form-field>
           @if (cardNumberSample()) {
             <span class="new-columns-mapping__sample-value">
-              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ cardNumberSample() }}
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}:
+              {{ cardNumberSample() }}
             </span>
           }
           <fieldset class="new-columns-mapping__date-group">
-            <legend>{{ 'newColumnsMapping.dateGroupLabel' | translate }}</legend>
+            <legend>
+              {{ 'newColumnsMapping.dateGroupLabel' | translate }}
+            </legend>
             <div class="new-columns-mapping__date-row">
               <mat-form-field>
                 <mat-label>{{
@@ -96,31 +109,44 @@
                 }}</mat-label>
                 <mat-select formControlName="dateFormat">
                   @for (preset of dateFormatPresets; track preset.pattern) {
-                    <mat-option [value]="preset.pattern">{{ preset.label }}</mat-option>
+                    <mat-option [value]="preset.pattern">{{
+                      preset.label
+                    }}</mat-option>
                   }
                 </mat-select>
                 @if (form.controls.dateFormat.hasError('required')) {
-                  <mat-error>{{ 'newColumnsMapping.dateFormatRequired' | translate }}</mat-error>
-                } @else if (form.controls.dateFormat.hasError('dateSampleMismatch')) {
-                  <mat-error>{{ 'newColumnsMapping.dateFormatMismatch' | translate }}</mat-error>
+                  <mat-error>{{
+                    'newColumnsMapping.dateFormatRequired' | translate
+                  }}</mat-error>
+                } @else if (
+                  form.controls.dateFormat.hasError('dateSampleMismatch')
+                ) {
+                  <mat-error>{{
+                    'newColumnsMapping.dateFormatMismatch' | translate
+                  }}</mat-error>
                 }
               </mat-form-field>
             </div>
-            @if (dateInscriptionSample()) {
-              <div class="new-columns-mapping__sample-value">
-                {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ dateInscriptionSample() }}
-              </div>
-            }
-            @if (dateFormatPreview(); as preview) {
-              @if (preview.success) {
-                <div class="new-columns-mapping__date-preview">
-                  <span class="new-columns-mapping__date-preview-ok">
-                    {{ 'newColumnsMapping.dateFormatPreviewLabel' | translate }}:
-                    {{ formatPreviewDate(preview.date) }}
-                  </span>
+            <div class="new-columns-mapping__date-row">
+              @if (dateInscriptionSample()) {
+                <div class="new-columns-mapping__sample-value">
+                  {{ 'newColumnsMapping.sampleValueLabel' | translate }}:
+                  {{ dateInscriptionSample() }}
                 </div>
               }
-            }
+              @if (dateFormatPreview(); as preview) {
+                @if (preview.success) {
+                  <div class="new-columns-mapping__date-preview">
+                    <span class="new-columns-mapping__date-preview-ok">
+                      {{
+                        'newColumnsMapping.dateFormatPreviewLabel' | translate
+                      }}:
+                      {{ formatPreviewDate(preview.date) }}
+                    </span>
+                  </div>
+                }
+              }
+            </div>
           </fieldset>
           <mat-form-field>
             <mat-label>{{
@@ -131,13 +157,18 @@
                 <mat-option [value]="$index">{{ header }}</mat-option>
               }
             </mat-select>
-            @if (form.controls.amountColumnIndex.hasError('amountSampleNotNumeric')) {
-              <mat-error>{{ 'newColumnsMapping.amountColumnNotNumeric' | translate }}</mat-error>
+            @if (
+              form.controls.amountColumnIndex.hasError('amountSampleNotNumeric')
+            ) {
+              <mat-error>{{
+                'newColumnsMapping.amountColumnNotNumeric' | translate
+              }}</mat-error>
             }
           </mat-form-field>
           @if (amountSample()) {
             <span class="new-columns-mapping__sample-value">
-              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ amountSample() }}
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}:
+              {{ amountSample() }}
             </span>
           }
           <mat-form-field>
@@ -152,7 +183,8 @@
           </mat-form-field>
           @if (descriptionSample()) {
             <span class="new-columns-mapping__sample-value">
-              {{ 'newColumnsMapping.sampleValueLabel' | translate }}: {{ descriptionSample() }}
+              {{ 'newColumnsMapping.sampleValueLabel' | translate }}:
+              {{ descriptionSample() }}
             </span>
           }
 
