@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { environment } from '@/environments/environment';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -25,12 +25,14 @@ import { AccountRecurringTransactionServiceProvider } from '@services/providers/
 import { ImportServiceProvider } from '@services/providers/import.service.provider';
 import { IMPORT_CSV_TRANSACTIONS_SERVICE, ImportCsvTransactionsServiceImpl } from '@services/import-csv-transactions.service';
 import { DEMO_STATEMENTS_SERVICE, DemoStatementsServiceImpl } from '@services/demo-statements.service';
+import { AuthServiceProvider } from '@services/providers/auth.service.provider';
+import { msalProviders } from './msal.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
     provideNativeDateAdapter(),
     provideTranslateService({
@@ -55,6 +57,8 @@ export const appConfig: ApplicationConfig = {
     { provide: DEMO_STATEMENTS_SERVICE, useClass: DemoStatementsServiceImpl },
     { provide: BUDGAN_EXPORT_SERVICE, useClass: BudganExportServiceImpl },
     { provide: ACCOUNT_ANALYSIS_SERVICE, useClass: AccountAnalysisServiceImpl },
+    AuthServiceProvider,
+    ...msalProviders(),
     provideCharts(withDefaultRegisterables()),
     provideServiceWorker('ngsw-worker.js', {
             enabled: environment.useServiceWorker,

@@ -12,6 +12,7 @@ import { LOCALE_SERVICE } from '@services/locale.service';
 import { THEME_SERVICE } from '@services/theme.service';
 import { HeaderPageTitleComponent } from '@components/header/header-page-title/header-page-title.component';
 import { getCurrentBuildType } from '@/utils/build-type';
+import { AUTH_SERVICE } from '@services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent {
   private readonly _localeService = inject(LOCALE_SERVICE);
   private readonly _router = inject(Router);
   private readonly _themeService = inject(THEME_SERVICE);
+  protected readonly authService = inject(AUTH_SERVICE);
   protected readonly isDark = this._themeService.isDark;
   protected readonly buildType = getCurrentBuildType();
   protected readonly currentLocale = this._localeService.currentLocale;

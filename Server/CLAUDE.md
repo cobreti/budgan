@@ -49,7 +49,7 @@ One class per operation, not per entity:
 
 - Controllers: `BudganSvr/Api/Controllers/<Feature>/<Feature>Controller.cs`, route `api/[controller]`.
 - Response envelope: `Api/Types/ApiResult.cs` — always return `ApiSuccessResult<T>` or `ApiErrorResult<E>`, never a bare value/exception.
-- No auth, no CORS configured anywhere in the solution. Don't assume `[Authorize]` does anything.
+- Auth: `Microsoft.Identity.Web` validates Azure AD (Entra ID) bearer tokens (`AzureAd` config section in `appsettings.json`, `TenantId: "common"` — accepts work/school accounts from any org plus personal Microsoft accounts). A global `AuthorizeFilter` (registered on `AddControllers` in `Program.cs`) protects every controller by default, including new ones — no per-controller `[Authorize]` needed; opt a genuinely public endpoint out with `[AllowAnonymous]`. `AzureAd:ClientId`/`Audience` in `appsettings.json` are still placeholder GUIDs pending a real Azure Portal App Registration. CORS policy `BudganCorsPolicy` is config-driven via `AllowedOrigins` (empty/fail-closed in base config, `http://localhost:4200` allowed in Development).
 
 ### Entities (`BudganInfra/DBContext/Tables/`)
 
@@ -87,6 +87,6 @@ Startup project for `dotnet-ef` commands is always `BudganSvr` (it holds the con
 
 ## Known gaps (don't silently "fix" — flag/ask first)
 
-- No authentication/authorization, no CORS policy.
+- `AzureAd:ClientId`/`Audience` in `appsettings.json` are placeholder GUIDs — no real Azure App Registration exists yet. Frontend (`web/`) has no MSAL/Azure AD integration, so it will get 401 on every API call until that follow-up lands.
 - No CI (`.github/workflows` doesn't exist); builds/tests/migrations are run locally.
 - `Account` and `UserAccount` are partially implemented (see above) — expanding them to full CRUD is expected future work, not a bug.
