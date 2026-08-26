@@ -12,7 +12,7 @@
     "build:server": "ng build --configuration=server && node scripts/copy-to-wwwroot.mjs",
     "build:server:dev": "ng build --configuration=server-dev && node scripts/copy-to-wwwroot.mjs",
     "build:all": "npm run build:pwa && npm run build:pwa:dev && npm run build:server && npm run build:server:dev",
-    "watch:server": "npm run build:server && concurrently \"ng build --configuration=server --watch\" \"node scripts/copy-to-wwwroot.mjs --watch\"",
+    "watch:server": "npm run build:server:dev && concurrently \"ng build --configuration=server-dev --watch\" \"node scripts/copy-to-wwwroot.mjs --watch\"",
     "serve:pwa": "ng serve --configuration=pwa-dev",
     "serve:server": "ng serve --configuration=server-dev"
   },
