@@ -27,6 +27,13 @@
     },
     {
       "type": "node-terminal",
+      "name": "Run Script: watch:server",
+      "request": "launch",
+      "command": "npm run watch:server",
+      "cwd": "${workspaceFolder}/web"
+    },
+    {
+      "type": "node-terminal",
       "name": "Run Script: test",
       "request": "launch",
       "command": "npm run test",
