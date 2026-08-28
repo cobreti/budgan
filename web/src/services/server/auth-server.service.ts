@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventType, InteractionStatus } from '@azure/msal-browser';
+import { AuthenticationResult, EventType, InteractionStatus } from '@azure/msal-browser';
 import { filter } from 'rxjs';
 import { AuthService } from '@services/auth.service';
 
@@ -25,7 +25,15 @@ export class AuthServiceServerImpl implements AuthService {
             msg.eventType === EventType.ACQUIRE_TOKEN_SUCCESS,
         ),
       )
-      .subscribe(() => this._refresh());
+      .subscribe((msg) => {
+        if (msg.eventType === EventType.LOGIN_SUCCESS) {
+          const result = msg.payload as AuthenticationResult;
+          if (result.account) {
+            this._msalService.instance.setActiveAccount(result.account);
+          }
+        }
+        this._refresh();
+      });
 
     this._msalBroadcastService.inProgress$
       .pipe(filter((status) => status === InteractionStatus.None))

@@ -2,7 +2,7 @@ import { EnvironmentProviders, inject, importProvidersFrom, Provider, provideApp
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { MsalBroadcastService, MsalGuard, MsalInterceptor, MsalModule, MsalService } from '@azure/msal-angular';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { isServerBuild } from '@/utils/build-type';
 import { environment } from '@/environments/environment';
 
@@ -38,7 +38,19 @@ export function msalProviders(): (Provider | EnvironmentProviders)[] {
     MsalBroadcastService,
     provideAppInitializer(() => {
       const msal = inject(MsalService);
-      return msal.initialize().pipe(switchMap(() => msal.handleRedirectObservable()));
+      return msal.initialize().pipe(
+        switchMap(() => msal.handleRedirectObservable()),
+        tap((result) => {
+          if (result?.account) {
+            msal.instance.setActiveAccount(result.account);
+          } else if (!msal.instance.getActiveAccount()) {
+            const [firstAccount] = msal.instance.getAllAccounts();
+            if (firstAccount) {
+              msal.instance.setActiveAccount(firstAccount);
+            }
+          }
+        }),
+      );
     }),
   ];
 }
