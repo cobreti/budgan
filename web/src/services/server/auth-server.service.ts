@@ -11,6 +11,9 @@ export class AuthServiceServerImpl implements AuthService {
 
   readonly isAuthenticated = signal(this._hasActiveAccount());
   readonly accountName = signal(this._activeAccountName());
+  readonly username = signal(this._activeUsername());
+  readonly oid = signal(this._activeOid());
+  readonly roles = signal(this._activeRoles());
 
   constructor() {
     this._msalBroadcastService.msalSubject$
@@ -40,6 +43,9 @@ export class AuthServiceServerImpl implements AuthService {
   private _refresh(): void {
     this.isAuthenticated.set(this._hasActiveAccount());
     this.accountName.set(this._activeAccountName());
+    this.username.set(this._activeUsername());
+    this.oid.set(this._activeOid());
+    this.roles.set(this._activeRoles());
   }
 
   private _hasActiveAccount(): boolean {
@@ -49,5 +55,20 @@ export class AuthServiceServerImpl implements AuthService {
   private _activeAccountName(): string | null {
     const account = this._msalService.instance.getActiveAccount();
     return account?.name ?? account?.username ?? null;
+  }
+
+  private _activeUsername(): string | null {
+    const account = this._msalService.instance.getActiveAccount();
+    return account?.idTokenClaims?.preferred_username ?? account?.username ?? null;
+  }
+
+  private _activeOid(): string | null {
+    const account = this._msalService.instance.getActiveAccount();
+    return account?.idTokenClaims?.oid ?? null;
+  }
+
+  private _activeRoles(): string[] {
+    const account = this._msalService.instance.getActiveAccount();
+    return account?.idTokenClaims?.roles ?? [];
   }
 }

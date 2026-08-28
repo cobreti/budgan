@@ -5,6 +5,9 @@ import { AuthService } from '@services/auth.service';
 export class AuthServiceNoopImpl implements AuthService {
   readonly isAuthenticated = signal(true);
   readonly accountName = signal<string | null>(null);
+  readonly username = signal<string | null>(null);
+  readonly oid = signal<string | null>(null);
+  readonly roles = signal<string[]>([]);
 
   login(): void {}
 
