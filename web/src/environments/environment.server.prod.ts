@@ -7,8 +7,8 @@ export const environment = {
   useServiceWorker: false,
   apiBaseUrl: '/api' as string | null,
   auth: {
-    clientId: '<client-id>>',
-    authority: 'https://<external tenant domain>.ciamlogin.com/<tenant-id>',
+    clientId: '<client-id>',
+    authority: 'https://login.microsoftonline.com/<tenant-id>/',
     apiScope: 'api://<client-id>/access_as_user',
   } as AuthConfig | null,
 };

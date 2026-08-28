@@ -26,29 +26,29 @@ Each file exports a single `environment` object typed against the shape declared
   - `authority` — MSAL authority URL.
   - `apiScope` — the scope requested when acquiring a token to call `BudganSvr` (`api://<client-id>/access_as_user`).
 
-## Azure AD auth config — External Tenant, matches the server
+## Azure AD auth config — regular Entra ID tenant, matches the server
 
 ```ts
 auth: {
-  clientId: '<client-id>>',
-  authority: 'https://<external tenant domain>.ciamlogin.com/<tenant-id>',
+  clientId: '<client-id>',
+  authority: 'https://login.microsoftonline.com/<tenant-id>/',
   apiScope: 'api://<client-id>/access_as_user',
 }
 ```
 
-This `auth` config is written for a **Microsoft Entra External ID tenant** (formerly "Azure AD CIAM"), not a regular workforce/organizational Entra ID tenant. The app registrations behind `clientId` / `apiScope` live in that External tenant, so sign-in targets external/customer identities rather than an organization's own employees — see [Server/BudganSvr/README.md](../../../Server/BudganSvr/README.md#azuread-configuration--external-tenant-not-a-regular-tenant) for the full explanation of why.
+This `auth` config targets a regular workforce/organizational **Microsoft Entra ID tenant** — the app registrations behind `clientId` / `apiScope` live in that tenant, so sign-in targets the organization's own accounts — see [Server/BudganSvr/README.md](../../../Server/BudganSvr/README.md#azuread-configuration) for the full explanation.
 
 ### `authority` format
 
 ```
-https://<external tenant domain>.ciamlogin.com/<tenant-id>
+https://login.microsoftonline.com/<tenant-id>/
 ```
 
-- `https://<external tenant domain>.ciamlogin.com/` — the External tenant's CIAM domain, e.g. `https://contosoexternal.ciamlogin.com/`. This replaces the standard `https://login.microsoftonline.com/` host used by regular Entra ID tenants — `ciamlogin.com` is the issuer host reserved for External ID tenants.
-- `<tenant-id>` — the External tenant's GUID, appended as a path segment (mirrors `AzureAd:TenantId` on the server). There is no `common`/`organizations`/`consumers` alias to fall back to: External ID tenants aren't multi-tenant in that sense, so this segment must be the specific tenant GUID.
+- `https://login.microsoftonline.com/` — the standard Entra ID issuer host used by regular work/school tenants.
+- `<tenant-id>` — the tenant's GUID, appended as a path segment (mirrors `AzureAd:TenantId` on the server). Use `common`/`organizations` instead of a specific GUID only if the app registration is meant to accept accounts from any organization.
 
-Because both sides authenticate against the same External Tenant:
+Because both sides authenticate against the same tenant:
 
-- `authority`'s `<external tenant domain>` and `<tenant-id>` must match `AzureAd:Instance` / `AzureAd:TenantId` in `Server/BudganSvr/appsettings*.json`.
+- `authority`'s `<tenant-id>` must match `AzureAd:Instance` / `AzureAd:TenantId` in `Server/BudganSvr/appsettings*.json`.
 - `clientId` here is the **SPA's** app registration, which is distinct from the **API's** `AzureAd:ClientId` on the server — `apiScope` (`api://<api-client-id>/access_as_user`) is what ties the two together: it must reference the API app registration's client ID and its exposed `access_as_user` scope.
-- All values are placeholders in source control (`<client-id>`, `<tenant-id>`, `<external tenant domain>`). Real values come from the External tenant's App Registrations in the Azure Portal and should not be committed.
+- All values are placeholders in source control (`<client-id>`, `<tenant-id>`). Real values come from the App Registrations in the Azure Portal and should not be committed.
