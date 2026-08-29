@@ -6,6 +6,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
+import { AUTH_SERVICE } from '@services/auth.service';
+import { isServerBuild } from '@/utils/build-type';
+import { Role } from '@/types/role';
 import {
   DuplicateTransaction,
   IMPORT_CSV_TRANSACTIONS_SERVICE,
@@ -40,6 +43,7 @@ export class ImportFileComponent {
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _importCsvTransactionsService = inject<ImportCsvTransactionsService>(IMPORT_CSV_TRANSACTIONS_SERVICE);
   private readonly _dialog = inject(MatDialog);
+  private readonly _authService = inject(AUTH_SERVICE);
 
   private readonly _accountId = this._route.snapshot.params['accountId'] as string;
 
@@ -49,6 +53,9 @@ export class ImportFileComponent {
   readonly isImporting = signal<boolean>(false);
   readonly importCompleted = signal<boolean>(false);
   readonly hasSelectedFiles = computed(() => this.selectedFiles().length > 0);
+  readonly canChooseCsvFile = computed(
+    () => !isServerBuild() || this._authService.roles().includes(Role.PersonalDataAllowed),
+  );
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
