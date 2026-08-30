@@ -48,4 +48,20 @@
       <span>Français</span>
     </button>
   </mat-menu>
+
+  @if (buildType === 'server') {
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-trigger" data-testid="account-menu-btn">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <mat-menu #accountMenu="matMenu">
+      @if (authService.accountName(); as name) {
+        <div class="account-name" mat-menu-item disabled>{{ name }}</div>
+      }
+      <button mat-menu-item (click)="authService.logout()" data-testid="sign-out-btn">
+        <mat-icon>logout</mat-icon>
+        <span>{{ 'header.signOut' | translate }}</span>
+      </button>
+    </mat-menu>
+  }
 </mat-toolbar>

@@ -27,6 +27,7 @@
             <button
               mat-stroked-button
               type="button"
+              [disabled]="!canChooseCsvFile()"
               (click)="fileInput.click()"
             >
               {{ 'newColumnsMapping.chooseFile' | translate }}
@@ -36,6 +37,7 @@
               type="file"
               accept=".csv"
               hidden
+              [disabled]="!canChooseCsvFile()"
               (change)="onFileSelected($event)"
             />
             @if (selectedFileSource() === 'native') {

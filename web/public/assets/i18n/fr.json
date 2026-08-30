@@ -86,7 +86,8 @@
     "clientMode": {
       "pwa": "Application installée (PWA)",
       "server": "Mode serveur"
-    }
+    },
+    "signOut": "Se déconnecter"
   },
   "account": {
     "title": "Détails du compte",

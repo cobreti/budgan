@@ -13,11 +13,12 @@
         <div class="import-file__picker">
           <div class="import-file__picker-column">
             <button mat-stroked-button type="button"
-                    [disabled]="isImporting()"
+                    [disabled]="isImporting() || !canChooseCsvFile()"
                     (click)="fileInput.click()">
               {{ 'importFile.chooseFiles' | translate }}
             </button>
             <input #fileInput type="file" accept=".csv" multiple hidden
+                   [disabled]="!canChooseCsvFile()"
                    (change)="onFileSelected($event)"/>
             @if (filesSource() === 'native') {
               <ng-container [ngTemplateOutlet]="fileList" />

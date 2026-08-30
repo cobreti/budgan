@@ -86,7 +86,8 @@
     "clientMode": {
       "pwa": "Running as installed app (PWA)",
       "server": "Running in server mode"
-    }
+    },
+    "signOut": "Sign out"
   },
   "account": {
     "title": "Account Details",

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -17,6 +17,9 @@ import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
+import { AUTH_SERVICE } from '@services/auth.service';
+import { isServerBuild } from '@/utils/build-type';
+import { Role } from '@/types/role';
 import { COLUMNS_MAPPING_SERVICE, ColumnsMappingService } from '@services/columns-mapping.service';
 import {
   CSV_CONTENT_EXTRACTOR_SERVICE,
@@ -67,6 +70,11 @@ export class NewColumnsMappingComponent {
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _dialog = inject(MatDialog);
+  private readonly _authService = inject(AUTH_SERVICE);
+
+  readonly canChooseCsvFile = computed(
+    () => !isServerBuild() || this._authService.roles().includes(Role.PersonalDataAllowed),
+  );
 
   readonly csvHeaders = signal<string[]>([]);
   readonly csvRows = signal<CsvJsonRecord[]>([]);
