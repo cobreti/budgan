@@ -8,7 +8,7 @@ export const environment = {
   apiBaseUrl: '/api' as string | null,
   auth: {
     clientId: '<client-id>',
-    authority: 'https://login.microsoftonline.com/<tenant-id>/',
+    authority: 'https://<tenant-subdomain>.ciamlogin.com/<tenant-id>/',
     apiScope: 'api://<client-id>/access_as_user',
   } as AuthConfig | null,
 };
