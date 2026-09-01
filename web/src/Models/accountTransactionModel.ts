@@ -25,7 +25,7 @@ export function buildTransactionUniqueKey(
   amount: number,
   description: string,
 ): string {
-  return `${accountId}|${cardNumber}|${dateInscriptionAsString}|${amount}|${description}`;
+  return `${accountId}|${dateInscriptionAsString}|${amount}|${description}`;
 }
 
 export function buildSnapshotUniqueKey(accountId: string): string {

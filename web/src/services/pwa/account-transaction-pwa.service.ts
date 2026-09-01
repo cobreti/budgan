@@ -8,7 +8,10 @@ import {
   buildTransactionUniqueKey,
 } from '@models/accountTransactionModel';
 import { Result } from '@app-types/result';
-import { ID_GENERATOR_SERVICE, IdGeneratorService } from '@services/id-generator.service';
+import {
+  ID_GENERATOR_SERVICE,
+  IdGeneratorService,
+} from '@services/id-generator.service';
 import {
   AccountTransactionService,
   TransactionPage,
@@ -19,7 +22,8 @@ import {
 export class AccountTransactionServicePwaImpl implements AccountTransactionService {
   private readonly _indexDb = inject(IndexdbService);
   private readonly _transactionsVersion = signal(0);
-  private readonly _idGenerator = inject<IdGeneratorService>(ID_GENERATOR_SERVICE);
+  private readonly _idGenerator =
+    inject<IdGeneratorService>(ID_GENERATOR_SERVICE);
 
   readonly transactionsVersion: Signal<number> = this._transactionsVersion;
 
@@ -28,7 +32,10 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
   }
 
   async getCountByAccount(accountId: string): Promise<number> {
-    return this._indexDb.accountTransactionsTable.where('accountId').equals(accountId).count();
+    return this._indexDb.accountTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .count();
   }
 
   async getPageByAccount(
@@ -63,7 +70,9 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
         case 'description':
           return sign * a.description.localeCompare(b.description);
         case 'dateInscription': {
-          const dateCmp = a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString);
+          const dateCmp = a.dateInscriptionAsString.localeCompare(
+            b.dateInscriptionAsString,
+          );
           if (dateCmp !== 0) return sign * dateCmp;
           const aOff = a.balanceDateOffset ?? 0;
           const bOff = b.balanceDateOffset ?? 0;
@@ -92,7 +101,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     const range = 0.15;
     const lower = Math.floor((amount * (1 - range)) / 5) * 5;
     const upper = Math.floor((amount * (1 + range)) / 5) * 5;
-    const recurringId = `${accountId}|${cardNumber}|${lower}|${upper}|${description}`;
+    const recurringId = `${accountId}|${lower}|${upper}|${description}`;
     try {
       await this._indexDb.accountTransactionsTable.add({
         id,
@@ -148,7 +157,9 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     return { success: true, value: id };
   }
 
-  async getSnapshot(accountId: string): Promise<AccountTransactionModel | undefined> {
+  async getSnapshot(
+    accountId: string,
+  ): Promise<AccountTransactionModel | undefined> {
     const uniqueKey = this.snapshotId(accountId);
     return this._indexDb.accountTransactionsTable
       .where('[accountId+uniqueKey]')
@@ -165,8 +176,13 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     await this.recalculateBalances(accountId);
   }
 
-  async getListByAccount(accountId: string): Promise<AccountTransactionModel[]> {
-    return this._indexDb.accountTransactionsTable.where('accountId').equals(accountId).toArray();
+  async getListByAccount(
+    accountId: string,
+  ): Promise<AccountTransactionModel[]> {
+    return this._indexDb.accountTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .toArray();
   }
 
   async getById(id: string): Promise<AccountTransactionModel> {
@@ -201,13 +217,17 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
       .toArray();
 
     // The snapshot is the anchor; there is at most one per account.
-    const snapshot = all.find((t) => t.recordType === AccountTransactionRecordType.snapshot);
+    const snapshot = all.find(
+      (t) => t.recordType === AccountTransactionRecordType.snapshot,
+    );
 
     // Normal rows in chronological order; uniqueKey is a stable tiebreaker for equal dates.
     const normal = all
       .filter((t) => t.recordType === AccountTransactionRecordType.normal)
       .sort((a, b) => {
-        const dateCmp = a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString);
+        const dateCmp = a.dateInscriptionAsString.localeCompare(
+          b.dateInscriptionAsString,
+        );
         if (dateCmp !== 0) return dateCmp;
         return a.uniqueKey.localeCompare(b.uniqueKey);
       });
@@ -239,8 +259,12 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     // `afterOrEqual` includes the snapshot date itself (forward pass);
     // `before` is everything strictly earlier (backward pass).
     const snapshotDate = snapshot.dateInscriptionAsString;
-    const before = normal.filter((t) => t.dateInscriptionAsString < snapshotDate);
-    const afterOrEqual = normal.filter((t) => t.dateInscriptionAsString >= snapshotDate);
+    const before = normal.filter(
+      (t) => t.dateInscriptionAsString < snapshotDate,
+    );
+    const afterOrEqual = normal.filter(
+      (t) => t.dateInscriptionAsString >= snapshotDate,
+    );
 
     // Forward pass: start at the snapshot balance and ADD each later amount.
     // Offset increases (+1, +2, ...) the further a row is after the snapshot.
@@ -261,7 +285,11 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     for (let i = before.length - 1; i >= 0; i--) {
       offset -= 1;
       const t = before[i];
-      updatedBefore.unshift({ ...t, balance: running, balanceDateOffset: offset });
+      updatedBefore.unshift({
+        ...t,
+        balance: running,
+        balanceDateOffset: offset,
+      });
       running -= t.amount;
     }
 
