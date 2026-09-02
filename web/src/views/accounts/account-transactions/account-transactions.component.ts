@@ -10,6 +10,7 @@ import {
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AccountRecurringTransactionsTableComponent } from '@/components/account-recurring-transactions-table/account-recurring-transactions-table.component';
 
 export type TransactionsDisplay = 'all' | 'recurring';
 
@@ -20,6 +21,7 @@ export type TransactionsDisplay = 'all' | 'recurring';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AccountTransactionsTableComponent,
+    AccountRecurringTransactionsTableComponent,
     MatButtonToggle,
     MatButtonToggleGroup,
     TranslatePipe,

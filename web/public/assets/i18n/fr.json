@@ -216,6 +216,15 @@
     "all": "Toutes",
     "recurring": "Récurrentes"
   },
+  "recurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Montant moy.",
+    "period": "Période (jours)",
+    "firstOccurrence": "Première occurrence",
+    "lastOccurrence": "Dernière occurrence",
+    "empty": "Aucune transaction."
+  },
   "transactionTable": {
     "cardNumber": "Numéro de carte",
     "dateInscription": "Date d'inscription",

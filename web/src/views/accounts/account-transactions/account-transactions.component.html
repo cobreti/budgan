@@ -18,5 +18,7 @@
   </div>
   @if (transactionsDisplay() == 'all') {
     <app-account-transactions-table [accountId]="accountId()" />
+  } @else {
+    <app-account-recurring-transactions-table [accountId]="accountId()" />
   }
 </div>

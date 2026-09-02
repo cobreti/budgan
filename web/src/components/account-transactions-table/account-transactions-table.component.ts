@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatIconButton } from '@angular/material/button';
@@ -10,9 +18,15 @@ import {
   TransactionSort,
   TransactionSortField,
 } from '@services/account-transaction.service';
-import { AccountTransactionModel, AccountTransactionRecordType } from '@models/accountTransactionModel';
+import {
+  AccountTransactionModel,
+  AccountTransactionRecordType,
+} from '@models/accountTransactionModel';
 
-const DEFAULT_SORT: TransactionSort = { field: 'dateInscription', direction: 'desc' };
+const DEFAULT_SORT: TransactionSort = {
+  field: 'dateInscription',
+  direction: 'desc',
+};
 const SORTABLE_FIELDS: readonly TransactionSortField[] = [
   'cardNumber',
   'dateInscription',
@@ -25,10 +39,18 @@ const SORTABLE_FIELDS: readonly TransactionSortField[] = [
   templateUrl: './account-transactions-table.component.html',
   styleUrl: './account-transactions-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatTableModule, MatSortModule, MatIconButton, MatIcon, TranslatePipe],
+  imports: [
+    MatTableModule,
+    MatSortModule,
+    MatIconButton,
+    MatIcon,
+    TranslatePipe,
+  ],
 })
 export class AccountTransactionsTableComponent {
-  private readonly _transactionService = inject<AccountTransactionService>(ACCOUNT_TRANSACTION_SERVICE);
+  private readonly _transactionService = inject<AccountTransactionService>(
+    ACCOUNT_TRANSACTION_SERVICE,
+  );
 
   readonly accountId = input.required<string>();
 
@@ -38,12 +60,20 @@ export class AccountTransactionsTableComponent {
   readonly totalPages = signal(0);
   readonly displayPage = computed(() => this._currentPage() + 1);
   readonly isFirstPage = computed(() => this._currentPage() === 0);
-  readonly isLastPage = computed(() => this._currentPage() >= this.totalPages() - 1);
+  readonly isLastPage = computed(
+    () => this._currentPage() >= this.totalPages() - 1,
+  );
   readonly sortField = computed(() => this._sort().field);
   readonly sortDirection = computed(() => this._sort().direction);
 
   readonly pageSize = 25;
-  readonly displayedColumns = ['cardNumber', 'dateInscription', 'description', 'amount', 'balance'];
+  readonly displayedColumns = [
+    'cardNumber',
+    'dateInscription',
+    'description',
+    'amount',
+    'balance',
+  ];
 
   constructor() {
     effect(() => {
@@ -55,8 +85,17 @@ export class AccountTransactionsTableComponent {
     });
   }
 
-  private async _loadPage(accountId: string, page: number, sort: TransactionSort): Promise<void> {
-    const result = await this._transactionService.getPageByAccount(accountId, page, this.pageSize, sort);
+  private async _loadPage(
+    accountId: string,
+    page: number,
+    sort: TransactionSort,
+  ): Promise<void> {
+    const result = await this._transactionService.getPageByAccount(
+      accountId,
+      page,
+      this.pageSize,
+      sort,
+    );
     this.transactions.set(result.transactions);
     this.totalPages.set(result.totalPages);
   }
@@ -75,11 +114,11 @@ export class AccountTransactionsTableComponent {
   }
 
   onPreviousPage(): void {
-    this._currentPage.update(p => p - 1);
+    this._currentPage.update((p) => p - 1);
   }
 
   onNextPage(): void {
-    this._currentPage.update(p => p + 1);
+    this._currentPage.update((p) => p + 1);
   }
 
   onGoToPage(event: Event): void {
@@ -99,11 +138,15 @@ export class AccountTransactionsTableComponent {
   }
 
   isPositiveAmount(row: AccountTransactionModel): boolean {
-    return row.recordType !== AccountTransactionRecordType.snapshot && row.amount > 0;
+    return (
+      row.recordType !== AccountTransactionRecordType.snapshot && row.amount > 0
+    );
   }
 
   isNegativeAmount(row: AccountTransactionModel): boolean {
-    return row.recordType !== AccountTransactionRecordType.snapshot && row.amount < 0;
+    return (
+      row.recordType !== AccountTransactionRecordType.snapshot && row.amount < 0
+    );
   }
 
   formatBalance(balance: number | undefined): string {
