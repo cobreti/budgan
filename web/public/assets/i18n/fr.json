@@ -212,6 +212,10 @@
     "back": "Retour",
     "nameExists": "Un compte avec ce nom existe déjà."
   },
+  "transactionsTab": {
+    "all": "Toutes",
+    "recurring": "Récurrentes"
+  },
   "transactionTable": {
     "cardNumber": "Numéro de carte",
     "dateInscription": "Date d'inscription",

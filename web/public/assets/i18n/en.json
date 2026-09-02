@@ -212,6 +212,10 @@
     "back": "Back",
     "nameExists": "An account with this name already exists."
   },
+  "transactionsTab": {
+    "all": "All",
+    "recurring": "Recurring"
+  },
   "transactionTable": {
     "cardNumber": "Card Number",
     "dateInscription": "Date",
