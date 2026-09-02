@@ -63,7 +63,7 @@ internal class CreateAccountTransactionUseCase : BaseUseCaseWithResultValue<Guid
 
     private static string BuildUniqueKey(BOCreateAccountTransaction model, string dateInscriptionAsString)
     {
-        return $"{model.AccountId}|{model.CardNumber}|{dateInscriptionAsString}|{model.Amount.ToString(CultureInfo.InvariantCulture)}|{model.Description}";
+        return $"{model.AccountId}|{dateInscriptionAsString}|{model.Amount.ToString(CultureInfo.InvariantCulture)}|{model.Description}";
     }
 
     private static string BuildRecurringId(BOCreateAccountTransaction model)
@@ -71,6 +71,6 @@ internal class CreateAccountTransactionUseCase : BaseUseCaseWithResultValue<Guid
         var lower = (long)(Math.Floor(model.Amount * (1 - RecurringRange) / 5m) * 5m);
         var upper = (long)(Math.Floor(model.Amount * (1 + RecurringRange) / 5m) * 5m);
 
-        return $"{model.AccountId}|{model.CardNumber}|{lower}|{upper}|{model.Description}";
+        return $"{model.AccountId}|{lower}|{upper}|{model.Description}";
     }
 }
