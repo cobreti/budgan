@@ -19,82 +19,14 @@ export class IndexdbService extends Dexie {
   accountsTable!: EntityTable<AccountModel, 'id'>;
   filesTable!: EntityTable<fileModel, 'id'>;
   accountTransactionsTable!: EntityTable<AccountTransactionModel, 'id'>;
-  recurringTransactionsTable!: EntityTable<AccountRecurringTransactionModel, 'id'>;
+  recurringTransactionsTable!: EntityTable<
+    AccountRecurringTransactionModel,
+    'id'
+  >;
 
   constructor() {
     super('budgan');
     this.version(1).stores({
-      workspaces: '&id, &name',
-    });
-    this.version(2).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-    });
-    this.version(3).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name, journalId',
-    });
-    this.version(4).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-    });
-    this.version(5).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-    });
-    this.version(6).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename',
-    });
-    this.version(7).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename',
-      accountTransactions: '&id, accountId, fileId',
-    });
-    this.version(8).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename, accountId',
-      accountTransactions: '&id, accountId, fileId',
-    });
-    this.version(9).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename, accountId',
-      accountTransactions: '&id, accountId, fileId',
-      accountRecurringTransactions: '&id, accountId',
-    });
-    this.version(10).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename, accountId',
-      accountTransactions: '&id, accountId, fileId',
-      accountRecurringTransactions: null,
-      recurringTransactions: '&id, accountId',
-    }).upgrade(async tx => {
-      const existing = await tx.table('accountRecurringTransactions').toArray();
-      if (existing.length > 0) {
-        await tx.table('recurringTransactions').bulkAdd(existing);
-      }
-    });
-    this.version(11).stores({
-      workspaces: '&id, &name',
-      columnMappings: '&id, &name',
-      accounts: '&id, &name',
-      files: '&id, filename, accountId',
-      accountTransactions: '&id, accountId, fileId, &[accountId+uniqueKey]',
-      accountRecurringTransactions: null,
-      recurringTransactions: '&id, accountId',
-    });
-    this.version(12).stores({
       workspaces: '&id, &name',
       columnMappings: '&id, &name',
       accounts: '&id, &name',
@@ -164,7 +96,11 @@ export class IndexdbService extends Dexie {
           this.filesTable.bulkAdd(payload.files),
           this.accountTransactionsTable.bulkAdd(payload.transactions),
           ...(payload.recurringTransactions?.length
-            ? [this.recurringTransactionsTable.bulkAdd(payload.recurringTransactions)]
+            ? [
+                this.recurringTransactionsTable.bulkAdd(
+                  payload.recurringTransactions,
+                ),
+              ]
             : []),
         ]);
       },
