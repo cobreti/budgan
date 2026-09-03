@@ -1,3 +1,24 @@
 <div class="account-transactions">
-  <app-account-transactions-table [accountId]="accountId()" />
+  <div class="account-transactions-toolbar">
+    <mat-button-toggle-group
+      hideSingleSelectionIndicator="true"
+      [(value)]="transactionsDisplay"
+    >
+      <mat-button-toggle
+        [aria-label]="'transactionsTab.all' | translate"
+        value="all"
+        >{{ 'transactionsTab.all' | translate }}</mat-button-toggle
+      >
+      <mat-button-toggle
+        [aria-label]="'transactionsTab.recurring' | translate"
+        value="recurring"
+        >{{ 'transactionsTab.recurring' | translate }}</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </div>
+  @if (transactionsDisplay() == 'all') {
+    <app-account-transactions-table [accountId]="accountId()" />
+  } @else {
+    <app-account-recurring-transactions-table [accountId]="accountId()" />
+  }
 </div>

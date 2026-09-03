@@ -212,6 +212,19 @@
     "back": "Back",
     "nameExists": "An account with this name already exists."
   },
+  "transactionsTab": {
+    "all": "All",
+    "recurring": "Recurring"
+  },
+  "recurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Avg. Amount",
+    "period": "Period (days)",
+    "firstOccurrence": "First Occurrence",
+    "lastOccurrence": "Last Occurrence",
+    "empty": "No transactions."
+  },
   "transactionTable": {
     "cardNumber": "Card Number",
     "dateInscription": "Date",
