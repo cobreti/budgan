@@ -3,6 +3,14 @@
   margin: 0;
   padding: 0;
 
+  &__toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1em 1em;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+
   &__item {
     border-bottom: 1px solid var(--mat-sys-outline-variant);
 

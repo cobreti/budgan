@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
@@ -7,16 +12,19 @@ import {
   ColumnsMappingService,
 } from '@services/columns-mapping.service';
 import { ColumnsMapping } from '@models/columnsMappingModel';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-columns-mapping-list',
   templateUrl: './columns-mapping-list.component.html',
   styleUrl: './columns-mapping-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, MatButton],
 })
 export class ColumnsMappingListComponent {
-  private readonly _service = inject<ColumnsMappingService>(COLUMNS_MAPPING_SERVICE);
+  private readonly _service = inject<ColumnsMappingService>(
+    COLUMNS_MAPPING_SERVICE,
+  );
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
 
@@ -31,6 +39,18 @@ export class ColumnsMappingListComponent {
   }
 
   open(id: string): void {
-    this._router.navigate([this._locale.currentLocale(), 'columns-mapping', id]);
+    this._router.navigate([
+      this._locale.currentLocale(),
+      'columns-mapping',
+      id,
+    ]);
+  }
+
+  async onNewColumnsMapping(): Promise<void> {
+    await this._router.navigate([
+      this._locale.currentLocale(),
+      'columns-mapping',
+      'new',
+    ]);
   }
 }

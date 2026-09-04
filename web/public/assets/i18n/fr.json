@@ -3,13 +3,8 @@
     "title": "Budgan"
   },
   "menu": {
-    "newJournal": "Nouveau journal",
-    "openJournal": "Ouvrir un journal",
-    "newColumnsMapping": "Nouveau mappage de colonnes",
-    "newAccount": "Nouveau compte",
     "saveAll": "Sauvegarder tout",
     "loadAll": "Tout charger",
-    "samples": "Exemples",
     "clearAll": "Tout effacer"
   },
   "samples": {
@@ -46,10 +41,13 @@
     "empty": "Aucun journal pour l'instant."
   },
   "columnsMappingList": {
-    "empty": "Aucun mappage de colonnes pour l'instant."
+    "empty": "Aucun mappage de colonnes pour l'instant.",
+    "newColumnsMapping": "Nouveau mappage de colonnes"
   },
   "accountList": {
-    "empty": "Aucun compte pour l'instant."
+    "empty": "Aucun compte pour l'instant.",
+    "newAccount": "Nouveau compte",
+    "globalView": "Vue d'ensemble"
   },
   "journal": {
     "title": "Détails du journal",

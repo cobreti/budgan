@@ -1,3 +1,9 @@
+<div class="account-list__toolbar">
+  <button mat-button (click)="onNewAccount()">
+    {{ 'accountList.newAccount' | translate }}
+  </button>
+  <button mat-button>{{ 'accountList.globalView' | translate }}</button>
+</div>
 <ul class="account-list">
   @for (account of accounts(); track account.id) {
     <li class="account-list__item">
@@ -5,7 +11,8 @@
         class="account-list__item-btn"
         type="button"
         data-testid="account-item"
-        (click)="open(account.id)">
+        (click)="open(account.id)"
+      >
         {{ account.name }}
       </button>
     </li>
