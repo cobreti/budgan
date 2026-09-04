@@ -258,5 +258,8 @@
     "loadDemo": "Load demo statement",
     "noFileChosen": "No file chosen",
     "csvParseError": "Failed to parse the CSV file."
+  },
+  "accountsOverview": {
+    "title": "Accounts Overview"
   }
 }

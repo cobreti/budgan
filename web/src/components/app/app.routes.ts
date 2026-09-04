@@ -14,6 +14,7 @@ import { SaveAccountComponent } from '@views/accounts/save-account/save-account.
 import { AnalyzeAccountComponent } from '@views/accounts/analyze-account/analyze-account.component';
 import { SaveComponent } from '@views/save/save.component';
 import { LoadComponent } from '@views/load/load.component';
+import { AccountOverviewComponent } from '@/views/accounts-overview/accounts-overview';
 
 export const routes: Routes = [
   {
@@ -48,6 +49,10 @@ export const routes: Routes = [
       },
       { path: 'save', component: SaveComponent },
       { path: 'load', component: LoadComponent },
+      {
+        path: 'accounts/overview',
+        component: AccountOverviewComponent,
+      },
     ],
   },
   { path: '**', redirectTo: 'en' },

@@ -44,4 +44,12 @@ export class AccountListComponent {
       'new',
     ]);
   }
+
+  async onAccountGlobalView(): Promise<void> {
+    await this._router.navigate([
+      this._locale.currentLocale(),
+      'accounts',
+      'overview',
+    ]);
+  }
 }

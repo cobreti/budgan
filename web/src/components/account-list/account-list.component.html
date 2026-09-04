@@ -2,7 +2,9 @@
   <button mat-button (click)="onNewAccount()">
     {{ 'accountList.newAccount' | translate }}
   </button>
-  <button mat-button>{{ 'accountList.globalView' | translate }}</button>
+  <button mat-button (click)="onAccountGlobalView()">
+    {{ 'accountList.globalView' | translate }}
+  </button>
 </div>
 <ul class="account-list">
   @for (account of accounts(); track account.id) {

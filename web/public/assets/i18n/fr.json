@@ -258,5 +258,8 @@
     "loadDemo": "Charger un relevé d'exemple",
     "noFileChosen": "Aucun fichier sélectionné",
     "csvParseError": "Impossible de lire le fichier CSV."
+  },
+  "accountsOverview": {
+    "title": "Vue d'ensemble des comptes"
   }
 }
