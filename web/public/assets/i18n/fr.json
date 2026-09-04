@@ -223,6 +223,16 @@
     "lastOccurrence": "Dernière occurrence",
     "empty": "Aucune transaction."
   },
+  "accountsRecurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Montant moy.",
+    "period": "Période (jours)",
+    "firstOccurrence": "Première occurrence",
+    "lastOccurrence": "Dernière occurrence",
+    "empty": "Aucune transaction.",
+    "accountName": "Nom du compte"
+  },
   "transactionTable": {
     "cardNumber": "Numéro de carte",
     "dateInscription": "Date d'inscription",
@@ -260,6 +270,8 @@
     "csvParseError": "Impossible de lire le fichier CSV."
   },
   "accountsOverview": {
-    "title": "Vue d'ensemble des comptes"
+    "title": "Vue d'ensemble des comptes",
+    "back": "Retour",
+    "recurringTransactions": "Transactions récurrentes"
   }
 }

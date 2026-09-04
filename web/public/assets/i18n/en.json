@@ -223,6 +223,17 @@
     "lastOccurrence": "Last Occurrence",
     "empty": "No transactions."
   },
+  "accountsRecurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Avg. Amount",
+    "period": "Period (days)",
+    "firstOccurrence": "First Occurrence",
+    "lastOccurrence": "Last Occurrence",
+    "empty": "No transactions.",
+    "accountName": "Account Name"
+  },
+
   "transactionTable": {
     "cardNumber": "Card Number",
     "dateInscription": "Date",
@@ -260,6 +271,8 @@
     "csvParseError": "Failed to parse the CSV file."
   },
   "accountsOverview": {
-    "title": "Accounts Overview"
+    "title": "Accounts Overview",
+    "back": "Back",
+    "recurringTransactions": "Recurring Transactions"
   }
 }

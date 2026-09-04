@@ -1,5 +1,16 @@
 <app-page [title]="'accountsOverview.title' | translate">
+  <app-page-menu page-menu>
+    <app-page-menu-button
+      icon="arrow_back"
+      [label]="'accountsOverview.back' | translate"
+      (clicked)="onBack()" />
+  </app-page-menu>
   <app-page-body page-body>
-    <h1>Account Overview content</h1>
+    <mat-tab-group class="account-home__tabs">
+      <mat-tab [label]="'accountsOverview.recurringTransactions' | translate">
+        <app-accounts-recurring-transactions-table
+          [accounts]="accounts()"></app-accounts-recurring-transactions-table>
+      </mat-tab>
+    </mat-tab-group>
   </app-page-body>
 </app-page>

@@ -1,0 +1,63 @@
+.transaction-table {
+  width: 100%;
+
+  &__table {
+    width: 100%;
+  }
+
+  &__empty {
+    padding: 1em;
+    text-align: center;
+    color: var(--mat-sys-on-surface-variant, inherit);
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    padding: 0.75em 1em;
+    color: var(--mat-sys-on-surface, inherit);
+    border-top: 1px solid var(--mat-sys-outline-variant, inherit);
+  }
+
+  &__page-info {
+    flex: 1;
+  }
+
+  &__go-to-label {
+    font-size: 0.875em;
+  }
+
+  &__amount {
+    &--positive {
+      color: var(--color-success, inherit);
+    }
+
+    &--negative {
+      color: var(--mat-sys-error, inherit);
+    }
+  }
+
+  &__page-input {
+    width: 4em;
+    padding: 0.25em 0.5em;
+    border: 1px solid var(--mat-sys-outline-variant, inherit);
+    border-radius: 4px;
+    background: var(--mat-sys-surface, inherit);
+    color: var(--mat-sys-on-surface, inherit);
+    text-align: center;
+
+    &:focus {
+      outline: 2px solid var(--mat-sys-primary, inherit);
+      outline-offset: -2px;
+    }
+  }
+}
+
+tr.mat-mdc-row:nth-child(odd) {
+  background-color: var(--mat-sys-surface, inherit);
+}
+
+tr.mat-mdc-row:nth-child(even) {
+  background-color: var(--mat-sys-surface-container-low, inherit);
+}
