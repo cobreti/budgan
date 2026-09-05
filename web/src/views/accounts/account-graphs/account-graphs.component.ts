@@ -25,9 +25,19 @@ import {
 } from '@services/account-transaction.service';
 import { AccountTransactionRecordType } from '@models/accountTransactionModel';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
-import { MonthRange, monthsBetween, toMonthKey } from '@/utils/recurring-month';
+import {
+  monthBounds,
+  MonthRange,
+  monthsBetween,
+  toMonthKey,
+} from '@/utils/recurring-month';
 import { BalanceTrendGraphComponent } from '@views/accounts/account-graphs/balance-trend-graph/balance-trend-graph.component';
 import { RecurringPieChartComponent } from '@views/accounts/account-graphs/recurring-pie-chart/recurring-pie-chart.component';
+import {
+  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
+  AccountRecurringTransactionService,
+  StructuredTransactionsByRecurringId,
+} from '@/services/account-recurring-transaction.service';
 
 @Component({
   selector: 'app-account-graphs',
@@ -50,8 +60,12 @@ import { RecurringPieChartComponent } from '@views/accounts/account-graphs/recur
 })
 export class AccountGraphsComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
-    ACCOUNT_TRANSACTION_SERVICE,
+    ACCOUNT_TRANSACTION_SERVICE
   );
+  private readonly _recurringTransactionService =
+    inject<AccountRecurringTransactionService>(
+      ACCOUNT_RECURRING_TRANSACTION_SERVICE
+    );
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _cdr = inject(ChangeDetectorRef);
 
@@ -61,6 +75,10 @@ export class AccountGraphsComponent {
   protected readonly endMonth = signal<string | null>(null);
   private readonly _monthRange = signal<MonthRange | null>(null);
   private _availableMonthsRequestId = 0;
+
+  readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
+    {}
+  );
 
   // Ascending, so a start/end pair of dropdowns reads naturally left to right.
   readonly availableMonths = computed(() => {
@@ -78,13 +96,25 @@ export class AccountGraphsComponent {
       this._transactionService.transactionsVersion();
       this._loadAvailableMonths(id);
     });
+
+    effect(async () => {
+      const id = this.accountId();
+      const startMonth = this.startMonth();
+      const endMonth = this.endMonth();
+
+      if (startMonth && endMonth) {
+        await this.updateRecurringTransactions(id, startMonth, endMonth);
+      }
+    });
   }
 
   monthLabel(month: string): string {
-    return moment(month, 'YYYY-MM').locale(this._locale.currentLocale()).format('MMMM YYYY');
+    return moment(month, 'YYYY-MM')
+      .locale(this._locale.currentLocale())
+      .format('MMMM YYYY');
   }
 
-  onStartMonthChange(change: MatSelectChange): void {
+  async onStartMonthChange(change: MatSelectChange): Promise<void> {
     const value = change.value as string;
     this.startMonth.set(value);
     const end = this.endMonth();
@@ -93,7 +123,7 @@ export class AccountGraphsComponent {
     }
   }
 
-  onEndMonthChange(change: MatSelectChange): void {
+  async onEndMonthChange(change: MatSelectChange): Promise<void> {
     const value = change.value as string;
     this.endMonth.set(value);
     const start = this.startMonth();
@@ -102,13 +132,31 @@ export class AccountGraphsComponent {
     }
   }
 
+  private async updateRecurringTransactions(
+    accountId: string,
+    startMonth: string,
+    endMonth: string
+  ): Promise<void> {
+    const start = monthBounds(startMonth).start;
+    const end = monthBounds(endMonth).end;
+
+    const recurringTrxs =
+      await this._recurringTransactionService.getStructuredRecurringTransactionsByAccount(
+        accountId,
+        start,
+        end
+      );
+    this.recurringTransactions.set(recurringTrxs);
+  }
+
   private async _loadAvailableMonths(accountId: string): Promise<void> {
     // Guards against out-of-order async resolution: if accountId changes
     // again before this call resolves, a later call's request id will have
     // moved on, so this (now stale) result is discarded instead of
     // overwriting the dropdowns with another account's months.
     const requestId = ++this._availableMonthsRequestId;
-    const transactions = await this._transactionService.getListByAccount(accountId);
+    const transactions =
+      await this._transactionService.getListByAccount(accountId);
     if (requestId !== this._availableMonthsRequestId) return;
 
     const matchingDates = transactions
@@ -116,9 +164,13 @@ export class AccountGraphsComponent {
       .map((t) => t.dateInscriptionAsString);
 
     const startDate =
-      matchingDates.length > 0 ? matchingDates.reduce((min, d) => (d < min ? d : min)) : undefined;
+      matchingDates.length > 0
+        ? matchingDates.reduce((min, d) => (d < min ? d : min))
+        : undefined;
     const endDate =
-      matchingDates.length > 0 ? matchingDates.reduce((max, d) => (d > max ? d : max)) : undefined;
+      matchingDates.length > 0
+        ? matchingDates.reduce((max, d) => (d > max ? d : max))
+        : undefined;
 
     if (!startDate || !endDate) {
       this._monthRange.set(null);
@@ -131,7 +183,9 @@ export class AccountGraphsComponent {
     const startMonthKey = toMonthKey(startDate);
     const endMonthKey = toMonthKey(endDate);
     const range: MonthRange | null =
-      startMonthKey && endMonthKey ? { start: startMonthKey, end: endMonthKey } : null;
+      startMonthKey && endMonthKey
+        ? { start: startMonthKey, end: endMonthKey }
+        : null;
     this._monthRange.set(range);
 
     const months = range ? monthsBetween(range) : [];
@@ -141,12 +195,18 @@ export class AccountGraphsComponent {
     const currentStart = this.startMonth();
     const currentEnd = this.endMonth();
     const validStart =
-      currentStart && months.includes(currentStart) ? currentStart : (months[0] ?? null);
+      currentStart && months.includes(currentStart)
+        ? currentStart
+        : (months[0] ?? null);
     const validEnd =
-      currentEnd && months.includes(currentEnd) ? currentEnd : (months[months.length - 1] ?? null);
+      currentEnd && months.includes(currentEnd)
+        ? currentEnd
+        : (months[months.length - 1] ?? null);
 
     this.startMonth.set(validStart);
-    this.endMonth.set(validStart && validEnd && validEnd < validStart ? validStart : validEnd);
+    this.endMonth.set(
+      validStart && validEnd && validEnd < validStart ? validStart : validEnd
+    );
 
     this._cdr.markForCheck();
   }

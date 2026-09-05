@@ -22,11 +22,8 @@ import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@services/account-transaction.service';
-import {
-  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
-  AccountRecurringTransactionService,
-} from '@services/account-recurring-transaction.service';
-import { monthBounds, ViewType } from '@/utils/recurring-month';
+import { StructuredTransactionsByRecurringId } from '@services/account-recurring-transaction.service';
+import { ViewType } from '@/utils/recurring-month';
 
 type RecurringSlice = { description: string; amount: number };
 
@@ -49,16 +46,10 @@ export class RecurringPieChartComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
     ACCOUNT_TRANSACTION_SERVICE
   );
-  private readonly _recurringTransactionService =
-    inject<AccountRecurringTransactionService>(
-      ACCOUNT_RECURRING_TRANSACTION_SERVICE
-    );
   private readonly _cdr = inject(ChangeDetectorRef);
 
-  readonly accountId = input.required<string>();
-  readonly startMonth = input.required<string | null>();
-  readonly endMonth = input.required<string | null>();
-  readonly newMethod = input<boolean>(false);
+  readonly recurringTransactions =
+    input.required<StructuredTransactionsByRecurringId>({});
 
   protected readonly viewTypes: ViewType[] = ['all', 'expense', 'income'];
   protected readonly viewType = signal<ViewType>('all');
@@ -125,12 +116,9 @@ export class RecurringPieChartComponent {
   constructor() {
     // Recomputed whenever the account, view type, or selected range changes.
     effect(() => {
-      const id = this.accountId();
-      const startMonth = this.startMonth();
-      const endMonth = this.endMonth();
       const viewType = this.viewType();
       this._transactionService.transactionsVersion();
-      this._loadSlicesForRange(id, startMonth, endMonth, viewType);
+      this.updateTransactions(viewType);
     });
   }
 
@@ -163,31 +151,11 @@ export class RecurringPieChartComponent {
     this._cdr.markForCheck();
   }
 
-  private async _loadSlicesForRange(
-    accountId: string,
-    startMonth: string | null,
-    endMonth: string | null,
-    viewType: ViewType
-  ): Promise<void> {
-    if (!startMonth || !endMonth) {
-      this.slices.set([]);
-      this.hiddenIndices.set(new Set());
-      this._cdr.markForCheck();
-      return;
-    }
-
-    const start = monthBounds(startMonth).start;
-    const end = monthBounds(endMonth).end;
-
-    const structuredTxs =
-      await this._recurringTransactionService.getStructuredRecurringTransactionsByAccount(
-        accountId,
-        start,
-        end
-      );
-
+  private async updateTransactions(viewType: ViewType): Promise<void> {
     this.slices.set([]);
-    for (const [_, transactions] of Object.entries(structuredTxs)) {
+    for (const [_, transactions] of Object.entries(
+      this.recurringTransactions()
+    )) {
       const totalAmount = transactions.reduce((sum, t) => {
         if (viewType == 'expense' && t.amount < 0) {
           return sum + Math.abs(t.amount);

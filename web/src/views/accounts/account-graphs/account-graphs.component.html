@@ -35,9 +35,9 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-recurring-pie-chart
-        [accountId]="accountId()"
-        [startMonth]="startMonth()"
-        [endMonth]="endMonth()" />
+        [recurringTransactions]="
+          recurringTransactions()
+        "></app-recurring-pie-chart>
     </mat-expansion-panel>
 
     <mat-expansion-panel class="graph" [expanded]="true">
