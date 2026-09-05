@@ -9,6 +9,7 @@ import { formatIsoDate, parseIsoDate } from '@/utils/date';
 import {
   AccountRecurringTransactionService,
   RecurringTransactionsSpan,
+  StructuredTransactionsByRecurringId,
 } from '@services/account-recurring-transaction.service';
 
 @Injectable({ providedIn: 'root' })
@@ -17,9 +18,12 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
 
   async replaceForAccount(
     accountId: string,
-    transactions: AccountRecurringTransactionModel[],
+    transactions: AccountRecurringTransactionModel[]
   ): Promise<void> {
-    await this._indexDb.recurringTransactionsTable.where('accountId').equals(accountId).delete();
+    await this._indexDb.recurringTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .delete();
 
     if (transactions.length > 0) {
       await this._indexDb.recurringTransactionsTable.bulkAdd(transactions);
@@ -29,7 +33,7 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
   async getRecurringTransactionsByAccount(
     accountId: string,
     startDate: Date,
-    endDate: Date,
+    endDate: Date
   ): Promise<AccountTransactionModel[]> {
     const startDateAsString = formatIsoDate(startDate);
     const endDateAsString = formatIsoDate(endDate);
@@ -51,13 +55,57 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
           t.recordType === AccountTransactionRecordType.normal &&
           recurringIds.has(t.recurringId) &&
           t.dateInscriptionAsString >= startDateAsString &&
-          t.dateInscriptionAsString <= endDateAsString,
+          t.dateInscriptionAsString <= endDateAsString
       )
-      .sort((a, b) => a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString));
+      .sort((a, b) =>
+        a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString)
+      );
+  }
+
+  async getStructuredRecurringTransactionsByAccount(
+    accountId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<StructuredTransactionsByRecurringId> {
+    const startDateAsString = formatIsoDate(startDate);
+    const endDateAsString = formatIsoDate(endDate);
+
+    const recurringPatterns = await this._indexDb.recurringTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .toArray();
+    const recurringIds = new Set(recurringPatterns.map((r) => r.id));
+
+    const transactions = await this._indexDb.accountTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .toArray();
+
+    const filteredTransactions = transactions
+      .filter(
+        (t) =>
+          t.recordType === AccountTransactionRecordType.normal &&
+          recurringIds.has(t.recurringId) &&
+          t.dateInscriptionAsString >= startDateAsString &&
+          t.dateInscriptionAsString <= endDateAsString
+      )
+      .sort((a, b) =>
+        a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString)
+      );
+
+    const structured: Record<string, AccountTransactionModel[]> = {};
+    for (const t of filteredTransactions) {
+      if (!structured[t.recurringId]) {
+        structured[t.recurringId] = [];
+      }
+      structured[t.recurringId].push(t);
+    }
+
+    return structured;
   }
 
   async getRecurringTransactionsSpan(
-    accountId: string,
+    accountId: string
   ): Promise<RecurringTransactionsSpan | undefined> {
     const recurringPatterns = await this._indexDb.recurringTransactionsTable
       .where('accountId')
@@ -73,7 +121,8 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
     const dates = transactions
       .filter(
         (t) =>
-          t.recordType === AccountTransactionRecordType.normal && recurringIds.has(t.recurringId),
+          t.recordType === AccountTransactionRecordType.normal &&
+          recurringIds.has(t.recurringId)
       )
       .map((t) => t.dateInscriptionAsString);
 
@@ -86,8 +135,13 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
     return { start, end };
   }
 
-  async getListByAccount(accountId: string): Promise<AccountRecurringTransactionModel[]> {
-    return this._indexDb.recurringTransactionsTable.where('accountId').equals(accountId).toArray();
+  async getListByAccount(
+    accountId: string
+  ): Promise<AccountRecurringTransactionModel[]> {
+    return this._indexDb.recurringTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .toArray();
   }
 
   async getAll(): Promise<AccountRecurringTransactionModel[]> {
@@ -95,7 +149,10 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
   }
 
   async deleteByAccount(accountId: string): Promise<void> {
-    await this._indexDb.recurringTransactionsTable.where('accountId').equals(accountId).delete();
+    await this._indexDb.recurringTransactionsTable
+      .where('accountId')
+      .equals(accountId)
+      .delete();
   }
 
   async delete(ids: string[]): Promise<void> {

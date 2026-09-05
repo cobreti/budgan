@@ -13,16 +13,17 @@ import { BaseChartDirective } from 'ng2-charts';
 import type { ChartData, ChartOptions, LegendItem } from 'chart.js';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect, MatSelectChange, MatSelectTrigger } from '@angular/material/select';
+import {
+  MatSelect,
+  MatSelectChange,
+  MatSelectTrigger,
+} from '@angular/material/select';
 import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@services/account-transaction.service';
-import {
-  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
-  AccountRecurringTransactionService,
-} from '@services/account-recurring-transaction.service';
-import { monthBounds, ViewType } from '@/utils/recurring-month';
+import { StructuredTransactionsByRecurringId } from '@services/account-recurring-transaction.service';
+import { ViewType } from '@/utils/recurring-month';
 
 type RecurringSlice = { description: string; amount: number };
 
@@ -43,16 +44,12 @@ type RecurringSlice = { description: string; amount: number };
 })
 export class RecurringPieChartComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
-    ACCOUNT_TRANSACTION_SERVICE,
-  );
-  private readonly _recurringTransactionService = inject<AccountRecurringTransactionService>(
-    ACCOUNT_RECURRING_TRANSACTION_SERVICE,
+    ACCOUNT_TRANSACTION_SERVICE
   );
   private readonly _cdr = inject(ChangeDetectorRef);
 
-  readonly accountId = input.required<string>();
-  readonly startMonth = input.required<string | null>();
-  readonly endMonth = input.required<string | null>();
+  readonly recurringTransactions =
+    input.required<StructuredTransactionsByRecurringId>({});
 
   protected readonly viewTypes: ViewType[] = ['all', 'expense', 'income'];
   protected readonly viewType = signal<ViewType>('all');
@@ -74,13 +71,18 @@ export class RecurringPieChartComponent {
 
   // Complete total always includes every detected recurring item, regardless
   // of what the user has hidden from the chart's legend.
-  readonly completeTotal = computed(() => this.slices().reduce((sum, s) => sum + s.amount, 0));
+  readonly completeTotal = computed(() =>
+    this.slices().reduce((sum, s) => sum + s.amount, 0)
+  );
 
   // Calculated total only counts slices still visible on the chart.
   readonly visibleTotal = computed(() => {
     const hidden = this.hiddenIndices();
     if (hidden.size === 0) return this.completeTotal();
-    return this.slices().reduce((sum, s, i) => (hidden.has(i) ? sum : sum + s.amount), 0);
+    return this.slices().reduce(
+      (sum, s, i) => (hidden.has(i) ? sum : sum + s.amount),
+      0
+    );
   });
 
   readonly chartOptions: ChartOptions<'pie'> = {
@@ -114,12 +116,9 @@ export class RecurringPieChartComponent {
   constructor() {
     // Recomputed whenever the account, view type, or selected range changes.
     effect(() => {
-      const id = this.accountId();
-      const startMonth = this.startMonth();
-      const endMonth = this.endMonth();
       const viewType = this.viewType();
       this._transactionService.transactionsVersion();
-      this._loadSlicesForRange(id, startMonth, endMonth, viewType);
+      this.updateTransactions(viewType);
     });
   }
 
@@ -152,45 +151,30 @@ export class RecurringPieChartComponent {
     this._cdr.markForCheck();
   }
 
-  private async _loadSlicesForRange(
-    accountId: string,
-    startMonth: string | null,
-    endMonth: string | null,
-    viewType: ViewType,
-  ): Promise<void> {
-    if (!startMonth || !endMonth) {
-      this.slices.set([]);
-      this.hiddenIndices.set(new Set());
-      this._cdr.markForCheck();
-      return;
+  private async updateTransactions(viewType: ViewType): Promise<void> {
+    this.slices.set([]);
+    for (const [_, transactions] of Object.entries(
+      this.recurringTransactions()
+    )) {
+      const totalAmount = transactions.reduce((sum, t) => {
+        if (viewType == 'expense' && t.amount < 0) {
+          return sum + Math.abs(t.amount);
+        } else if (viewType == 'income' && t.amount > 0) {
+          return sum + t.amount;
+        } else if (viewType == 'all') {
+          return sum + Math.abs(t.amount);
+        }
+        return sum;
+      }, 0);
+      const description = transactions[0]?.description || 'Unknown';
+      this.slices.update((prev) => [
+        ...prev,
+        { description, amount: totalAmount },
+      ]);
+
+      this.slices.update((prev) => prev.sort((a, b) => b.amount - a.amount));
     }
 
-    const start = monthBounds(startMonth).start;
-    const end = monthBounds(endMonth).end;
-    const txs = await this._recurringTransactionService.getRecurringTransactionsByAccount(
-      accountId,
-      start,
-      end,
-    );
-
-    // getRecurringTransactionsByAccount returns both signs; keep only the
-    // ones matching the selected view type ('all' keeps both).
-    const matchingTxs = txs.filter((t) => {
-      if (viewType === 'expense') return t.amount < 0;
-      if (viewType === 'income') return t.amount > 0;
-      return true;
-    });
-
-    const totals = new Map<string, number>();
-    for (const t of matchingTxs) {
-      totals.set(t.description, (totals.get(t.description) ?? 0) + Math.abs(t.amount));
-    }
-
-    const slices = [...totals.entries()]
-      .map(([description, amount]) => ({ description, amount }))
-      .sort((a, b) => b.amount - a.amount);
-
-    this.slices.set(slices);
     this.hiddenIndices.set(new Set());
     this._cdr.markForCheck();
   }

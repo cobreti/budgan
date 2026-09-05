@@ -4,44 +4,46 @@
     <mat-select
       [value]="viewType()"
       (selectionChange)="onViewTypeChange($event)"
-      data-testid="recurring-pie-chart-view-type"
-    >
-      <mat-select-trigger>{{ viewTypeLabelKey(viewType()) | translate }}</mat-select-trigger>
+      data-testid="recurring-pie-chart-view-type">
+      <mat-select-trigger>
+        {{ viewTypeLabelKey(viewType()) | translate }}
+      </mat-select-trigger>
       @for (type of viewTypes; track type) {
-        <mat-option [value]="type">{{ viewTypeLabelKey(type) | translate }}</mat-option>
+        <mat-option [value]="type">
+          {{ viewTypeLabelKey(type) | translate }}
+        </mat-option>
       }
     </mat-select>
   </mat-form-field>
 
-  @if (startMonth() && endMonth()) {
-    @if (slices().length > 0) {
-      <div class="recurring-pie-chart__chart-container">
-        <canvas
-          baseChart
-          class="recurring-pie-chart__canvas"
-          [type]="'pie'"
-          [data]="chartData()"
-          [options]="chartOptions"
-          [attr.aria-label]="'recurringPieChart.ariaLabel' | translate"
-          role="img"
-        ></canvas>
-      </div>
-      <p class="recurring-pie-chart__total" data-testid="recurring-pie-chart-total">
-        {{ 'recurringPieChart.total' | translate }}: {{ formatTotal(visibleTotal()) }}
-        @if (hiddenIndices().size > 0) {
-          <span
-            class="recurring-pie-chart__total-complete"
-            data-testid="recurring-pie-chart-total-complete"
-          >
-            ({{ 'recurringPieChart.completeTotal' | translate }}:
-            {{ formatTotal(completeTotal()) }})
-          </span>
-        }
-      </p>
-    } @else {
-      <p class="recurring-pie-chart__empty">{{ 'recurringPieChart.noDataForRange' | translate }}</p>
-    }
+  @if (slices().length > 0) {
+    <div class="recurring-pie-chart__chart-container">
+      <canvas
+        baseChart
+        class="recurring-pie-chart__canvas"
+        [type]="'pie'"
+        [data]="chartData()"
+        [options]="chartOptions"
+        [attr.aria-label]="'recurringPieChart.ariaLabel' | translate"
+        role="img"></canvas>
+    </div>
+    <p
+      class="recurring-pie-chart__total"
+      data-testid="recurring-pie-chart-total">
+      {{ 'recurringPieChart.total' | translate }}:
+      {{ formatTotal(visibleTotal()) }}
+      @if (hiddenIndices().size > 0) {
+        <span
+          class="recurring-pie-chart__total-complete"
+          data-testid="recurring-pie-chart-total-complete">
+          ({{ 'recurringPieChart.completeTotal' | translate }}:
+          {{ formatTotal(completeTotal()) }})
+        </span>
+      }
+    </p>
   } @else {
-    <p class="recurring-pie-chart__empty">{{ 'recurringPieChart.noData' | translate }}</p>
+    <p class="recurring-pie-chart__empty">
+      {{ 'recurringPieChart.noDataForRange' | translate }}
+    </p>
   }
 </div>
