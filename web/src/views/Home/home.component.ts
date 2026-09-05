@@ -37,7 +37,9 @@ export class HomeComponent {
   private readonly _dialog = inject(MatDialog);
   private readonly _indexdb = inject(IndexdbService);
 
-  private readonly _columnsMappingList = viewChild.required(ColumnsMappingListComponent);
+  private readonly _columnsMappingList = viewChild.required(
+    ColumnsMappingListComponent,
+  );
   private readonly _accountList = viewChild.required(AccountListComponent);
 
   readonly hasData = computed(
@@ -45,14 +47,6 @@ export class HomeComponent {
       this._accountList().accounts().length > 0 ||
       this._columnsMappingList().mappings().length > 0,
   );
-
-  async onNewColumnsMapping(): Promise<void> {
-    await this._router.navigate([this._locale.currentLocale(), 'columns-mapping', 'new']);
-  }
-
-  async onNewAccount(): Promise<void> {
-    await this._router.navigate([this._locale.currentLocale(), 'account', 'new']);
-  }
 
   async onSave(): Promise<void> {
     await this._router.navigate([this._locale.currentLocale(), 'save']);
@@ -62,23 +56,20 @@ export class HomeComponent {
     await this._router.navigate([this._locale.currentLocale(), 'load']);
   }
 
-  async onSamples(): Promise<void> {
-    await this._router.navigate([this._locale.currentLocale(), 'samples']);
-  }
-
   async onClearAll(): Promise<void> {
-    const ref = this._dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(
+    const ref = this._dialog.open<
       ConfirmDialogComponent,
-      {
-        data: {
-          title: 'clearAll.title',
-          message: 'clearAll.message',
-          confirmLabel: 'clearAll.confirm',
-          cancelLabel: 'clearAll.cancel',
-          danger: true,
-        },
+      ConfirmDialogData,
+      boolean
+    >(ConfirmDialogComponent, {
+      data: {
+        title: 'clearAll.title',
+        message: 'clearAll.message',
+        confirmLabel: 'clearAll.confirm',
+        cancelLabel: 'clearAll.cancel',
+        danger: true,
       },
-    );
+    });
 
     const confirmed = await ref.afterClosed().toPromise();
     if (!confirmed) {

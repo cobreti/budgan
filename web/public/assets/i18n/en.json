@@ -3,13 +3,8 @@
     "title": "Budgan"
   },
   "menu": {
-    "newJournal": "New Journal",
-    "openJournal": "Open Journal",
-    "newColumnsMapping": "New Columns Mapping",
-    "newAccount": "New Account",
     "saveAll": "Save All",
     "loadAll": "Load All",
-    "samples": "Samples",
     "clearAll": "Clear All"
   },
   "samples": {
@@ -46,10 +41,13 @@
     "empty": "No journals yet."
   },
   "columnsMappingList": {
-    "empty": "No column mappings yet."
+    "empty": "No column mappings yet.",
+    "newColumnsMapping": "New Columns Mapping"
   },
   "accountList": {
-    "empty": "No accounts yet."
+    "empty": "No accounts yet.",
+    "newAccount": "New Account",
+    "globalView": "Overview"
   },
   "journal": {
     "title": "Journal Details",
@@ -225,6 +223,17 @@
     "lastOccurrence": "Last Occurrence",
     "empty": "No transactions."
   },
+  "accountsRecurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Avg. Amount",
+    "period": "Period (days)",
+    "firstOccurrence": "First Occurrence",
+    "lastOccurrence": "Last Occurrence",
+    "empty": "No transactions.",
+    "accountName": "Account Name"
+  },
+
   "transactionTable": {
     "cardNumber": "Card Number",
     "dateInscription": "Date",
@@ -260,5 +269,10 @@
     "loadDemo": "Load demo statement",
     "noFileChosen": "No file chosen",
     "csvParseError": "Failed to parse the CSV file."
+  },
+  "accountsOverview": {
+    "title": "Accounts Overview",
+    "back": "Back",
+    "recurringTransactions": "Recurring Transactions"
   }
 }

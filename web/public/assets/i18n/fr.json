@@ -3,13 +3,8 @@
     "title": "Budgan"
   },
   "menu": {
-    "newJournal": "Nouveau journal",
-    "openJournal": "Ouvrir un journal",
-    "newColumnsMapping": "Nouveau mappage de colonnes",
-    "newAccount": "Nouveau compte",
     "saveAll": "Sauvegarder tout",
     "loadAll": "Tout charger",
-    "samples": "Exemples",
     "clearAll": "Tout effacer"
   },
   "samples": {
@@ -46,10 +41,13 @@
     "empty": "Aucun journal pour l'instant."
   },
   "columnsMappingList": {
-    "empty": "Aucun mappage de colonnes pour l'instant."
+    "empty": "Aucun mappage de colonnes pour l'instant.",
+    "newColumnsMapping": "Nouveau mappage de colonnes"
   },
   "accountList": {
-    "empty": "Aucun compte pour l'instant."
+    "empty": "Aucun compte pour l'instant.",
+    "newAccount": "Nouveau compte",
+    "globalView": "Vue d'ensemble"
   },
   "journal": {
     "title": "Détails du journal",
@@ -225,6 +223,16 @@
     "lastOccurrence": "Dernière occurrence",
     "empty": "Aucune transaction."
   },
+  "accountsRecurringTransactionTable": {
+    "description": "Description",
+    "count": "#",
+    "averageAmount": "Montant moy.",
+    "period": "Période (jours)",
+    "firstOccurrence": "Première occurrence",
+    "lastOccurrence": "Dernière occurrence",
+    "empty": "Aucune transaction.",
+    "accountName": "Nom du compte"
+  },
   "transactionTable": {
     "cardNumber": "Numéro de carte",
     "dateInscription": "Date d'inscription",
@@ -260,5 +268,10 @@
     "loadDemo": "Charger un relevé d'exemple",
     "noFileChosen": "Aucun fichier sélectionné",
     "csvParseError": "Impossible de lire le fichier CSV."
+  },
+  "accountsOverview": {
+    "title": "Vue d'ensemble des comptes",
+    "back": "Retour",
+    "recurringTransactions": "Transactions récurrentes"
   }
 }

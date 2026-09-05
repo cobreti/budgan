@@ -1,16 +1,22 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ACCOUNT_SERVICE, AccountService } from '@services/account.service';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
 import { AccountModel } from '@models/accountModel';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-account-list',
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, MatButton],
 })
 export class AccountListComponent {
   private readonly _accountService = inject<AccountService>(ACCOUNT_SERVICE);
@@ -29,5 +35,21 @@ export class AccountListComponent {
 
   open(id: string): void {
     this._router.navigate([this._locale.currentLocale(), 'account', id]);
+  }
+
+  async onNewAccount(): Promise<void> {
+    await this._router.navigate([
+      this._locale.currentLocale(),
+      'account',
+      'new',
+    ]);
+  }
+
+  async onAccountGlobalView(): Promise<void> {
+    await this._router.navigate([
+      this._locale.currentLocale(),
+      'accounts',
+      'overview',
+    ]);
   }
 }

@@ -14,7 +14,7 @@ import { SaveAccountComponent } from '@views/accounts/save-account/save-account.
 import { AnalyzeAccountComponent } from '@views/accounts/analyze-account/analyze-account.component';
 import { SaveComponent } from '@views/save/save.component';
 import { LoadComponent } from '@views/load/load.component';
-import { SamplesComponent } from '@views/samples/samples.component';
+import { AccountOverviewComponent } from '@/views/accounts-overview/accounts-overview';
 
 export const routes: Routes = [
   {
@@ -32,15 +32,27 @@ export const routes: Routes = [
       { path: 'journal/new', component: NewJournalComponent },
       { path: 'journal/:journalId', component: JournalDetailsComponent },
       { path: 'columns-mapping/new', component: NewColumnsMappingComponent },
-      { path: 'columns-mapping/:columnsMappingId', component: ColumnsMappingDetailsComponent },
+      {
+        path: 'columns-mapping/:columnsMappingId',
+        component: ColumnsMappingDetailsComponent,
+      },
       { path: 'account/new', component: NewAccountComponent },
       { path: 'account/:accountId', component: AccountHomeComponent },
-      { path: 'account/:accountId/import-file', component: ImportFileComponent },
+      {
+        path: 'account/:accountId/import-file',
+        component: ImportFileComponent,
+      },
       { path: 'account/:accountId/save', component: SaveAccountComponent },
-      { path: 'account/:accountId/analyze', component: AnalyzeAccountComponent },
+      {
+        path: 'account/:accountId/analyze',
+        component: AnalyzeAccountComponent,
+      },
       { path: 'save', component: SaveComponent },
       { path: 'load', component: LoadComponent },
-      { path: 'samples', component: SamplesComponent },
+      {
+        path: 'accounts/overview',
+        component: AccountOverviewComponent,
+      },
     ],
   },
   { path: '**', redirectTo: 'en' },
