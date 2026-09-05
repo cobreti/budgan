@@ -8,6 +8,7 @@ import { formatIsoDate, parseIsoDate } from '@/utils/date';
 import {
   AccountRecurringTransactionService,
   RecurringTransactionsSpan,
+  StructuredTransactionsByRecurringId,
 } from '@services/account-recurring-transaction.service';
 import { ApiResult, BdgHttpClient } from './bdg-http-client.service';
 
@@ -71,39 +72,71 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
 
   async replaceForAccount(
     _accountId: string,
-    _transactions: AccountRecurringTransactionModel[],
+    _transactions: AccountRecurringTransactionModel[]
   ): Promise<void> {
     await this._httpClient.put<void>(
       `/api/AccountRecurringTransaction/account/${_accountId}`,
-      _transactions,
+      _transactions
     );
   }
 
   async getRecurringTransactionsByAccount(
     accountId: string,
     startDate: Date,
-    endDate: Date,
+    endDate: Date
   ): Promise<AccountTransactionModel[]> {
     const query = `startDate=${formatIsoDate(startDate)}&endDate=${formatIsoDate(endDate)}`;
-    const result = await this._httpClient.get<ApiResult<AccountTransactionDto[]>>(
-      `/api/AccountRecurringTransaction/Account/${accountId}/Transactions?${query}`,
+    const result = await this._httpClient.get<
+      ApiResult<AccountTransactionDto[]>
+    >(
+      `/api/AccountRecurringTransaction/Account/${accountId}/Transactions?${query}`
     );
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to get recurring transactions for account ${accountId} with error : ${result.errorValue}`,
+        `failed to get recurring transactions for account ${accountId} with error : ${result.errorValue}`
       );
     }
 
     return result.successValue.map((dto) => this._toModel(dto));
   }
 
-  async getRecurringTransactionsSpan(
+  async getStructuredRecurringTransactionsByAccount(
     accountId: string,
-  ): Promise<RecurringTransactionsSpan | undefined> {
-    const result = await this._httpClient.get<ApiResult<RecurringTransactionsSpanDto | null>>(
-      `/api/AccountRecurringTransaction/Account/${accountId}/Span`,
+    startDate: Date,
+    endDate: Date
+  ): Promise<StructuredTransactionsByRecurringId> {
+    const query = `startDate=${formatIsoDate(startDate)}&endDate=${formatIsoDate(endDate)}`;
+    const result = await this._httpClient.get<
+      ApiResult<AccountTransactionDto[]>
+    >(
+      `/api/AccountRecurringTransaction/Account/${accountId}/Transactions?${query}`
     );
+
+    if (!result.succeeded) {
+      throw new Error(
+        `failed to get recurring transactions for account ${accountId} with error : ${result.errorValue}`
+      );
+    }
+
+    const structured: Record<string, AccountTransactionModel[]> = {};
+    for (const dto of result.successValue) {
+      const model = this._toModel(dto);
+      if (!structured[model.recurringId]) {
+        structured[model.recurringId] = [];
+      }
+      structured[model.recurringId].push(model);
+    }
+
+    return structured;
+  }
+
+  async getRecurringTransactionsSpan(
+    accountId: string
+  ): Promise<RecurringTransactionsSpan | undefined> {
+    const result = await this._httpClient.get<
+      ApiResult<RecurringTransactionsSpanDto | null>
+    >(`/api/AccountRecurringTransaction/Account/${accountId}/Span`);
 
     if (!result.succeeded || !result.successValue) {
       return undefined;
@@ -118,14 +151,16 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
     return { start, end };
   }
 
-  async getListByAccount(accountId: string): Promise<AccountRecurringTransactionModel[]> {
-    const result = await this._httpClient.get<ApiResult<AccountRecurringTransactionItemDto[]>>(
-      `/api/AccountRecurringTransaction/Account/${accountId}/List`,
-    );
+  async getListByAccount(
+    accountId: string
+  ): Promise<AccountRecurringTransactionModel[]> {
+    const result = await this._httpClient.get<
+      ApiResult<AccountRecurringTransactionItemDto[]>
+    >(`/api/AccountRecurringTransaction/Account/${accountId}/List`);
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to list recurring transactions for account ${accountId} with error : ${result.errorValue}`,
+        `failed to list recurring transactions for account ${accountId} with error : ${result.errorValue}`
       );
     }
 
@@ -142,13 +177,13 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
   }
 
   async getAll(): Promise<AccountRecurringTransactionModel[]> {
-    const result = await this._httpClient.get<ApiResult<AccountRecurringTransactionListItemDto[]>>(
-      '/api/AccountRecurringTransaction/List',
-    );
+    const result = await this._httpClient.get<
+      ApiResult<AccountRecurringTransactionListItemDto[]>
+    >('/api/AccountRecurringTransaction/List');
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to list all recurring transactions with error : ${result.errorValue}`,
+        `failed to list all recurring transactions with error : ${result.errorValue}`
       );
     }
 
@@ -166,7 +201,7 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
 
   async deleteByAccount(accountId: string): Promise<void> {
     await this._httpClient.delete<ApiResult<boolean>>(
-      `/api/AccountRecurringTransaction/Account/${accountId}`,
+      `/api/AccountRecurringTransaction/Account/${accountId}`
     );
   }
 

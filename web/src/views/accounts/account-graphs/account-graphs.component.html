@@ -6,8 +6,7 @@
         <mat-select
           [value]="startMonth()"
           (selectionChange)="onStartMonthChange($event)"
-          data-testid="account-graphs-start-month"
-        >
+          data-testid="account-graphs-start-month">
           @for (month of availableMonths(); track month) {
             <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
           }
@@ -19,8 +18,7 @@
         <mat-select
           [value]="endMonth()"
           (selectionChange)="onEndMonthChange($event)"
-          data-testid="account-graphs-end-month"
-        >
+          data-testid="account-graphs-end-month">
           @for (month of availableMonths(); track month) {
             <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
           }
@@ -32,24 +30,26 @@
   <mat-accordion class="account-graphs__accordion" multi>
     <mat-expansion-panel class="graph" [expanded]="true">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ 'recurringPieChart.title' | translate }}</mat-panel-title>
+        <mat-panel-title>
+          {{ 'recurringPieChart.title' | translate }}
+        </mat-panel-title>
       </mat-expansion-panel-header>
       <app-recurring-pie-chart
         [accountId]="accountId()"
         [startMonth]="startMonth()"
-        [endMonth]="endMonth()"
-      />
+        [endMonth]="endMonth()" />
     </mat-expansion-panel>
 
     <mat-expansion-panel class="graph" [expanded]="true">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ 'balanceTrendGraph.title' | translate }}</mat-panel-title>
+        <mat-panel-title>
+          {{ 'balanceTrendGraph.title' | translate }}
+        </mat-panel-title>
       </mat-expansion-panel-header>
       <app-balance-trend-graph
         [accountId]="accountId()"
         [startMonth]="startMonth()"
-        [endMonth]="endMonth()"
-      />
+        [endMonth]="endMonth()" />
     </mat-expansion-panel>
   </mat-accordion>
 </div>
