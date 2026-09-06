@@ -6,8 +6,40 @@
 .recurring-pie-chart {
   display: flex;
   flex-direction: column;
+  flex-grow: 1 1;
   height: 100%;
   gap: 0.5em;
+
+  .table-panel {
+    width: 45%;
+  }
+
+  .graph-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
+    height: 100%;
+
+    .graph-row-piechart {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      // gap: 0.5em;
+      width: 50%;
+    }
+
+    .graph-row-table {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      width: 50%;
+    }
+  }
+
+  &__canvas {
+    max-height: 30vh;
+  }
 
   &__view-type-field {
     flex: 0 0 auto;

@@ -24,8 +24,10 @@ import {
 } from '@services/account-transaction.service';
 import { StructuredTransactionsByRecurringId } from '@services/account-recurring-transaction.service';
 import { ViewType } from '@/utils/recurring-month';
+import { AccountTransactionModel } from '@/Models/accountTransactionModel';
+import { PiechartTransactionsTableComponent } from './piechart-transactions-table/piechart-transactions-table';
 
-type RecurringSlice = { description: string; amount: number };
+type RecurringSlice = { id: string; description: string; amount: number };
 
 @Component({
   selector: 'app-recurring-pie-chart',
@@ -40,6 +42,7 @@ type RecurringSlice = { description: string; amount: number };
     MatSelect,
     MatSelectTrigger,
     MatOption,
+    PiechartTransactionsTableComponent,
   ],
 })
 export class RecurringPieChartComponent {
@@ -55,6 +58,9 @@ export class RecurringPieChartComponent {
   protected readonly viewType = signal<ViewType>('all');
 
   protected readonly slices = signal<RecurringSlice[]>([]);
+
+  readonly selectedTransactions = signal<AccountTransactionModel[]>([]);
+  readonly selectedColor = signal<string | undefined>(undefined);
 
   // Indices manually hidden by clicking a legend entry (Chart.js toggles a
   // pie slice's visibility per data index, not per dataset). Kept in sync
@@ -104,10 +110,9 @@ export class RecurringPieChartComponent {
         onClick: (_event, legendItem: LegendItem, legend) => {
           const index = legendItem.index;
           if (index === undefined) return;
-          const chart = legend.chart;
-          chart.toggleDataVisibility(index);
-          chart.update();
-          this._setIndexHidden(index, !chart.getDataVisibility(index));
+          const d = this.slices()[index];
+          this.selectedTransactions.set(this.recurringTransactions()[d.id]);
+          this.selectedColor.set(legendItem.fillStyle?.toString());
         },
       },
     },
@@ -153,7 +158,7 @@ export class RecurringPieChartComponent {
 
   private async updateTransactions(viewType: ViewType): Promise<void> {
     this.slices.set([]);
-    for (const [_, transactions] of Object.entries(
+    for (const [id, transactions] of Object.entries(
       this.recurringTransactions()
     )) {
       const totalAmount = transactions.reduce((sum, t) => {
@@ -169,7 +174,7 @@ export class RecurringPieChartComponent {
       const description = transactions[0]?.description || 'Unknown';
       this.slices.update((prev) => [
         ...prev,
-        { description, amount: totalAmount },
+        { id, description, amount: totalAmount },
       ]);
 
       this.slices.update((prev) => prev.sort((a, b) => b.amount - a.amount));

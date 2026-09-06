@@ -16,34 +16,44 @@
     </mat-select>
   </mat-form-field>
 
-  @if (slices().length > 0) {
-    <div class="recurring-pie-chart__chart-container">
-      <canvas
-        baseChart
-        class="recurring-pie-chart__canvas"
-        [type]="'pie'"
-        [data]="chartData()"
-        [options]="chartOptions"
-        [attr.aria-label]="'recurringPieChart.ariaLabel' | translate"
-        role="img"></canvas>
-    </div>
-    <p
-      class="recurring-pie-chart__total"
-      data-testid="recurring-pie-chart-total">
-      {{ 'recurringPieChart.total' | translate }}:
-      {{ formatTotal(visibleTotal()) }}
-      @if (hiddenIndices().size > 0) {
-        <span
-          class="recurring-pie-chart__total-complete"
-          data-testid="recurring-pie-chart-total-complete">
-          ({{ 'recurringPieChart.completeTotal' | translate }}:
-          {{ formatTotal(completeTotal()) }})
-        </span>
+  <div class="graph-row">
+    <div class="graph-row-piechart">
+      @if (slices().length > 0) {
+        <div class="recurring-pie-chart__chart-container">
+          <canvas
+            baseChart
+            class="recurring-pie-chart__canvas"
+            [type]="'pie'"
+            [data]="chartData()"
+            [options]="chartOptions"
+            [attr.aria-label]="'recurringPieChart.ariaLabel' | translate"
+            role="img"></canvas>
+        </div>
+        <p
+          class="recurring-pie-chart__total"
+          data-testid="recurring-pie-chart-total">
+          {{ 'recurringPieChart.total' | translate }}:
+          {{ formatTotal(visibleTotal()) }}
+          @if (hiddenIndices().size > 0) {
+            <span
+              class="recurring-pie-chart__total-complete"
+              data-testid="recurring-pie-chart-total-complete">
+              ({{ 'recurringPieChart.completeTotal' | translate }}:
+              {{ formatTotal(completeTotal()) }})
+            </span>
+          }
+        </p>
+      } @else {
+        <p class="recurring-pie-chart__empty">
+          {{ 'recurringPieChart.noDataForRange' | translate }}
+        </p>
       }
-    </p>
-  } @else {
-    <p class="recurring-pie-chart__empty">
-      {{ 'recurringPieChart.noDataForRange' | translate }}
-    </p>
-  }
+    </div>
+    <div class="table-panel">
+      <app-piechart-transactions-table
+        style="width: 45%; max-height: 10vh; overflow-y: auto"
+        [accountTransactions]="selectedTransactions()"
+        [color]="selectedColor()"></app-piechart-transactions-table>
+    </div>
+  </div>
 </div>

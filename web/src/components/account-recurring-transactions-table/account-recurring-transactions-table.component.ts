@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   input,
@@ -28,21 +27,14 @@ import { AccountRecurringTransactionModel } from '@/Models/accountRecurringTrans
 export class AccountRecurringTransactionsTableComponent implements AfterViewInit {
   private readonly _recurringTransactionService =
     inject<AccountRecurringTransactionService>(
-      ACCOUNT_RECURRING_TRANSACTION_SERVICE,
+      ACCOUNT_RECURRING_TRANSACTION_SERVICE
     );
 
   @ViewChild(MatSort) sort!: MatSort;
 
   readonly accountId = input.required<string>();
 
-  private readonly _currentPage = signal(0);
   readonly transactions = signal<AccountRecurringTransactionModel[]>([]);
-  readonly totalPages = signal(0);
-  readonly displayPage = computed(() => this._currentPage() + 1);
-  readonly isFirstPage = computed(() => this._currentPage() === 0);
-  readonly isLastPage = computed(
-    () => this._currentPage() >= this.totalPages() - 1,
-  );
 
   readonly pageSize = 25;
   readonly displayedColumns = [
