@@ -172,10 +172,12 @@ export class RecurringPieChartComponent {
         return sum;
       }, 0);
       const description = transactions[0]?.description || 'Unknown';
-      this.slices.update((prev) => [
-        ...prev,
-        { id, description, amount: totalAmount },
-      ]);
+      if (totalAmount > 0) {
+        this.slices.update((prev) => [
+          ...prev,
+          { id, description, amount: totalAmount },
+        ]);
+      }
 
       this.slices.update((prev) => prev.sort((a, b) => b.amount - a.amount));
     }
