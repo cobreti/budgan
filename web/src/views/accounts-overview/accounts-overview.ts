@@ -10,11 +10,7 @@ import { Router } from '@angular/router';
 import { LOCALE_SERVICE, LocaleService } from '@/services/locale.service';
 import { PageMenuButtonComponent } from '@/components/page-menu/page-menu-button/page-menu-button.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import {
-  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
-  AccountRecurringTransactionService,
-  StructuredTransactionsByRecurringId,
-} from '@/services/account-recurring-transaction.service';
+import { StructuredTransactionsByRecurringId } from '@/services/account-recurring-transaction.service';
 import { AccountOverviewGraphComponent } from './accounts-overview-graph/account-overview-graph';
 
 @Component({
@@ -33,12 +29,8 @@ import { AccountOverviewGraphComponent } from './accounts-overview-graph/account
     AccountOverviewGraphComponent,
   ],
 })
-export class AccountOverviewComponent implements OnInit {
+export class AccountOverviewComponent {
   private readonly _accountService = inject<AccountService>(ACCOUNT_SERVICE);
-  private readonly _recurringTransactionsService =
-    inject<AccountRecurringTransactionService>(
-      ACCOUNT_RECURRING_TRANSACTION_SERVICE
-    );
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
 
@@ -49,17 +41,6 @@ export class AccountOverviewComponent implements OnInit {
 
   constructor() {
     this.refresh();
-  }
-
-  async ngOnInit(): Promise<void> {
-    const accounts = await this._accountService.getList();
-
-    for (const account of accounts) {
-      // const trxs =
-      // await this._recurringTransactionsService.getStructuredRecurringTransactionsByAccount(
-      //   account.id
-      // );
-    }
   }
 
   async refresh(): Promise<void> {

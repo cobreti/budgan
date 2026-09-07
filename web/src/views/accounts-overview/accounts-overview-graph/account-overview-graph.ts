@@ -1,3 +1,4 @@
+import { AccountModel } from '@/Models/accountModel';
 import {
   AccountTransactionModel,
   AccountTransactionRecordType,
@@ -11,7 +12,6 @@ import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@/services/account-transaction.service';
-import { ACCOUNT_SERVICE, AccountService } from '@/services/account.service';
 import { LOCALE_SERVICE, LocaleService } from '@/services/locale.service';
 import {
   monthBounds,
@@ -54,7 +54,6 @@ export class AccountOverviewGraphComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
     ACCOUNT_TRANSACTION_SERVICE
   );
-  private readonly _accountService = inject<AccountService>(ACCOUNT_SERVICE);
   private readonly _recurringTransactionsService =
     inject<AccountRecurringTransactionService>(
       ACCOUNT_RECURRING_TRANSACTION_SERVICE
