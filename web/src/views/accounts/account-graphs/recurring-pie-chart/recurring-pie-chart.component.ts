@@ -150,6 +150,11 @@ export class RecurringPieChartComponent {
     return `${sign}${grouped}.${decPart}`;
   }
 
+  onPieChartTransactionsTableClosed() {
+    this.activeRecurringTransactionIds.set([]);
+    this.selectedTransactions.set([]);
+  }
+
   private _setIndexHidden(index: number, hidden: boolean): void {
     this.hiddenIndices.update((prev) => {
       if (hidden === prev.has(index)) return prev;

@@ -50,11 +50,13 @@
       }
     </div>
     <div class="table-panel">
-      <app-piechart-transactions-table
-        *ngIf="selectedTransactions().length > 0"
-        [showAccountColumn]="false"
-        [accountTransactions]="selectedTransactions()"
-        [color]="selectedColor()"></app-piechart-transactions-table>
+      @if (selectedTransactions().length > 0) {
+        <app-piechart-transactions-table
+          (close)="onPieChartTransactionsTableClosed()"
+          [showAccountColumn]="false"
+          [accountTransactions]="selectedTransactions()"
+          [color]="selectedColor()"></app-piechart-transactions-table>
+      }
     </div>
   </div>
 </div>
