@@ -3,6 +3,13 @@
   @if ( accountTransactions().length > 0) {
   <div class="table-container">
     <table mat-table matSort [dataSource]="dataSource">
+      <ng-container matColumnDef="account">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'piechartRecurringTransactionTable.account' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.account }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'piechartRecurringTransactionTable.description' | translate }}

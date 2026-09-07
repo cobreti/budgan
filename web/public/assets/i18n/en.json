@@ -226,7 +226,8 @@
   "piechartRecurringTransactionTable": {
     "description": "Description",
     "dateInscription": "Date",
-    "amount": "Amount"
+    "amount": "Amount",
+    "account": "Account"
   },
   "accountsRecurringTransactionTable": {
     "description": "Description",

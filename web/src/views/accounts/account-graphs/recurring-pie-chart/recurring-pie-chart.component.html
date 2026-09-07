@@ -51,7 +51,7 @@
     </div>
     <div class="table-panel">
       <app-piechart-transactions-table
-        style="width: 45%; max-height: 10vh; overflow-y: auto"
+        [showAccountColumn]="false"
         [accountTransactions]="selectedTransactions()"
         [color]="selectedColor()"></app-piechart-transactions-table>
     </div>
