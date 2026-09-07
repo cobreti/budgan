@@ -26,6 +26,7 @@ import { StructuredTransactionsByRecurringId } from '@services/account-recurring
 import { ViewType } from '@/utils/recurring-month';
 import { AccountTransactionModel } from '@/Models/accountTransactionModel';
 import { PiechartTransactionsTableComponent } from './piechart-transactions-table/piechart-transactions-table';
+import { CommonModule } from '@angular/common';
 
 type RecurringSlice = { id: string; description: string; amount: number };
 
@@ -43,6 +44,7 @@ type RecurringSlice = { id: string; description: string; amount: number };
     MatSelectTrigger,
     MatOption,
     PiechartTransactionsTableComponent,
+    CommonModule,
   ],
 })
 export class RecurringPieChartComponent {
@@ -60,8 +62,9 @@ export class RecurringPieChartComponent {
   protected readonly slices = signal<RecurringSlice[]>([]);
 
   readonly selectedTransactions = signal<AccountTransactionModel[]>([]);
-  readonly selectedRecurringTransactionId = signal<string>('');
+  selectedRecurringTransactionId = '';
   readonly selectedColor = signal<string | undefined>(undefined);
+  readonly activeRecurringTransactionIds = signal<string[]>([]);
 
   // Indices manually hidden by clicking a legend entry (Chart.js toggles a
   // pie slice's visibility per data index, not per dataset). Kept in sync
@@ -112,7 +115,7 @@ export class RecurringPieChartComponent {
           const index = legendItem.index;
           if (index === undefined) return;
           const d = this.slices()[index];
-          this.selectedRecurringTransactionId.set(d.id);
+          this.selectedRecurringTransactionId = d.id;
           this.selectedTransactions.set(this.recurringTransactions()[d.id]);
           this.selectedColor.set(legendItem.fillStyle?.toString());
         },
@@ -160,6 +163,8 @@ export class RecurringPieChartComponent {
 
   private async updateTransactions(viewType: ViewType): Promise<void> {
     this.slices.set([]);
+    this.activeRecurringTransactionIds.set([]);
+
     for (const [id, transactions] of Object.entries(
       this.recurringTransactions()
     )) {
@@ -175,6 +180,7 @@ export class RecurringPieChartComponent {
       }, 0);
       const description = transactions[0]?.description || 'Unknown';
       if (totalAmount > 0) {
+        this.activeRecurringTransactionIds.update((prev) => [...prev, id]);
         this.slices.update((prev) => [
           ...prev,
           { id, description, amount: totalAmount },
@@ -184,15 +190,17 @@ export class RecurringPieChartComponent {
       this.slices.update((prev) => prev.sort((a, b) => b.amount - a.amount));
     }
 
-    this.updateSelectedTransactions(this.selectedRecurringTransactionId());
+    this.updateSelectedTransactions(this.selectedRecurringTransactionId);
 
     this.hiddenIndices.set(new Set());
     this._cdr.markForCheck();
   }
 
-  private async updateSelectedTransactions(id: string) {
-    if (id) {
+  private updateSelectedTransactions(id: string) {
+    if (id && this.activeRecurringTransactionIds().includes(id)) {
       this.selectedTransactions.set(this.recurringTransactions()[id]);
+    } else {
+      this.selectedTransactions.set([]);
     }
   }
 }
