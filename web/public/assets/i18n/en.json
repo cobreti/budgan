@@ -223,6 +223,11 @@
     "lastOccurrence": "Last Occurrence",
     "empty": "No transactions."
   },
+  "piechartRecurringTransactionTable": {
+    "description": "Description",
+    "dateInscription": "Date",
+    "amount": "Amount"
+  },
   "accountsRecurringTransactionTable": {
     "description": "Description",
     "count": "#",
