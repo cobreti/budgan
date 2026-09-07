@@ -11,6 +11,9 @@
         <app-accounts-recurring-transactions-table
           [accounts]="accounts()"></app-accounts-recurring-transactions-table>
       </mat-tab>
+      <mat-tab [label]="'accountsOverview.graph' | translate">
+        <app-account-overview-graph></app-account-overview-graph>
+      </mat-tab>
     </mat-tab-group>
   </app-page-body>
 </app-page>

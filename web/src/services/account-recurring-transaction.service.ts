@@ -21,6 +21,10 @@ export interface AccountRecurringTransactionService {
     startDate: Date,
     endDate: Date
   ): Promise<AccountTransactionModel[]>;
+  getAllStructuredRecurringTransactions(
+    startDate: Date,
+    endDate: Date
+  ): Promise<StructuredTransactionsByRecurringId>;
   getStructuredRecurringTransactionsByAccount(
     accountId: string,
     startDate: Date,

@@ -279,6 +279,7 @@
   "accountsOverview": {
     "title": "Accounts Overview",
     "back": "Back",
-    "recurringTransactions": "Recurring Transactions"
+    "recurringTransactions": "Recurring Transactions",
+    "graph": "Graphs"
   }
 }

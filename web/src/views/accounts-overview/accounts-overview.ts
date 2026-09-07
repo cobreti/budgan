@@ -2,7 +2,7 @@ import { PageBodyComponent } from '@/components/page-body/page-body.component';
 import { PageComponent } from '@/components/page/page.component';
 import { AccountModel } from '@/Models/accountModel';
 import { ACCOUNT_SERVICE, AccountService } from '@/services/account.service';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountRecurringTransactionsTableComponent } from './accounts-recurring-transactions-table/accounts-recurring-transactions-table.component';
 import { PageMenuComponent } from '@/components/page-menu/page-menu.component';
@@ -10,6 +10,12 @@ import { Router } from '@angular/router';
 import { LOCALE_SERVICE, LocaleService } from '@/services/locale.service';
 import { PageMenuButtonComponent } from '@/components/page-menu/page-menu-button/page-menu-button.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import {
+  ACCOUNT_RECURRING_TRANSACTION_SERVICE,
+  AccountRecurringTransactionService,
+  StructuredTransactionsByRecurringId,
+} from '@/services/account-recurring-transaction.service';
+import { AccountOverviewGraphComponent } from './accounts-overview-graph/account-overview-graph';
 
 @Component({
   selector: 'app-accounts-overview',
@@ -24,17 +30,36 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
     AccountRecurringTransactionsTableComponent,
     MatTabGroup,
     MatTab,
+    AccountOverviewGraphComponent,
   ],
 })
-export class AccountOverviewComponent {
+export class AccountOverviewComponent implements OnInit {
   private readonly _accountService = inject<AccountService>(ACCOUNT_SERVICE);
+  private readonly _recurringTransactionsService =
+    inject<AccountRecurringTransactionService>(
+      ACCOUNT_RECURRING_TRANSACTION_SERVICE
+    );
   private readonly _router = inject(Router);
   private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
 
   readonly accounts = signal<AccountModel[]>([]);
+  readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
+    {}
+  );
 
   constructor() {
     this.refresh();
+  }
+
+  async ngOnInit(): Promise<void> {
+    const accounts = await this._accountService.getList();
+
+    for (const account of accounts) {
+      // const trxs =
+      // await this._recurringTransactionsService.getStructuredRecurringTransactionsByAccount(
+      //   account.id
+      // );
+    }
   }
 
   async refresh(): Promise<void> {
