@@ -62,6 +62,42 @@ export class AccountRecurringTransactionServicePwaImpl implements AccountRecurri
       );
   }
 
+  async getAllStructuredRecurringTransactions(
+    startDate: Date,
+    endDate: Date
+  ): Promise<StructuredTransactionsByRecurringId> {
+    const startDateAsString = formatIsoDate(startDate);
+    const endDateAsString = formatIsoDate(endDate);
+
+    const recurringPatterns =
+      await this._indexDb.recurringTransactionsTable.toArray();
+    const recurringIds = new Set(recurringPatterns.map((r) => r.id));
+
+    const transactions = await this._indexDb.accountTransactionsTable.toArray();
+
+    const filteredTransactions = transactions
+      .filter(
+        (t) =>
+          t.recordType === AccountTransactionRecordType.normal &&
+          recurringIds.has(t.recurringId) &&
+          t.dateInscriptionAsString >= startDateAsString &&
+          t.dateInscriptionAsString <= endDateAsString
+      )
+      .sort((a, b) =>
+        a.dateInscriptionAsString.localeCompare(b.dateInscriptionAsString)
+      );
+
+    const structured: Record<string, AccountTransactionModel[]> = {};
+    for (const t of filteredTransactions) {
+      if (!structured[t.recurringId]) {
+        structured[t.recurringId] = [];
+      }
+      structured[t.recurringId].push(t);
+    }
+
+    return structured;
+  }
+
   async getStructuredRecurringTransactionsByAccount(
     accountId: string,
     startDate: Date,

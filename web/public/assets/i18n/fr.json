@@ -278,6 +278,7 @@
   "accountsOverview": {
     "title": "Vue d'ensemble des comptes",
     "back": "Retour",
-    "recurringTransactions": "Transactions récurrentes"
+    "recurringTransactions": "Transactions récurrentes",
+    "graph": "Graphiques"
   }
 }

@@ -101,6 +101,27 @@ export class AccountRecurringTransactionServiceServerImpl implements AccountRecu
     return result.successValue.map((dto) => this._toModel(dto));
   }
 
+  async getAllStructuredRecurringTransactions(
+    startDate: Date,
+    endDate: Date
+  ): Promise<StructuredTransactionsByRecurringId> {
+    const query = `startDate=${formatIsoDate(startDate)}&endDate=${formatIsoDate(endDate)}`;
+    const result = await this._httpClient.get<
+      ApiResult<AccountTransactionDto[]>
+    >(`/api/AccountRecurringTransaction/Account/Transactions?${query}`);
+
+    const structured: Record<string, AccountTransactionModel[]> = {};
+    for (const dto of result.successValue) {
+      const model = this._toModel(dto);
+      if (!structured[model.recurringId]) {
+        structured[model.recurringId] = [];
+      }
+      structured[model.recurringId].push(model);
+    }
+
+    return structured;
+  }
+
   async getStructuredRecurringTransactionsByAccount(
     accountId: string,
     startDate: Date,
