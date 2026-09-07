@@ -60,6 +60,7 @@ export class RecurringPieChartComponent {
   protected readonly slices = signal<RecurringSlice[]>([]);
 
   readonly selectedTransactions = signal<AccountTransactionModel[]>([]);
+  readonly selectedRecurringTransactionId = signal<string>('');
   readonly selectedColor = signal<string | undefined>(undefined);
 
   // Indices manually hidden by clicking a legend entry (Chart.js toggles a
@@ -111,6 +112,7 @@ export class RecurringPieChartComponent {
           const index = legendItem.index;
           if (index === undefined) return;
           const d = this.slices()[index];
+          this.selectedRecurringTransactionId.set(d.id);
           this.selectedTransactions.set(this.recurringTransactions()[d.id]);
           this.selectedColor.set(legendItem.fillStyle?.toString());
         },
@@ -182,7 +184,15 @@ export class RecurringPieChartComponent {
       this.slices.update((prev) => prev.sort((a, b) => b.amount - a.amount));
     }
 
+    this.updateSelectedTransactions(this.selectedRecurringTransactionId());
+
     this.hiddenIndices.set(new Set());
     this._cdr.markForCheck();
+  }
+
+  private async updateSelectedTransactions(id: string) {
+    if (id) {
+      this.selectedTransactions.set(this.recurringTransactions()[id]);
+    }
   }
 }
