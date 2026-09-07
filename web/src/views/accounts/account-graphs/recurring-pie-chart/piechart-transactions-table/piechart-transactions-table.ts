@@ -5,11 +5,10 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   effect,
-  EventEmitter,
   inject,
   input,
   OnInit,
-  Output,
+  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -18,7 +17,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { EventHandler } from '@azure/msal-browser';
 
 export type AccountTransactionsViewModel = {
   account: string;
@@ -43,7 +41,7 @@ export type AccountTransactionsViewModel = {
 export class PiechartTransactionsTableComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
-  @Output() readonly close = new EventEmitter<void>();
+  readonly close = output();
 
   readonly accountService = inject<AccountService>(ACCOUNT_SERVICE);
   readonly showAccountColumn = input<boolean>(false);
