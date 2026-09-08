@@ -1,7 +1,7 @@
 {
- "singleQuote": true,
- "trailingComma": "es5",
- "endOfLine": "auto",
- "bracketSameLine": true,
- "htmlWhitespaceSensitivity": "ignore"
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "endOfLine": "auto",
+  "bracketSameLine": true,
+  "htmlWhitespaceSensitivity": "ignore"
 }

@@ -73,6 +73,7 @@ export class DateRangeComponent {
 
       if (startMonth && endMonth) {
         this.calculateMonthRange(startMonth, endMonth);
+        this.updateModel();
       }
     });
   }

@@ -26,8 +26,6 @@
   "prettier.useTabs": false,
   "js/ts.suggest.autoImports": true,
   "js/ts.updateImportsOnFileMove.enabled": "always",
-  "typescript.tsdk": "web/node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.workingDirectories": [
     {
       "directory": "web",
