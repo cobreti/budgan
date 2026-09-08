@@ -31,7 +31,8 @@ export class IndexdbService extends Dexie {
       columnMappings: '&id, &name',
       accounts: '&id, &name',
       files: '&id, filename, accountId',
-      accountTransactions: '&id, accountId, fileId, &[accountId+uniqueKey]',
+      accountTransactions:
+        '&id, accountId, fileId, &[accountId+uniqueKey], *dateInscriptionAsString',
       accountRecurringTransactions: null,
       recurringTransactions: '&id, accountId',
     });
@@ -66,7 +67,7 @@ export class IndexdbService extends Dexie {
           this.accountTransactionsTable.clear(),
           this.recurringTransactionsTable.clear(),
         ]);
-      },
+      }
     );
   }
 
@@ -98,12 +99,12 @@ export class IndexdbService extends Dexie {
           ...(payload.recurringTransactions?.length
             ? [
                 this.recurringTransactionsTable.bulkAdd(
-                  payload.recurringTransactions,
+                  payload.recurringTransactions
                 ),
               ]
             : []),
         ]);
-      },
+      }
     );
   }
 }
