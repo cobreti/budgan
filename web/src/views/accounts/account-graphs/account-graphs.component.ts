@@ -38,6 +38,10 @@ import {
   AccountRecurringTransactionService,
   StructuredTransactionsByRecurringId,
 } from '@/services/account-recurring-transaction.service';
+import {
+  DateMonthRange,
+  DateRangeComponent,
+} from '@/components/date-range/date-range';
 
 @Component({
   selector: 'app-account-graphs',
@@ -56,6 +60,7 @@ import {
     MatSelect,
     MatOption,
     TranslatePipe,
+    DateRangeComponent,
   ],
 })
 export class AccountGraphsComponent {
@@ -70,6 +75,7 @@ export class AccountGraphsComponent {
   private readonly _cdr = inject(ChangeDetectorRef);
 
   readonly accountId = input.required<string>();
+  readonly dateMonthRange = signal<DateMonthRange>({});
 
   protected readonly startMonth = signal<string | null>(null);
   protected readonly endMonth = signal<string | null>(null);

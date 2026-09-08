@@ -27,6 +27,11 @@
     }
   </div>
 
+  <app-date-range
+    [startMonth]="startMonth()"
+    [endMonth]="endMonth()"
+    [(dateMonthRange)]="dateMonthRange"></app-date-range>
+
   <mat-accordion class="account-graphs__accordion" multi>
     <mat-expansion-panel class="graph" [expanded]="true">
       <mat-expansion-panel-header>
