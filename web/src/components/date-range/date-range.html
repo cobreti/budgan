@@ -1,7 +1,7 @@
 <div class="account-graphs__filters">
   <!-- @if (availableMonths().length > 0) { -->
   <mat-form-field class="account-graphs__month-field">
-    <mat-label>{{ 'recurringPieChart.startMonth' | translate }}</mat-label>
+    <mat-label>{{ 'dateRange.startMonth' | translate }}</mat-label>
     <mat-select
       [value]="selectedStartMonth()"
       (selectionChange)="onStartMonthChange($event)"
@@ -13,7 +13,7 @@
   </mat-form-field>
 
   <mat-form-field class="account-graphs__month-field">
-    <mat-label>{{ 'recurringPieChart.endMonth' | translate }}</mat-label>
+    <mat-label>{{ 'dateRange.endMonth' | translate }}</mat-label>
     <mat-select
       [value]="selectedEndMonth()"
       (selectionChange)="onEndMonthChange($event)"

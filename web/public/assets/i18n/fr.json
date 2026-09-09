@@ -280,5 +280,9 @@
     "back": "Retour",
     "recurringTransactions": "Transactions récurrentes",
     "graph": "Graphiques"
+  },
+  "dateRange": {
+    "startMonth": "Mois de début",
+    "endMonth": "Mois de fin"
   }
 }
