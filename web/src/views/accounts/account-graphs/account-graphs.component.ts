@@ -72,7 +72,6 @@ export class AccountGraphsComponent {
 
   protected readonly startMonth = signal<string | null>(null);
   protected readonly endMonth = signal<string | null>(null);
-  // private readonly _monthRange = signal<MonthRange | null>(null);
   private _availableMonthsRequestId = 0;
 
   readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
