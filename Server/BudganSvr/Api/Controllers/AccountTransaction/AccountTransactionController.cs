@@ -301,6 +301,23 @@ public class AccountTransactionController : ControllerBase
         return this.Ok(new ApiSuccessResult<bool>(true));
     }
 
+    [HttpGet]
+    [Route("Account/{accountId}/DateRange")]
+    public async Task<IActionResult> GetDateRange(Guid accountId)
+    {
+        var useCase = this._accountTransactionUseCaseFactory.GetDateRangeUseCase(accountId);
+
+        await useCase.ExecuteAsync();
+
+        var result = new GetDateRange
+        {
+            StartDate = useCase.ResultValue.StartDate,
+            EndDate = useCase.ResultValue.EndDate
+        };
+
+        return this.Ok(new ApiSuccessResult<GetDateRange>(result));
+    }
+
     private static string ToRecordTypeString(AccountTransactionRecordType recordType)
     {
         return recordType == AccountTransactionRecordType.Snapshot ? "snapshot" : "normal";

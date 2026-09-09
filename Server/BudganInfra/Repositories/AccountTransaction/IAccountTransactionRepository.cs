@@ -1,6 +1,7 @@
 using BudganInfra.Repositories.AccountTransaction.Delete;
 using BudganInfra.Repositories.AccountTransaction.Get;
 using BudganInfra.Repositories.AccountTransaction.GetCountByAccount;
+using BudganInfra.Repositories.AccountTransaction.GetDateRange;
 using BudganInfra.Repositories.AccountTransaction.GetList;
 using BudganInfra.Repositories.AccountTransaction.GetListByAccount;
 using BudganInfra.Repositories.AccountTransaction.GetPageByAccount;
@@ -30,4 +31,6 @@ public interface IAccountTransactionRepository
 
     IUpdateBalancesAccountTransactionRepoOp UpdateBalancesAccountTransactionRepoOperation(
         List<DaoAccountTransactionBalanceUpdate> updates);
+
+    IGetDateRangeRepoOp GetDateRangeRepoOp(Guid accountId);
 }

@@ -5,6 +5,7 @@ using BudganServices.UseCases.AccountTransaction.Delete;
 using BudganServices.UseCases.AccountTransaction.DeleteSnapshot;
 using BudganServices.UseCases.AccountTransaction.Get;
 using BudganServices.UseCases.AccountTransaction.GetCountByAccount;
+using BudganServices.UseCases.AccountTransaction.GetDateRange;
 using BudganServices.UseCases.AccountTransaction.GetList;
 using BudganServices.UseCases.AccountTransaction.GetListByAccount;
 using BudganServices.UseCases.AccountTransaction.GetPageByAccount;
@@ -81,5 +82,10 @@ internal class AccountTransactionUseCaseFactory : IAccountTransactionUseCaseFact
     public IRecalculateBalancesAccountTransactionUseCase RecalculateBalancesUseCase(Guid accountId)
     {
         return new RecalculateBalancesAccountTransactionUseCase(this._accountTransactionRepository, accountId);
+    }
+
+    public IGetDateRangeUseCase GetDateRangeUseCase(Guid accountId)
+    {
+        return new GetDateRangeUseCase(this._accountTransactionRepository, accountId);
     }
 }
