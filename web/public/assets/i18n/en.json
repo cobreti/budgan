@@ -281,5 +281,9 @@
     "back": "Back",
     "recurringTransactions": "Recurring Transactions",
     "graph": "Graphs"
+  },
+  "dateRange": {
+    "startMonth": "Start month",
+    "endMonth": "End month"
   }
 }

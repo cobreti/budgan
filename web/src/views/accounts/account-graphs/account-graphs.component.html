@@ -1,31 +1,8 @@
 <div class="account-graphs">
-  <div class="account-graphs__filters">
-    @if (availableMonths().length > 0) {
-      <mat-form-field class="account-graphs__month-field">
-        <mat-label>{{ 'recurringPieChart.startMonth' | translate }}</mat-label>
-        <mat-select
-          [value]="startMonth()"
-          (selectionChange)="onStartMonthChange($event)"
-          data-testid="account-graphs-start-month">
-          @for (month of availableMonths(); track month) {
-            <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="account-graphs__month-field">
-        <mat-label>{{ 'recurringPieChart.endMonth' | translate }}</mat-label>
-        <mat-select
-          [value]="endMonth()"
-          (selectionChange)="onEndMonthChange($event)"
-          data-testid="account-graphs-end-month">
-          @for (month of availableMonths(); track month) {
-            <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
-  </div>
+  <app-date-range
+    [startMonth]="startMonth()"
+    [endMonth]="endMonth()"
+    [(dateMonthRange)]="dateMonthRange"></app-date-range>
 
   <mat-accordion class="account-graphs__accordion" multi>
     <mat-expansion-panel class="graph" [expanded]="true">

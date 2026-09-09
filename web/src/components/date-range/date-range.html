@@ -1,0 +1,27 @@
+<div class="account-graphs__filters">
+  <!-- @if (availableMonths().length > 0) { -->
+  <mat-form-field class="account-graphs__month-field">
+    <mat-label>{{ 'dateRange.startMonth' | translate }}</mat-label>
+    <mat-select
+      [value]="selectedStartMonth()"
+      (selectionChange)="onStartMonthChange($event)"
+      data-testid="account-graphs-start-month">
+      @for (month of availableMonths(); track month) {
+      <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="account-graphs__month-field">
+    <mat-label>{{ 'dateRange.endMonth' | translate }}</mat-label>
+    <mat-select
+      [value]="selectedEndMonth()"
+      (selectionChange)="onEndMonthChange($event)"
+      data-testid="account-graphs-end-month">
+      @for (month of availableMonths(); track month) {
+      <mat-option [value]="month">{{ monthLabel(month) }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <!-- } -->
+</div>

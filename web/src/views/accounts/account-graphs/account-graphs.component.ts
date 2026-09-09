@@ -2,16 +2,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  computed,
   effect,
   inject,
   input,
   signal,
 } from '@angular/core';
 import moment from 'moment';
-import { MatOption } from '@angular/material/core';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { MatSelectChange } from '@angular/material/select';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -38,6 +35,10 @@ import {
   AccountRecurringTransactionService,
   StructuredTransactionsByRecurringId,
 } from '@/services/account-recurring-transaction.service';
+import {
+  DateMonthRange,
+  DateRangeComponent,
+} from '@/components/date-range/date-range';
 
 @Component({
   selector: 'app-account-graphs',
@@ -51,11 +52,8 @@ import {
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption,
     TranslatePipe,
+    DateRangeComponent,
   ],
 })
 export class AccountGraphsComponent {
@@ -70,22 +68,15 @@ export class AccountGraphsComponent {
   private readonly _cdr = inject(ChangeDetectorRef);
 
   readonly accountId = input.required<string>();
+  readonly dateMonthRange = signal<DateMonthRange>({});
 
   protected readonly startMonth = signal<string | null>(null);
   protected readonly endMonth = signal<string | null>(null);
-  private readonly _monthRange = signal<MonthRange | null>(null);
   private _availableMonthsRequestId = 0;
 
   readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
     {}
   );
-
-  // Ascending, so a start/end pair of dropdowns reads naturally left to right.
-  readonly availableMonths = computed(() => {
-    const range = this._monthRange();
-    if (!range) return [];
-    return monthsBetween(range);
-  });
 
   constructor() {
     // Discovers which months are selectable and picks a default month, from
@@ -99,8 +90,7 @@ export class AccountGraphsComponent {
 
     effect(async () => {
       const id = this.accountId();
-      const startMonth = this.startMonth();
-      const endMonth = this.endMonth();
+      const { startMonth, endMonth } = this.dateMonthRange();
 
       if (startMonth && endMonth) {
         await this.updateRecurringTransactions(id, startMonth, endMonth);
@@ -173,7 +163,6 @@ export class AccountGraphsComponent {
         : undefined;
 
     if (!startDate || !endDate) {
-      this._monthRange.set(null);
       this.startMonth.set(null);
       this.endMonth.set(null);
       this._cdr.markForCheck();
@@ -186,7 +175,6 @@ export class AccountGraphsComponent {
       startMonthKey && endMonthKey
         ? { start: startMonthKey, end: endMonthKey }
         : null;
-    this._monthRange.set(range);
 
     const months = range ? monthsBetween(range) : [];
 

@@ -1,0 +1,12 @@
+.account-graphs__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.account-graphs__month-field {
+  flex: 0 0 auto;
+  display: block;
+  max-width: 240px;
+}

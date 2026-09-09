@@ -1,4 +1,7 @@
-import { AccountModel } from '@/Models/accountModel';
+import {
+  DateMonthRange,
+  DateRangeComponent,
+} from '@/components/date-range/date-range';
 import {
   AccountTransactionModel,
   AccountTransactionRecordType,
@@ -12,7 +15,6 @@ import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@/services/account-transaction.service';
-import { LOCALE_SERVICE, LocaleService } from '@/services/locale.service';
 import {
   monthBounds,
   MonthRange,
@@ -23,32 +25,16 @@ import { RecurringPieChartComponent } from '@/views/accounts/account-graphs/recu
 import {
   ChangeDetectorRef,
   Component,
-  computed,
   effect,
   inject,
   signal,
 } from '@angular/core';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import {
-  MatOption,
-  MatSelect,
-  MatSelectChange,
-} from '@angular/material/select';
-import { TranslatePipe } from '@ngx-translate/core';
-import moment from 'moment';
 
 @Component({
   selector: 'app-account-overview-graph',
   templateUrl: './account-overview-graph.html',
   styleUrl: './account-overview-graph.scss',
-  imports: [
-    RecurringPieChartComponent,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption,
-    TranslatePipe,
-  ],
+  imports: [RecurringPieChartComponent, DateRangeComponent],
 })
 export class AccountOverviewGraphComponent {
   private readonly _transactionService = inject<AccountTransactionService>(
@@ -58,55 +44,25 @@ export class AccountOverviewGraphComponent {
     inject<AccountRecurringTransactionService>(
       ACCOUNT_RECURRING_TRANSACTION_SERVICE
     );
-  private readonly _locale = inject<LocaleService>(LOCALE_SERVICE);
   private readonly _cdr = inject(ChangeDetectorRef);
 
   readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
     {}
   );
+  readonly dateMonthRange = signal<DateMonthRange>({});
 
   protected readonly startMonth = signal<string | null>(null);
   protected readonly endMonth = signal<string | null>(null);
   private readonly _monthRange = signal<MonthRange | null>(null);
 
-  readonly availableMonths = computed(() => {
-    const range = this._monthRange();
-    if (!range) return [];
-    return monthsBetween(range);
-  });
-
   constructor() {
     this.loadAvailableMonths();
 
     effect(() => {
-      const startMonth = this.startMonth();
-      const endMonth = this.endMonth();
+      const { startMonth, endMonth } = this.dateMonthRange();
+
       this.loadRecurringTransactions(startMonth, endMonth);
     });
-  }
-
-  monthLabel(month: string): string {
-    return moment(month, 'YYYY-MM')
-      .locale(this._locale.currentLocale())
-      .format('MMMM YYYY');
-  }
-
-  async onStartMonthChange(change: MatSelectChange): Promise<void> {
-    const value = change.value as string;
-    this.startMonth.set(value);
-    const end = this.endMonth();
-    if (end && value > end) {
-      this.endMonth.set(value);
-    }
-  }
-
-  async onEndMonthChange(change: MatSelectChange): Promise<void> {
-    const value = change.value as string;
-    this.endMonth.set(value);
-    const start = this.startMonth();
-    if (start && value < start) {
-      this.startMonth.set(value);
-    }
   }
 
   private async getAllTransactions(): Promise<AccountTransactionModel[]> {
@@ -176,8 +132,8 @@ export class AccountOverviewGraphComponent {
   }
 
   private async loadRecurringTransactions(
-    startMonth: string | null,
-    endMonth: string | null
+    startMonth: string | undefined,
+    endMonth: string | undefined
   ): Promise<void> {
     if (!startMonth || !endMonth) {
       this.recurringTransactions.set({});
