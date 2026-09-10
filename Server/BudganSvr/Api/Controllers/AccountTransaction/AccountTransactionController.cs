@@ -22,6 +22,7 @@ public class AccountTransactionController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType<ApiSuccessResult<Guid>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create(CreateAccountTransaction model)
     {
         try
@@ -60,6 +61,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
+    [ProducesResponseType<ApiSuccessResult<GetAccountTransaction>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAccountTransaction(Guid id)
     {
         var useCase = this._accountTransactionUseCaseFactory.GetUseCase(id);
@@ -94,6 +96,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpDelete]
     [Route("{id}")]
+    [ProducesResponseType<ApiSuccessResult<Guid>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> DeleteAccountTransaction(Guid id)
     {
         var useCase = this._accountTransactionUseCaseFactory.DeleteUseCase(id);
@@ -110,6 +113,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("Account/{accountId}/List")]
+    [ProducesResponseType<ApiSuccessResult<List<AccountTransactionListItem>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListByAccount(Guid accountId)
     {
         var useCase = this._accountTransactionUseCaseFactory.ListByAccountUseCase(accountId);
@@ -139,6 +143,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("List")]
+    [ProducesResponseType<ApiSuccessResult<List<AccountTransactionListItem>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
     {
         var useCase = this._accountTransactionUseCaseFactory.ListUseCase();
@@ -168,6 +173,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("Account/{accountId}/Count")]
+    [ProducesResponseType<ApiSuccessResult<int>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCountByAccount(Guid accountId)
     {
         var useCase = this._accountTransactionUseCaseFactory.GetCountByAccountUseCase(accountId);
@@ -179,6 +185,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("Account/{accountId}/Page")]
+    [ProducesResponseType<ApiSuccessResult<GetPageAccountTransaction>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPageByAccount(
         Guid accountId,
         [FromQuery] int page,
@@ -223,6 +230,7 @@ public class AccountTransactionController : ControllerBase
 
     [HttpGet]
     [Route("Account/{accountId}/Snapshot")]
+    [ProducesResponseType(typeof(ApiSuccessResult<GetAccountTransactionSnapshot>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSnapshot(Guid accountId)
     {
         var useCase = this._accountTransactionUseCaseFactory.GetSnapshotUseCase(accountId);
@@ -257,6 +265,9 @@ public class AccountTransactionController : ControllerBase
 
     [HttpPut]
     [Route("Account/{accountId}/Snapshot")]
+    [ProducesResponseType(typeof(ApiSuccessResult<Guid>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiErrorResult<string>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SetSnapshot(Guid accountId, SetAccountTransactionSnapshot model)
     {
         try
@@ -292,13 +303,32 @@ public class AccountTransactionController : ControllerBase
 
     [HttpDelete]
     [Route("Account/{accountId}/Snapshot")]
+    [ProducesResponseType(typeof(ApiResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> DeleteSnapshot(Guid accountId)
     {
         var useCase = this._accountTransactionUseCaseFactory.DeleteSnapshotUseCase(accountId);
 
         await useCase.ExecuteAsync();
 
-        return this.Ok(new ApiSuccessResult<bool>(true));
+        return this.Ok(new ApiResult{Succeeded = true});
+    }
+
+    [HttpGet]
+    [Route("Account/{accountId}/DateRange")]
+    [ProducesResponseType(typeof(ApiSuccessResult<GetDateRange>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetDateRange(Guid accountId)
+    {
+        var useCase = this._accountTransactionUseCaseFactory.GetDateRangeUseCase(accountId);
+
+        await useCase.ExecuteAsync();
+
+        var result = new GetDateRange
+        {
+            StartDate = useCase.ResultValue.StartDate,
+            EndDate = useCase.ResultValue.EndDate
+        };
+
+        return this.Ok(new ApiSuccessResult<GetDateRange>(result));
     }
 
     private static string ToRecordTypeString(AccountTransactionRecordType recordType)

@@ -12,6 +12,7 @@ import {
 import {
   AccountTransactionService,
   TransactionPage,
+  TransactionsDateRange,
   TransactionSort,
 } from '@services/account-transaction.service';
 
@@ -63,12 +64,14 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
   }
 
   async getList(): Promise<AccountTransactionModel[]> {
-    const result = await this.httpClient.get<ApiResult<AccountTransactionDto[]>>(
-      '/api/AccountTransaction/List',
-    );
+    const result = await this.httpClient.get<
+      ApiResult<AccountTransactionDto[]>
+    >('/api/AccountTransaction/List');
 
     if (!result.succeeded) {
-      throw new Error(`failed to list transactions with error : ${result.errorValue}`);
+      throw new Error(
+        `failed to list transactions with error : ${result.errorValue}`
+      );
     }
 
     return result.successValue.map((dto) => this._toModel(dto));
@@ -76,12 +79,12 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
 
   async getCountByAccount(accountId: string): Promise<number> {
     const result = await this.httpClient.get<ApiResult<number>>(
-      `/api/AccountTransaction/Account/${accountId}/Count`,
+      `/api/AccountTransaction/Account/${accountId}/Count`
     );
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to get transaction count for account ${accountId} with error : ${result.errorValue}`,
+        `failed to get transaction count for account ${accountId} with error : ${result.errorValue}`
       );
     }
 
@@ -92,16 +95,16 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     accountId: string,
     page: number,
     pageSize: number,
-    sort: TransactionSort,
+    sort: TransactionSort
   ): Promise<TransactionPage> {
     const query = `page=${page}&pageSize=${pageSize}&sortField=${encodeURIComponent(sort.field)}&sortDirection=${encodeURIComponent(sort.direction)}`;
     const result = await this.httpClient.get<ApiResult<PageResultDto>>(
-      `/api/AccountTransaction/Account/${accountId}/Page?${query}`,
+      `/api/AccountTransaction/Account/${accountId}/Page?${query}`
     );
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to get transaction page for account ${accountId} with error : ${result.errorValue}`,
+        `failed to get transaction page for account ${accountId} with error : ${result.errorValue}`
       );
     }
 
@@ -118,7 +121,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
     cardNumber: string,
     dateInscriptionAsString: string,
     amount: number,
-    description: string,
+    description: string
   ): Promise<Result<string>> {
     const result = await this.httpClient.post<ApiResult<string>>(
       '/api/AccountTransaction',
@@ -129,7 +132,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
         dateInscriptionAsString,
         amount,
         description,
-      },
+      }
     );
 
     if (!result.succeeded) {
@@ -143,11 +146,11 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
   async setSnapshot(
     accountId: string,
     dateAsString: string,
-    amount: number,
+    amount: number
   ): Promise<Result<string>> {
     const result = await this.httpClient.put<ApiResult<string>>(
       `/api/AccountTransaction/Account/${accountId}/Snapshot`,
-      { dateAsString, amount },
+      { dateAsString, amount }
     );
 
     if (!result.succeeded) {
@@ -159,7 +162,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
   }
 
   async getSnapshot(
-    accountId: string,
+    accountId: string
   ): Promise<AccountTransactionModel | undefined> {
     const result = await this.httpClient.get<
       ApiResult<AccountTransactionDto | null>
@@ -174,13 +177,13 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
 
   async deleteSnapshot(accountId: string): Promise<void> {
     await this.httpClient.delete<ApiResult<boolean>>(
-      `/api/AccountTransaction/Account/${accountId}/Snapshot`,
+      `/api/AccountTransaction/Account/${accountId}/Snapshot`
     );
     this._transactionsVersion.update((v) => v + 1);
   }
 
   async getListByAccount(
-    accountId: string,
+    accountId: string
   ): Promise<AccountTransactionModel[]> {
     const result = await this.httpClient.get<
       ApiResult<AccountTransactionDto[]>
@@ -188,7 +191,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
 
     if (!result.succeeded) {
       throw new Error(
-        `failed to list transactions for account ${accountId} with error : ${result.errorValue}`,
+        `failed to list transactions for account ${accountId} with error : ${result.errorValue}`
       );
     }
 
@@ -217,7 +220,7 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
   async delete(id: string): Promise<void> {
     try {
       await this.httpClient.delete<ApiResult<string>>(
-        `/api/AccountTransaction/${id}`,
+        `/api/AccountTransaction/${id}`
       );
     } catch (e) {
       if (e instanceof HttpErrorResponse && e.status === 404) {
@@ -226,6 +229,14 @@ export class AccountTransactionServiceServerImpl implements AccountTransactionSe
       throw e;
     }
     this._transactionsVersion.update((v) => v + 1);
+  }
+
+  async getAccountDateRange(accountId: string): Promise<TransactionsDateRange> {
+    var result = await this.httpClient.get<ApiResult<TransactionsDateRange>>(
+      `/api/AccountTransaction/Account/${accountId}/DateRange`
+    );
+
+    return result.successValue;
   }
 
   async recalculateBalances(_accountId: string): Promise<void> {

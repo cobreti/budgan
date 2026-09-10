@@ -2,6 +2,7 @@ using BudganInfra.DBContext;
 using BudganInfra.Repositories.AccountTransaction.Delete;
 using BudganInfra.Repositories.AccountTransaction.Get;
 using BudganInfra.Repositories.AccountTransaction.GetCountByAccount;
+using BudganInfra.Repositories.AccountTransaction.GetDateRange;
 using BudganInfra.Repositories.AccountTransaction.GetList;
 using BudganInfra.Repositories.AccountTransaction.GetListByAccount;
 using BudganInfra.Repositories.AccountTransaction.GetPageByAccount;
@@ -72,5 +73,10 @@ internal class AccountTransactionRepository : IAccountTransactionRepository
         List<DaoAccountTransactionBalanceUpdate> updates)
     {
         return new UpdateBalancesAccountTransactionRepoOp(this._dataContext, updates);
+    }
+
+    public IGetDateRangeRepoOp GetDateRangeRepoOp(Guid accountId)
+    {
+        return new GetDateRangeRepoOp(this._dataContext, accountId);
     }
 }

@@ -20,7 +20,6 @@ import {
   ACCOUNT_TRANSACTION_SERVICE,
   AccountTransactionService,
 } from '@services/account-transaction.service';
-import { AccountTransactionRecordType } from '@models/accountTransactionModel';
 import { LOCALE_SERVICE, LocaleService } from '@services/locale.service';
 import {
   monthBounds,
@@ -72,7 +71,6 @@ export class AccountGraphsComponent {
 
   protected readonly startMonth = signal<string | null>(null);
   protected readonly endMonth = signal<string | null>(null);
-  private _availableMonthsRequestId = 0;
 
   readonly recurringTransactions = signal<StructuredTransactionsByRecurringId>(
     {}
@@ -140,27 +138,11 @@ export class AccountGraphsComponent {
   }
 
   private async _loadAvailableMonths(accountId: string): Promise<void> {
-    // Guards against out-of-order async resolution: if accountId changes
-    // again before this call resolves, a later call's request id will have
-    // moved on, so this (now stale) result is discarded instead of
-    // overwriting the dropdowns with another account's months.
-    const requestId = ++this._availableMonthsRequestId;
-    const transactions =
-      await this._transactionService.getListByAccount(accountId);
-    if (requestId !== this._availableMonthsRequestId) return;
+    const dateRange =
+      await this._transactionService.getAccountDateRange(accountId);
 
-    const matchingDates = transactions
-      .filter((t) => t.recordType === AccountTransactionRecordType.normal)
-      .map((t) => t.dateInscriptionAsString);
-
-    const startDate =
-      matchingDates.length > 0
-        ? matchingDates.reduce((min, d) => (d < min ? d : min))
-        : undefined;
-    const endDate =
-      matchingDates.length > 0
-        ? matchingDates.reduce((max, d) => (d > max ? d : max))
-        : undefined;
+    const startDate = dateRange.startDate;
+    const endDate = dateRange.endDate;
 
     if (!startDate || !endDate) {
       this.startMonth.set(null);

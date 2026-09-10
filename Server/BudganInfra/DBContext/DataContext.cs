@@ -47,6 +47,7 @@ public class DataContext(DbContextOptions<DataContext> options) : Microsoft.Enti
                 .HasMaxLength(20);
 
             entity.HasIndex(e => e.FileId);
+            entity.HasIndex(e => e.DateInscription);
 
             entity.HasIndex(e => new { e.AccountId, e.UniqueKey })
                 .IsUnique();

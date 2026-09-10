@@ -8,11 +8,17 @@ export type TransactionPage = {
   page: number;
 };
 
-export type TransactionSortField = 'cardNumber' | 'dateInscription' | 'description' | 'amount';
+export type TransactionSortField =
+  'cardNumber' | 'dateInscription' | 'description' | 'amount';
 
 export type TransactionSort = {
   field: TransactionSortField;
   direction: 'asc' | 'desc';
+};
+
+export type TransactionsDateRange = {
+  startDate?: string;
+  endDate?: string;
 };
 
 export interface AccountTransactionService {
@@ -23,7 +29,7 @@ export interface AccountTransactionService {
     accountId: string,
     page: number,
     pageSize: number,
-    sort: TransactionSort,
+    sort: TransactionSort
   ): Promise<TransactionPage>;
   create(
     fileId: string,
@@ -31,17 +37,21 @@ export interface AccountTransactionService {
     cardNumber: string,
     dateInscriptionAsString: string,
     amount: number,
-    description: string,
+    description: string
   ): Promise<Result<string>>;
-  setSnapshot(accountId: string, dateAsString: string, amount: number): Promise<Result<string>>;
+  setSnapshot(
+    accountId: string,
+    dateAsString: string,
+    amount: number
+  ): Promise<Result<string>>;
   getSnapshot(accountId: string): Promise<AccountTransactionModel | undefined>;
   deleteSnapshot(accountId: string): Promise<void>;
   getListByAccount(accountId: string): Promise<AccountTransactionModel[]>;
   getById(id: string): Promise<AccountTransactionModel>;
   delete(id: string): Promise<void>;
   recalculateBalances(accountId: string): Promise<void>;
+  getAccountDateRange(accountId: string): Promise<TransactionsDateRange>;
 }
 
-export const ACCOUNT_TRANSACTION_SERVICE = new InjectionToken<AccountTransactionService>(
-  'AccountTransactionService',
-);
+export const ACCOUNT_TRANSACTION_SERVICE =
+  new InjectionToken<AccountTransactionService>('AccountTransactionService');

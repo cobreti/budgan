@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BudganInfra.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,6 +171,11 @@ namespace BudganInfra.Migrations
                 table: "AccountTransactions",
                 columns: new[] { "AccountId", "UniqueKey" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccountTransactions_DateInscription",
+                table: "AccountTransactions",
+                column: "DateInscription");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountTransactions_FileId",
