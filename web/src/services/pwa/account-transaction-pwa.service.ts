@@ -15,6 +15,7 @@ import {
 import {
   AccountTransactionService,
   TransactionPage,
+  TransactionsDateRange,
   TransactionSort,
 } from '@services/account-transaction.service';
 
@@ -42,7 +43,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     accountId: string,
     page: number,
     pageSize: number,
-    sort: TransactionSort,
+    sort: TransactionSort
   ): Promise<TransactionPage> {
     const all = await this._indexDb.accountTransactionsTable
       .where('accountId')
@@ -58,7 +59,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
 
   private _sortTransactions(
     transactions: AccountTransactionModel[],
-    sort: TransactionSort,
+    sort: TransactionSort
   ): AccountTransactionModel[] {
     const sign = sort.direction === 'desc' ? -1 : 1;
     return [...transactions].sort((a, b) => {
@@ -71,7 +72,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
           return sign * a.description.localeCompare(b.description);
         case 'dateInscription': {
           const dateCmp = a.dateInscriptionAsString.localeCompare(
-            b.dateInscriptionAsString,
+            b.dateInscriptionAsString
           );
           if (dateCmp !== 0) return sign * dateCmp;
           const aOff = a.balanceDateOffset ?? 0;
@@ -88,14 +89,14 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     cardNumber: string,
     dateInscriptionAsString: string,
     amount: number,
-    description: string,
+    description: string
   ): Promise<Result<string>> {
     const uniqueKey = buildTransactionUniqueKey(
       accountId,
       cardNumber,
       dateInscriptionAsString,
       amount,
-      description,
+      description
     );
     const id = this._idGenerator.generateId();
     const range = 0.15;
@@ -131,7 +132,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
   async setSnapshot(
     accountId: string,
     dateAsString: string,
-    amount: number,
+    amount: number
   ): Promise<Result<string>> {
     const uniqueKey = this.snapshotId(accountId);
     const existing = await this._indexDb.accountTransactionsTable
@@ -158,7 +159,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
   }
 
   async getSnapshot(
-    accountId: string,
+    accountId: string
   ): Promise<AccountTransactionModel | undefined> {
     const uniqueKey = this.snapshotId(accountId);
     return this._indexDb.accountTransactionsTable
@@ -177,7 +178,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
   }
 
   async getListByAccount(
-    accountId: string,
+    accountId: string
   ): Promise<AccountTransactionModel[]> {
     return this._indexDb.accountTransactionsTable
       .where('accountId')
@@ -218,7 +219,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
 
     // The snapshot is the anchor; there is at most one per account.
     const snapshot = all.find(
-      (t) => t.recordType === AccountTransactionRecordType.snapshot,
+      (t) => t.recordType === AccountTransactionRecordType.snapshot
     );
 
     // Normal rows in chronological order; uniqueKey is a stable tiebreaker for equal dates.
@@ -226,7 +227,7 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
       .filter((t) => t.recordType === AccountTransactionRecordType.normal)
       .sort((a, b) => {
         const dateCmp = a.dateInscriptionAsString.localeCompare(
-          b.dateInscriptionAsString,
+          b.dateInscriptionAsString
         );
         if (dateCmp !== 0) return dateCmp;
         return a.uniqueKey.localeCompare(b.uniqueKey);
@@ -260,10 +261,10 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
     // `before` is everything strictly earlier (backward pass).
     const snapshotDate = snapshot.dateInscriptionAsString;
     const before = normal.filter(
-      (t) => t.dateInscriptionAsString < snapshotDate,
+      (t) => t.dateInscriptionAsString < snapshotDate
     );
     const afterOrEqual = normal.filter(
-      (t) => t.dateInscriptionAsString >= snapshotDate,
+      (t) => t.dateInscriptionAsString >= snapshotDate
     );
 
     // Forward pass: start at the snapshot balance and ADD each later amount.
@@ -299,5 +300,25 @@ export class AccountTransactionServicePwaImpl implements AccountTransactionServi
 
     // Bump the version signal so dependent views recompute.
     this._transactionsVersion.update((v) => v + 1);
+  }
+
+  async getAccountDateRange(accountId: string): Promise<TransactionsDateRange> {
+    const min = await this._indexDb.accountTransactionsTable
+      .orderBy('dateInscriptionAsString')
+      .filter((x) => x.accountId == accountId)
+      .first();
+    const max = await this._indexDb.accountTransactionsTable
+      .orderBy('dateInscriptionAsString')
+      .filter((x) => x.accountId == accountId)
+      .last();
+
+    if (min && max) {
+      return {
+        startDate: min.dateInscriptionAsString,
+        endDate: max.dateInscriptionAsString,
+      };
+    }
+
+    return {};
   }
 }

@@ -22,7 +22,9 @@ namespace BudganInfra.Repositories.AccountTransaction.GetDateRange
                 EndDate = null
             };
 
-            var hasData = await this._dataContext.AccountTransactions.AnyAsync();
+            var hasData = await this._dataContext.AccountTransactions
+                .Where(x => x.AccountId == this._accountId)
+                .AnyAsync();
 
             if (hasData)
             {
