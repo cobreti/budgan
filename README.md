@@ -1,20 +1,98 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# BUDGAN
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## PWA Version
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+### Description
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+This is a budgeting application designed to help users manage their finances effectively. It provides features such as tracking income and expenses.
+For now it's very simple but there's plans to have it evolved with more ways to analyze a budget
+and even in the future some budget planning.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+One of the goal of this application is to keep it simple and AI free: you own and keep your data.
+There's no server, data is kept in the browser or in a local file when you save it. You can always clear the browser data content from the app itself.
+
+It's designed as a PWA (Progressive Web App) which means it can be installed on your device and used offline. It also provides a native-like experience with features like push notifications and app shortcuts.
+
+### Security
+
+The main way this application keeps your data secure is by not relying on any server nor
+using any AI sending your data in the cloud. All the data is kept locally in the browser or
+in a location of your choosing when saving a file.
+
+### How it works
+
+It all starts from you saving your bank statements locally in CSV format.
+
+#### Setting a column mapping
+
+You then can create a mapping (tell the application which column is what) in the file.
+The application let you use your statement csv file to help you select the columns.
+
+This is required because each bank have a different csv format. It's also possible within
+the same bank to have different format for account and credit cards.
+
+![](./Images/home-new-column-mapping.png)
+
+![](./Images/new-column-mapping.png)
+
+The new mapping will appear on the home page in the card named "Columns mapping".
+
+![](./Images/home-column-mapping.png)
+
+You can view the mapping by selecting it.
+The number in parentheses indicates the column index in the CSV file.
+
+![](./Images/column-mapping-detail.png)
+
+#### Creating an account
+
+When creating an account, you need to provide the column mapping this account will use when importing statements.
+
+![](./Images/new-account.png)
+
+The new account will appear on the home page in the card named "Accounts".
+
+![](./Images/home-account.png)
+
+#### Importing statements
+
+Importing a statement is done from the account page by selecting "import file".
+
+![](./Images/account-import-file.png)
+
+#### Account information
+
+The application allow you to view the transactions over time. You can also choose which column to order from in ascending or descending order.
+It will estimate a balance account value after each transaction. By default this balance starts at 0.
+
+![](./Images/account-transactions.png)
+
+There's also a graph view of the balance over time.
+
+![](./Images/account-graph.png)
+
+##### Snapshot balance
+
+On the detail tab of the account, it's possible to set a balance snapshot that will be used to calculate the balance for each transaction instead of starting at 0.
+This snapshot can be at any point in time. The application will calculate a starting point from the given snapshot.
+
+For example, here we set a snapshot on Jan 1st, 2026 of $10 000.
+
+![](./Images/account-snapshot.png)
+
+The transactions table will adjust accordingly. And the snapshot it represented in a row with black text for the amount.
+
+![](./Images/transactions-with-snapshot.png)
+
+The graph also represent the new data with the snapshot.
+
+![](./Images/graph-with-snapshot.png)
+
+#### Save / Load / Clear
+
+At any time you can save your data using the "Save All" button on the home page.  
+You can also load a previous saved file using the "Load All" button.
+
+At any time you can erase all data from the browser by using the "Clear All" button.
+
+![](./Images/home-page-buttons.png)
