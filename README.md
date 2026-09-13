@@ -67,16 +67,31 @@ It will estimate a balance account value after each transaction. By default this
 
 ![](./Images/account-transactions.png)
 
-There's also a graph view of the balance over time.
+There's also a graph view of the balance over time.\
+Red dots represents expenses and green ones incomes.
 
 ![](./Images/account-graph.png)
+
+##### Income and Expenses
+
+The application allow to analyze transactions to find recurring ones to help know what are your recurring expenses and incomes.
+
+![](./Images/account-analyze-button.png)
+
+After running the analysis, you get to select which items are really recurring ones.
+
+![](./Images/account-analyze-select-items.png)
+
+Those transactions are visible in the graph for recurring transactions to help visualize using a pie chart.
+
+![](./Images/recurring-transactions-graph.png)
 
 ##### Snapshot balance
 
 On the detail tab of the account, it's possible to set a balance snapshot that will be used to calculate the balance for each transaction instead of starting at 0.
 This snapshot can be at any point in time. The application will calculate a starting point from the given snapshot.
 
-For example, here we set a snapshot on Jan 1st, 2026 of $10 000.
+For example, here we set a snapshot on Jan 1st, 2025 of $10 000.
 
 ![](./Images/account-snapshot.png)
 
